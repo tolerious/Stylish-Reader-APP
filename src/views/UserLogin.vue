@@ -1,25 +1,54 @@
 <template>
   <div class="login-container">
-    <el-row
-      ><el-col> <el-divider content-position="center">欢迎使用燃烧英语</el-divider></el-col></el-row
-    >
-    <el-form label-width="100px">
-      <el-form-item label="用户名">
-        <el-input></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input type="password"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button>取消</el-button>
-        <el-button type="primary">登陆</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="inner-login-container">
+      <el-row><el-col :span="24"> <el-divider content-position="center">欢迎使用燃烧英语</el-divider></el-col></el-row>
+      <el-row>
+        <el-col :span="20">
+          <el-form label-width="100px">
+            <el-form-item label="用户名">
+              <el-input v-model="userInfo.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="userInfo.password" type="password"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button>取消</el-button>
+              <el-button type="primary" @click="login">登陆</el-button>
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </div>
   </div>
 </template>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+let userInfo = ref({
+  username: '', password: ''
+})
+const router = useRouter()
+function login() {
+  router.push('/home')
+}
+</script>
 <style lang="less" scoped>
 .login-container {
-  width: 500px;
-  margin: 200px auto;
+  background-color: blue;
+  width: 100%;
+  position: relative;
+  top: 150px;
+
+  .inner-login-container {
+    height: 80%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+  }
 }
 </style>
