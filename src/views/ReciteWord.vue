@@ -1,4 +1,5 @@
 <template>
+    <Header :title="'Recite Words'"></Header>
     <div class="recite-word-container">
         <div class="recite-word-inner-container">
             <div class="title-word">
@@ -56,6 +57,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import Header from '@/components/Header.vue'
 
 let activeNames = ref(['1'])
 </script>

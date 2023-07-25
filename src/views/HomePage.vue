@@ -14,14 +14,25 @@
             </el-carousel>
         </div>
         <div class="body-container">
-            
+            <el-row justify="space-around">
+                <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Recite Words </el-card>
+                </el-col>
+                <el-col :span="11"> <el-card shadow="always" @click="redirect('loop')"> Loop Words </el-card>
+                </el-col>
+            </el-row>
         </div>
 
     </div>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
+function redirect(condition: string) {
+    if (condition === 'recite') router.push('/recite')
+    if (condition === 'loop') router.push('/loop')
+}
 </script>
 
 <style lang="less" scoped>
@@ -33,6 +44,10 @@
         img {
             object-fit: fill;
         }
+    }
+
+    .body-container {
+        margin-top: 15px;
     }
 }
 </style>
