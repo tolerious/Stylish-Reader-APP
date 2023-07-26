@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Record Word'" />
+    <Header :title="'Record Word'" @go-back="handleGoBack" />
     <div class="record-word-container">
         <el-form :model="form" label-width="120px">
             <el-form-item label="Word:">
@@ -55,6 +55,7 @@
 import Header from '@/components/Header.vue'
 import { ref } from 'vue';
 
+// #region
 const activeNames = ref('0')
 
 let wordDescription = ref({
@@ -67,7 +68,9 @@ const form = ref({
     englishName: '',
     wordDescriptionList: []
 })
+// #endregion
 
+// #region
 function addNewItem() {
     form.value.wordDescriptionList.push(wordDescription)
     wordDescription = ref({
@@ -76,6 +79,7 @@ function addNewItem() {
         chineseDescription: '', sentence: ''
     })
 }
+// #endregion
 </script>
 
 <style scoped lang="less">
