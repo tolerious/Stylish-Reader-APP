@@ -3,10 +3,19 @@
         <div class="slider-container">
             <el-carousel height="auto">
                 <el-carousel-item style="height:180px">
-                    <img src='@/assets/images/slider-01.jpg' alt="" srcset="">
+                    <div class="daily-word-container">
+                        <div>Emotional</div>
+                        <p>relating to the emotions</p>
+                        <p>情绪（上）的，情感（上）的</p>
+                    </div>
                 </el-carousel-item>
                 <el-carousel-item>
-                    <img src='@/assets/images/slider-02.jpg' alt="" srcset="">
+                    <!-- <img src='@/assets/images/slider-02.jpg' alt="" srcset=""> -->
+                    <div class="daily-word-container">
+                        <div>Emotional</div>
+                        <p>relating to the emotions</p>
+                        <p>情绪（上）的，情感（上）的</p>
+                    </div>
                 </el-carousel-item>
                 <el-carousel-item>
                     <img src='@/assets/images/slider-03.jpg' alt="" srcset="">
@@ -21,6 +30,14 @@
                         Word Group</el-card>
                 </el-col>
             </el-row>
+            <el-row justify="space-around" style="margin-top: 15px;">
+                <el-col :span="11">
+                    <el-card shadow="always" @click="redirect('cycling')">Cycling</el-card>
+                </el-col>
+                <el-col :span="11">
+                    <el-card shadow="always" @click="redirect('feedback')">Feedback</el-card>
+                </el-col>
+            </el-row>
         </div>
 
     </div>
@@ -33,6 +50,8 @@ const router = useRouter()
 function redirect(condition: string) {
     if (condition === 'recite') router.push('/recite')
     if (condition === 'group') router.push('/group')
+    if (condition == 'cycling') router.push('/cycling')
+    if (condition == 'feedback') router.push('/feedback')
 }
 </script>
 
@@ -44,6 +63,12 @@ function redirect(condition: string) {
 
         img {
             object-fit: fill;
+        }
+
+        .daily-word-container {
+            padding: 3px 5px;
+            background-color: rgba(0, 255, 255, 0.5);
+            height: 100%;
         }
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Recite Words'"></Header>
+    <Header :title="'Recite Words'" @goBack="handleGoBack"></Header>
     <div class="recite-word-container">
         <div class="recite-word-inner-container">
             <div class="title-word">
@@ -58,8 +58,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Header from '@/components/Header.vue'
+import { useRouter } from 'vue-router';
 
 let activeNames = ref(['1'])
+const router = useRouter()
+function handleGoBack() {
+    router.push('/')
+}
 </script>
 
 <style lang="less" scoped>

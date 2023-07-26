@@ -21,7 +21,17 @@ const router = createRouter({
     {
       path: '/group',
       name: 'wordGroup',
-      component:()=>import('@/views/WordGroup.vue')
+      component: () => import('@/views/WordGroup.vue')
+    },
+    {
+      path: '/cycling',
+      name: 'cycling',
+      component: () => import('@/views/Cycling.vue')
+    },
+    {
+      path: '/feedback',
+      name: 'feedback',
+      component: () => import('@/views/Feedback.vue')
     }
   ]
 })

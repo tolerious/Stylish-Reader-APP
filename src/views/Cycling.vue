@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Words Group'" @goBack="handleGoBack" />
+    <Header :title="'Words Cycling'" @go-back="handleGoBack" />
     <div class="loop-word-container">
         <div class="loop-word-item" v-for="item in 51">
             <div class="loop-word-left">
@@ -8,7 +8,7 @@
             </div>
             <div class="loop-word-right">
                 <button>
-                    <span>Burning</span>
+                    <span>Cycling</span>
                 </button>
             </div>
         </div>

@@ -23,8 +23,9 @@ defineProps({
     },
 })
 const router = useRouter()
+const emit = defineEmits(['goBack'])
 function goBack() {
-    router.go(-1)
+    emit('goBack')
 }
 
 </script>
