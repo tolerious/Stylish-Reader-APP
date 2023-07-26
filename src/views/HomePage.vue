@@ -17,7 +17,8 @@
             <el-row justify="space-around">
                 <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Recite Words </el-card>
                 </el-col>
-                <el-col :span="11"> <el-card shadow="always" @click="redirect('loop')"> Loop Words </el-card>
+                <el-col :span="11"> <el-card shadow="always" @click="redirect('group')">
+                        Word Group</el-card>
                 </el-col>
             </el-row>
         </div>
@@ -31,7 +32,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 function redirect(condition: string) {
     if (condition === 'recite') router.push('/recite')
-    if (condition === 'loop') router.push('/loop')
+    if (condition === 'group') router.push('/group')
 }
 </script>
 

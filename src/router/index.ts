@@ -17,6 +17,11 @@ const router = createRouter({
       path: '/recite',
       name: 'recite',
       component: () => import('@/views/ReciteWord.vue')
+    },
+    {
+      path: '/group',
+      name: 'wordGroup',
+      component:()=>import('@/views/WordGroup.vue')
     }
   ]
 })
