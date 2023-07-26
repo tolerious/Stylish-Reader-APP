@@ -1,9 +1,8 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
-import { useUserStoreHook } from '@/store/modules/user'
 import { ElMessage } from 'element-plus'
 import { get, merge } from 'lodash-es'
-import { getToken } from './cache/cookies'
-
+import { useUserStore } from '@/stores/user'
+// #region
 /** 创建请求实例 */
 function createService() {
   // 创建一个 axios 实例命名为 service
@@ -30,8 +29,13 @@ function createService() {
         return Promise.reject(new Error('非本系统的接口'))
       }
       switch (code) {
-        case 0:
+        case 200:
           // 本系统采用 code === 0 来表示没有业务错误
+          return apiData
+        case 400:
+          ElMessage.error(apiData.msg)
+          const t = useUserStore()
+          t.reset()
           return apiData
         default:
           // 不是正确的 code
@@ -40,6 +44,7 @@ function createService() {
       }
     },
     (error) => {
+      console.log(error)
       // status 是 HTTP 状态码
       const status = get(error, 'response.status')
       switch (status) {
@@ -48,7 +53,6 @@ function createService() {
           break
         case 401:
           // Token 过期时，直接退出登录并强制刷新页面（会重定向到登录页）
-          useUserStoreHook().logout()
           location.reload()
           break
         case 403:
@@ -87,11 +91,13 @@ function createService() {
   )
   return service
 }
+// #endregion
 
+// #region
 /** 创建请求方法 */
 function createRequest(service: AxiosInstance) {
   return function <T>(config: AxiosRequestConfig): Promise<T> {
-    const token = getToken()
+    const token = localStorage.getItem('token')
     const defaultConfig = {
       headers: {
         // 携带 Token
@@ -107,6 +113,7 @@ function createRequest(service: AxiosInstance) {
     return service(mergeConfig)
   }
 }
+// #endregion
 
 /** 用于网络请求的实例 */
 const service = createService()

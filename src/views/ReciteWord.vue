@@ -56,10 +56,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Header from '@/components/Header.vue'
 import { useRouter } from 'vue-router';
+import { request } from '@/utils/service'
+onMounted(async () => {
+    const info = await request({ url: "/word/list" })
+    console.log(info);
+    
 
+})
 let activeNames = ref(['1'])
 const router = useRouter()
 function handleGoBack() {
