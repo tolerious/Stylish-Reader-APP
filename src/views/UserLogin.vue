@@ -24,13 +24,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { request } from '@/utils/service'
 let userInfo = ref({
   username: '', password: ''
 })
 const router = useRouter()
-function login() {
-  router.push('/home')
+async function login() {
+  const user = await request({ url: '/logic/login', method: 'post', data: userInfo.value }) as any
+  console.log(user.data.token);
+  localStorage.setItem('token', user.data.token)
+  if (user.data.token) {
+    router.push('/')
+  }
 }
 </script>
 <style lang="less" scoped>

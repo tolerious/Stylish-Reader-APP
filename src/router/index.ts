@@ -19,9 +19,9 @@ const router = createRouter({
       component: () => import('@/views/ReciteWord.vue')
     },
     {
-      path: '/group',
-      name: 'wordGroup',
-      component: () => import('@/views/WordGroup.vue')
+      path: '/group-recite',
+      name: 'groupRecite',
+      component: () => import('@/views/GroupRecite.vue')
     },
     {
       path: '/cycling',
@@ -32,7 +32,17 @@ const router = createRouter({
       path: '/feedback',
       name: 'feedback',
       component: () => import('@/views/Feedback.vue')
-    }
+    },
+    {
+      path: '/record-word',
+      name: 'recordWord',
+      component: () => import('@/views/RecordWord.vue')
+    },
+    {
+      path: '/group-manage',
+      name: 'input',
+      component: () => import('@/views/InputWord.vue')
+    },
   ]
 })
 

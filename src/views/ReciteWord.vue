@@ -61,9 +61,14 @@ import Header from '@/components/Header.vue'
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
 onMounted(async () => {
-    const info = await request({ url: "/word/list" })
+    const info = await request({
+        url: "/word/list", method: 'post', data: {
+            "pageNo": 1,
+            "pageSize": 10
+        }
+    })
     console.log(info);
-    
+
 
 })
 let activeNames = ref(['1'])

@@ -32,10 +32,13 @@ function createService() {
         case 200:
           // 本系统采用 code === 0 来表示没有业务错误
           return apiData
-        case 400:
+        case 401:
           ElMessage.error(apiData.msg)
           const t = useUserStore()
           t.reset()
+          return apiData
+        case 400:
+          ElMessage.error(apiData.msg)
           return apiData
         default:
           // 不是正确的 code
