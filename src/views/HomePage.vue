@@ -32,7 +32,7 @@
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
-                <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Recite Words </el-card>
+                <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Flash Card </el-card>
                 </el-col>
                 <el-col :span="11"> <el-card shadow="always" @click="redirect('group-recite')">
                         Recite Group</el-card>
@@ -40,7 +40,7 @@
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('cycling')">Cycling</el-card>
+                    <el-card shadow="always" @click="redirect('cycling')">Group Cycling</el-card>
                 </el-col>
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('feedback')">Feedback</el-card>

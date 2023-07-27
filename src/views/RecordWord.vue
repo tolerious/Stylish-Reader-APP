@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -88,6 +88,20 @@ let wordDescription: Ref<WD>
 const form: Ref<WDL> = ref({
     englishName: '',
     wordDescriptionList: []
+})
+// #endregion
+
+// #region lifecycle
+onMounted(() => {
+    wordDescription = ref({
+        englishDescription: '',
+        partOfSpeech: '',
+        level: '',
+        chineseDescription: '',
+        sentence: '',
+        group: '',
+    })
+    form.value.wordDescriptionList.push(wordDescription.value)
 })
 // #endregion
 

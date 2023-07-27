@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Recite Words'" @goBack="handleGoBack"></Header>
+    <Header title="Flash Card" @goBack="handleGoBack"></Header>
     <div class="recite-word-container">
         <div class="recite-word-inner-container">
             <div class="title-word">
