@@ -54,6 +54,7 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 // #region
 const activeNames = ref('0')
@@ -78,6 +79,10 @@ function addNewItem() {
         partOfSpeech: '', level: '',
         chineseDescription: '', sentence: ''
     })
+}
+function handleGoBack() {
+    const router = useRouter()
+    router.push('/')
 }
 // #endregion
 </script>
