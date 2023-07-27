@@ -57,6 +57,8 @@ import { ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
+// #region
+
 interface WD {
     englishDescription: string,
     partOfSpeech: string,
@@ -69,27 +71,29 @@ interface WDL {
     englishName: string,
     wordDescriptionList: WD[]
 }
+// #endregion
+
 // #region
 const activeNames = ref(0)
 
-let wordDescription: Ref<WD> = ref({
-    englishDescription: '',
-    partOfSpeech: '',
-    level: '',
-    chineseDescription: '',
-    sentence: ''
-})
+let wordDescription: Ref<WD>
 
 const form: Ref<WDL> = ref({
     englishName: '',
     wordDescriptionList: []
 })
-form.value.wordDescriptionList.push(wordDescription.value)
 // #endregion
 
 // #region
 function addNewItem() {
-    console.log(form.value.wordDescriptionList.push(wordDescription.value));
+    wordDescription = ref({
+        englishDescription: '',
+        partOfSpeech: '',
+        level: '',
+        chineseDescription: '',
+        sentence: ''
+    })
+    form.value.wordDescriptionList.push(wordDescription.value)
 }
 function handleGoBack() {
     const router = useRouter()
@@ -101,9 +105,10 @@ function handleGoBack() {
 <style scoped lang="less">
 .record-word-container {
     width: 90%;
-    margin: 0 auto;
+    margin: 0 auto 50px auto;
 
     .bottom-btn-group {
+        height: 30px;
         position: fixed;
         bottom: 15px;
         display: flex;
