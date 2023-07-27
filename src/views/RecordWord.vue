@@ -54,31 +54,42 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
 import { ref } from 'vue';
+import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-// #region
-const activeNames = ref('0')
+interface WD {
+    englishDescription: string,
+    partOfSpeech: string,
+    level: string,
+    chineseDescription: string,
+    sentence: string
+}
 
-let wordDescription = ref({
+interface WDL {
+    englishName: string,
+    wordDescriptionList: WD[]
+}
+// #region
+const activeNames = ref(0)
+
+let wordDescription: Ref<WD> = ref({
     englishDescription: '',
-    partOfSpeech: '', level: '',
-    chineseDescription: '', sentence: ''
+    partOfSpeech: '',
+    level: '11',
+    chineseDescription: '',
+    sentence: ''
 })
 
-const form = ref({
+const form: Ref<WDL> = ref({
     englishName: '',
     wordDescriptionList: []
 })
+form.value.wordDescriptionList.push(wordDescription.value)
 // #endregion
 
 // #region
 function addNewItem() {
-    form.value.wordDescriptionList.push(wordDescription)
-    wordDescription = ref({
-        englishDescription: '',
-        partOfSpeech: '', level: '',
-        chineseDescription: '', sentence: ''
-    })
+    console.log(form.value.wordDescriptionList.push(wordDescription.value));
 }
 function handleGoBack() {
     const router = useRouter()
