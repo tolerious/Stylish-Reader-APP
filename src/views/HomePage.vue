@@ -35,7 +35,7 @@
                 <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Flash Card </el-card>
                 </el-col>
                 <el-col :span="11"> <el-card shadow="always" @click="redirect('group-recite')">
-                        Recite Group</el-card>
+                        Word Group</el-card>
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
