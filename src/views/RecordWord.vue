@@ -1,7 +1,7 @@
 <template>
     <Header :title="'Record Word'" @go-back="handleGoBack" />
     <div class="record-word-container">
-        <el-form :model="form" label-width="120px">
+        <el-form :model="form" label-width="80px">
             <el-form-item label="Word:">
                 <el-input v-model="form.englishName"></el-input>
             </el-form-item>
@@ -16,6 +16,9 @@
                     <el-form-item label="ZH">
                         <el-input v-model="item.chineseDescription"></el-input>
                     </el-form-item>
+                    <el-form-item label="Sentence">
+                        <el-input v-model="item.sentence" type="textarea" :rows="5" label="Sentence"></el-input>
+                    </el-form-item>
                     <el-form-item label="Level">
                         <el-select v-model="item.level">
                             <el-option label="" value=""></el-option>
@@ -25,6 +28,11 @@
                             <el-option label="B2" value="B2"></el-option>
                             <el-option label="C1" value="C1"></el-option>
                             <el-option label="C2" value="C2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="Group">
+                        <el-select v-model="item.group">
+                            <el-option label="" value=""></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Property">
@@ -37,9 +45,7 @@
                             <el-option label="prep." value="prep."></el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="Sentence">
-                        <el-input v-model="item.sentence" type="textarea" :rows="5" label="Sentence"></el-input>
-                    </el-form-item>
+
                 </el-form>
             </el-collapse-item>
         </el-collapse>
@@ -64,7 +70,8 @@ interface WD {
     partOfSpeech: string,
     level: string,
     chineseDescription: string,
-    sentence: string
+    sentence: string,
+    group: string,
 }
 
 interface WDL {
@@ -74,8 +81,8 @@ interface WDL {
 // #endregion
 
 // #region
+const router = useRouter()
 const activeNames = ref(0)
-
 let wordDescription: Ref<WD>
 
 const form: Ref<WDL> = ref({
@@ -91,12 +98,12 @@ function addNewItem() {
         partOfSpeech: '',
         level: '',
         chineseDescription: '',
-        sentence: ''
+        sentence: '',
+        group: '',
     })
     form.value.wordDescriptionList.push(wordDescription.value)
 }
 function handleGoBack() {
-    const router = useRouter()
     router.push('/')
 }
 // #endregion
