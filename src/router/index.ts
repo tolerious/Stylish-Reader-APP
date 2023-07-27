@@ -43,6 +43,16 @@ const router = createRouter({
       name: 'input',
       component: () => import('@/views/GroupManage.vue')
     },
+    {
+      path: '/help',
+      name: 'help',
+      component: () => import('@/views/Help.vue')
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('@/views/Settings.vue')
+    },
   ]
 })
 

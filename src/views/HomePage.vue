@@ -46,6 +46,14 @@
                     <el-card shadow="always" @click="redirect('feedback')">Feedback</el-card>
                 </el-col>
             </el-row>
+            <el-row justify="space-around" style="margin-top: 15px;">
+                <el-col :span="11">
+                    <el-card shadow="always" @click="redirect('settings')">Settings</el-card>
+                </el-col>
+                <el-col :span="11">
+                    <el-card shadow="always" @click="redirect('help')">Help</el-card>
+                </el-col>
+            </el-row>
         </div>
 
     </div>
@@ -62,6 +70,8 @@ function redirect(condition: string) {
     if (condition == 'feedback') router.push('/feedback')
     if (condition == 'group-manage') router.push('/group-manage')
     if (condition == 'record') router.push('/record-word')
+    if (condition == 'settings') router.push('/settings')
+    if (condition == 'help') router.push('/help')
 }
 </script>
 
