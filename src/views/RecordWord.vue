@@ -7,17 +7,17 @@
             </el-form-item>
         </el-form>
         <el-collapse v-model="activeNames">
-            <el-collapse-item v-for="item, index in  form.wordDescriptionList " :key="item.englishDescription"
-                :title="`Option ${index + 1}`" :name="index">
-                <el-form :model="wordDescription" label-width="80">
+            <el-collapse-item v-for="item, index in  form.wordDescriptionList " :key="index" :title="`Option ${index + 1}`"
+                :name="index">
+                <el-form :model="item" label-width="80">
                     <el-form-item label="EN">
-                        <el-input v-model="wordDescription.englishDescription"></el-input>
+                        <el-input v-model="item.englishDescription"></el-input>
                     </el-form-item>
                     <el-form-item label="ZH">
-                        <el-input v-model="wordDescription.chineseDescription"></el-input>
+                        <el-input v-model="item.chineseDescription"></el-input>
                     </el-form-item>
                     <el-form-item label="Level">
-                        <el-select v-model="wordDescription.level">
+                        <el-select v-model="item.level">
                             <el-option label="" value=""></el-option>
                             <el-option label="A1" value="A1"></el-option>
                             <el-option label="A2" value="A2"></el-option>
@@ -28,7 +28,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Property">
-                        <el-select v-model="wordDescription.partOfSpeech">
+                        <el-select v-model="item.partOfSpeech">
                             <el-option label="" value=""></el-option>
                             <el-option label="n." value="n."></el-option>
                             <el-option label="v." value="v."></el-option>
@@ -38,7 +38,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Sentence">
-                        <el-input type="textarea" :rows="5" label="Sentence"></el-input>
+                        <el-input v-model="item.sentence" type="textarea" :rows="5" label="Sentence"></el-input>
                     </el-form-item>
                 </el-form>
             </el-collapse-item>
@@ -75,7 +75,7 @@ const activeNames = ref(0)
 let wordDescription: Ref<WD> = ref({
     englishDescription: '',
     partOfSpeech: '',
-    level: '11',
+    level: '',
     chineseDescription: '',
     sentence: ''
 })
