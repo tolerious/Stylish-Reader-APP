@@ -2,10 +2,10 @@
     <Header title="Flash Card" @goBack="handleGoBack"></Header>
     <div class="recite-word-container">
         <div class="recite-word-inner-container">
-            <div class="title-word">
+            <div class="title-word-container" @click="showMeanings" v-if="showWord">
                 <span>Fucking Vue</span>
             </div>
-            <div class="meaning-collapse-container">
+            <div class="meaning-collapse-container" v-else>
                 <el-collapse v-model="activeNames">
                     <el-collapse-item title="First Meaning" name="1">
                         <div class="english-meaning-content">
@@ -47,8 +47,9 @@
             </div>
             <div class="bottom-btn-group">
                 <el-row>
-                    <el-col :span="12"> <el-button type="info">Prev</el-button></el-col>
-                    <el-col :span="12"> <el-button type="primary">Next</el-button></el-col>
+                    <el-col :span="8"> <el-button type="danger" @click="showMeanings">Overturn</el-button></el-col>
+                    <el-col :span="8"> <el-button type="info">Prev</el-button></el-col>
+                    <el-col :span="8"> <el-button type="primary">Next</el-button></el-col>
                 </el-row>
             </div>
         </div>
@@ -60,6 +61,7 @@ import { onMounted, ref } from 'vue';
 import Header from '@/components/Header.vue'
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
+let showWord = ref(true)
 onMounted(async () => {
     const info = await request({
         url: "/word/list", method: 'post', data: {
@@ -76,21 +78,17 @@ const router = useRouter()
 function handleGoBack() {
     router.push('/')
 }
+function showMeanings() {
+    showWord.value = !showWord.value
+}
 </script>
 
 <style lang="less" scoped>
 .recite-word-container {
-    position: relative;
 
     .recite-word-inner-container {
-        position: absolute;
-        height: 100px;
+        margin: 0 auto;
         width: 80%;
-        left: 0;
-        right: 0;
-        top: 30px;
-        margin-left: auto;
-        margin-right: auto;
         height: 50%;
         border-radius: 5px;
         display: flex;
@@ -98,9 +96,22 @@ function handleGoBack() {
         justify-content: flex-start;
         align-items: center;
 
-        .title-word {
+        .title-word-container {
             text-align: center;
-            font-size: 17px;
+            font-size: 29px;
+            width: 90%;
+            height: 50vh;
+            border: 1px solid #eeeeee;
+            border-radius: 5px;
+            box-shadow: 2px 2px 2p #eeeeee;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            color: #ff7c0a;
+            font-weight: bold;
+            margin-top: 40px;
+
         }
 
         .meaning-collapse-container {
