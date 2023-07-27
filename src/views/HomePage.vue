@@ -24,18 +24,18 @@
         </div>
         <div class="body-container">
             <el-row justify="space-around">
-                <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Recite Words </el-card>
-                </el-col>
-                <el-col :span="11"> <el-card shadow="always" @click="redirect('group-recite')">
-                        Recite Group</el-card>
-                </el-col>
-            </el-row>
-            <el-row justify="space-around" style="margin-top: 15px;">
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('group-manage')">Manage Group</el-card>
                 </el-col>
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('record')">Record Word</el-card>
+                </el-col>
+            </el-row>
+            <el-row justify="space-around" style="margin-top: 15px;">
+                <el-col :span="11"> <el-card shadow="always" @click="redirect('recite')"> Recite Words </el-card>
+                </el-col>
+                <el-col :span="11"> <el-card shadow="always" @click="redirect('group-recite')">
+                        Recite Group</el-card>
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
