@@ -48,8 +48,8 @@
             <div class="bottom-btn-group">
                 <el-row>
                     <el-col :span="8"> <el-button type="danger" @click="showMeanings">Overturn</el-button></el-col>
-                    <el-col :span="8"> <el-button type="info">Prev</el-button></el-col>
-                    <el-col :span="8"> <el-button type="primary">Next</el-button></el-col>
+                    <el-col :span="8"> <el-button type="info" @click="preWord">Prev</el-button></el-col>
+                    <el-col :span="8"> <el-button type="primary" @click="nextWord">Next</el-button></el-col>
                 </el-row>
             </div>
         </div>
@@ -80,6 +80,12 @@ function handleGoBack() {
 }
 function showMeanings() {
     showWord.value = !showWord.value
+}
+function preWord() {
+    showWord.value = true
+}
+function nextWord() {
+    showWord.value = true
 }
 </script>
 
