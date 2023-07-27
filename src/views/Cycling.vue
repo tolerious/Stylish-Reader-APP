@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Words Cycling'" @go-back="handleGoBack" />
+    <Header :title="'Cycling'" @go-back="handleGoBack" />
     <div class="loop-word-container">
         <div class="loop-word-item" v-for="item in 51">
             <div class="loop-word-left">

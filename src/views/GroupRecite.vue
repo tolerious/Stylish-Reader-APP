@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Words Group'" @goBack="handleGoBack" />
+    <Header :title="'Recite Group'" @goBack="handleGoBack" />
     <div class="loop-word-container">
         <div class="loop-word-item" v-for="item in 51">
             <div class="loop-word-left">

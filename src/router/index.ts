@@ -41,7 +41,7 @@ const router = createRouter({
     {
       path: '/group-manage',
       name: 'input',
-      component: () => import('@/views/InputWord.vue')
+      component: () => import('@/views/GroupManage.vue')
     },
   ]
 })
