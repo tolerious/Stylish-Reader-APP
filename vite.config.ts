@@ -14,7 +14,7 @@ export default defineConfig({
   },
   server: {
     https: false,
-    port: 3000,
+    port: 4577,
     cors: true,
     proxy: {
       '/api/v1/': {

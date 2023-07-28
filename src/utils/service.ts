@@ -39,6 +39,8 @@ function createService() {
           return apiData
         case 400:
           ElMessage.error(apiData.msg)
+          const tt = useUserStore()
+          tt.reset()
           return apiData
         default:
           // 不是正确的 code

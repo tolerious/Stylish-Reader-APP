@@ -6,10 +6,10 @@
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
         </el-form>
-        <div class="loop-word-item" v-for="item in 51">
+        <div class="loop-word-item" v-for="group in groupList">
             <div class="loop-word-left">
-                <div class="loop-word-left-top">Everything Around You.</div>
-                <div class="loop-word-left-bottom">399 words</div>
+                <div class="loop-word-left-top">{{ group.name }}</div>
+                <div class="loop-word-left-bottom">{{ group.words > 0 ? group.words : 0 }} words</div>
             </div>
             <div class="loop-word-right">
                 <button>
@@ -18,22 +18,49 @@
             </div>
         </div>
         <div class="group-manage-bottom-btn">
-            <el-button type="primary">Confirm</el-button>
+            <el-button @click="createGroup" type="primary">Confirm</el-button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
-import { ref } from 'vue';
+import { request } from '@/utils/service';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-// #region
+// #region variable
 const form = ref({ name: '' })
 const router = useRouter()
+let groupList = ref([])
 // #endregion
 
-// #region 
+// #region lifecycle
+onMounted(async () => {
+    groupList.value = await getGroupList()
+    console.log(groupList.value);
+
+})
+// #endregion
+
+// #region function
+async function getGroupList() {
+    const info = await request({
+        url: '/wordgroup'
+    })
+    console.log(info.data);
+    return info.data
+}
+async function createGroup() {
+    if (form.value.name)
+        request({
+            url: '/wordgroup', method: 'post', data: {
+                name: form.value.name
+            }
+        })
+    form.value.name = ''
+    groupList.value = await getGroupList()
+}
 function handleGoBack() {
     router.push('/')
 }
