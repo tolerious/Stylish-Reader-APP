@@ -6,13 +6,13 @@
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
         </el-form>
-        <div class="loop-word-item" v-for="group in groupList">
+        <div class="loop-word-item" v-for="group in groupList" :key="group._id">
             <div class="loop-word-left">
                 <div class="loop-word-left-top">{{ group.name }}</div>
                 <div class="loop-word-left-bottom">{{ group.words > 0 ? group.words : 0 }} words</div>
             </div>
             <div class="loop-word-right">
-                <button>
+                <button @click="deleteGroup(group._id)">
                     <span>Delete</span>
                 </button>
             </div>
@@ -37,9 +37,7 @@ let groupList = ref([])
 
 // #region lifecycle
 onMounted(async () => {
-    groupList.value = await getGroupList()
-    console.log(groupList.value);
-
+    getGroupList()
 })
 // #endregion
 
@@ -49,17 +47,27 @@ async function getGroupList() {
         url: '/wordgroup'
     })
     console.log(info.data);
-    return info.data
+    groupList.value = info.data
 }
 async function createGroup() {
-    if (form.value.name)
-        request({
+    if (form.value.name) {
+        let m = await request({
             url: '/wordgroup', method: 'post', data: {
                 name: form.value.name
             }
         })
-    form.value.name = ''
-    groupList.value = await getGroupList()
+        form.value.name = ''
+        getGroupList()
+    }
+
+}
+async function deleteGroup(groupID) {
+    request({
+        url: '/wordgroup', method: 'delete', data: {
+            id: groupID
+        }
+    })
+    getGroupList()
 }
 function handleGoBack() {
     router.push('/')
