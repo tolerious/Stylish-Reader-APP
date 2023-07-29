@@ -38,7 +38,7 @@ async function handleChange(e) {
     const info = await request({
         url: '/usersetting', method: 'post', data: { defaultGroupID: e }
     })
-    
+
 
 }
 function handleGoBack() {
@@ -53,9 +53,9 @@ async function getGroupList() {
 }
 async function getDefaultGroup() {
     const info = await request({
-        url: '/usersetting', method: 'post'
+        url: '/usersetting'
     })
-    defaultGroup.value = info.data.defaultGroupID
+    defaultGroup.value = info.data[0].defaultGroupID
 
 }
 // #endregion

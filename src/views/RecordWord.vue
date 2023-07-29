@@ -1,9 +1,10 @@
 <template>
     <Header :title="'Record Word'" @go-back="handleGoBack" />
     <div class="record-word-container">
-        <el-form :model="form" label-width="80px">
+        <el-form :inline="true" :model="form" label-width="80px">
             <el-form-item label="Word:">
                 <el-input v-model="form.englishName"></el-input>
+                <el-button style="margin-left: 15px;" type="primary" @click="searchWord">查询</el-button>
             </el-form-item>
         </el-form>
         <el-collapse v-model="activeNames">
@@ -31,8 +32,10 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Group">
-                        <el-select v-model="item.group">
+                        <el-select v-model="defaultGroup">
                             <el-option label="" value=""></el-option>
+                            <el-option v-for="group in groupList" :key="group._id" :label="group.name"
+                                :value="group._id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="Property">
@@ -62,8 +65,9 @@ import Header from '@/components/Header.vue'
 import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { request } from '@/utils/service'
 
-// #region
+// #region interface
 
 interface WD {
     englishDescription: string,
@@ -80,7 +84,7 @@ interface WDL {
 }
 // #endregion
 
-// #region
+// #region variable
 const router = useRouter()
 const activeNames = ref(0)
 let wordDescription: Ref<WD>
@@ -89,6 +93,8 @@ const form: Ref<WDL> = ref({
     englishName: '',
     wordDescriptionList: []
 })
+let defaultGroup = ref('')
+let groupList = ref([])
 // #endregion
 
 // #region lifecycle
@@ -102,10 +108,24 @@ onMounted(() => {
         group: '',
     })
     form.value.wordDescriptionList.push(wordDescription.value)
+    getDefaultGroup()
+    getGroupList()
 })
 // #endregion
 
-// #region
+// #region function
+async function searchWord() {
+    const info = await request({
+        url: '/word/grab',
+        method: 'post',
+        data: {
+            word: form.value.englishName
+        }
+    })
+    console.log(info.data);
+    
+}
+
 function addNewItem() {
     wordDescription = ref({
         englishDescription: '',
@@ -119,6 +139,18 @@ function addNewItem() {
 }
 function handleGoBack() {
     router.push('/')
+}
+async function getGroupList() {
+    const info = await request({
+        url: '/wordgroup'
+    })
+    groupList.value = info.data
+}
+async function getDefaultGroup() {
+    const info = await request({
+        url: '/usersetting', method: 'post'
+    })
+    defaultGroup.value = info.data.defaultGroupID
 }
 // #endregion
 </script>
