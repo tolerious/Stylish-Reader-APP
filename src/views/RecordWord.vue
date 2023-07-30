@@ -112,7 +112,7 @@ let wordDescription: Ref<WD>
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 const form: Ref<WDL> = ref({
-    englishName: 'good',
+    englishName: 'enjoy',
     wordDescriptionList: []
 })
 let defaultGroup = ref('')
