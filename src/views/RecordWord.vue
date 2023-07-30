@@ -4,10 +4,31 @@
         <el-form :inline="true" :model="form" label-width="80px">
             <el-form-item label="Word:">
                 <el-input v-model="form.englishName"></el-input>
-                <el-button style="margin-left: 15px;" type="primary" @click="searchWord">查询</el-button>
+                <el-button style="margin-left: 15px;" type="primary" @click="grabWord">查询</el-button>
             </el-form-item>
+            <audio id="wordAudio" type="audio/mpeg" :src="audioUrl"></audio>
+
         </el-form>
-        <el-collapse v-model="activeNames">
+        <el-card v-for="card, index in cardList" :key="index" style="margin-bottom: 20px;">
+            <template #header>
+                <div class="card-header">
+                    <span>{{ card.name }} </span>
+                    <span>{{ card.property }} </span>
+                    <span> {{ card.phonetic }}</span>
+                </div>
+            </template>
+            <div>
+                <el-divider content-position="left">No. {{ index + 1 }}</el-divider>
+                <template v-for="mean in card.meanings">
+                    <div class="meaning">{{ mean.en }}</div>
+                    <div class="meaning">{{ mean.zh }}</div>
+                    <template v-for="sentence in mean.sentences">
+                        <div class="sentence"> {{ sentence }}</div>
+                    </template>
+                </template>
+            </div>
+        </el-card>
+        <!-- <el-collapse v-model="activeNames">
             <el-collapse-item v-for="item, index in  form.wordDescriptionList " :key="index" :title="`Option ${index + 1}`"
                 :name="index">
                 <el-form :model="item" label-width="80">
@@ -51,10 +72,10 @@
 
                 </el-form>
             </el-collapse-item>
-        </el-collapse>
+        </el-collapse> -->
         <div class="bottom-btn-group">
             <el-button type="primary">Confirm</el-button>
-            <el-button type="danger">Pronounce</el-button>
+            <el-button type="danger" @click="playAudio(form.englishName)">Pronounce</el-button>
             <el-button type="warning" @click="addNewItem">New Item</el-button>
         </div>
     </div>
@@ -88,13 +109,15 @@ interface WDL {
 const router = useRouter()
 const activeNames = ref(0)
 let wordDescription: Ref<WD>
-
+let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
+let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 const form: Ref<WDL> = ref({
-    englishName: '',
+    englishName: 'good',
     wordDescriptionList: []
 })
 let defaultGroup = ref('')
 let groupList = ref([])
+let cardList = ref([])
 // #endregion
 
 // #region lifecycle
@@ -114,7 +137,14 @@ onMounted(() => {
 // #endregion
 
 // #region function
-async function searchWord() {
+function playAudio(word) {
+    let audio = document.getElementById('wordAudio')
+    audioUrl.value = originUrl.value + word
+    setTimeout(() => {
+        audio.play()
+    }, 300);
+}
+async function grabWord() {
     const info = await request({
         url: '/word/grab',
         method: 'post',
@@ -122,8 +152,8 @@ async function searchWord() {
             word: form.value.englishName
         }
     })
-    console.log(info.data);
-    
+    cardList.value = info.data
+    playAudio(form.value.englishName)
 }
 
 function addNewItem() {
@@ -160,6 +190,21 @@ async function getDefaultGroup() {
     width: 90%;
     margin: 0 auto 50px auto;
 
+    .card-header {
+        height: 30px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .sentence {
+        color: rgb(255, 124, 10);
+    }
+
     .bottom-btn-group {
         height: 30px;
         position: fixed;
@@ -168,6 +213,7 @@ async function getDefaultGroup() {
         flex-direction: row;
         justify-content: space-between;
         width: 90%;
+        color: #ff7c0ab3;
     }
 
 
