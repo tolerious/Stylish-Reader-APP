@@ -40,9 +40,8 @@
         </el-collapse>
         <el-empty description="No Result." v-else />
         <div class="bottom-btn-group">
-            <el-button type="primary">Confirm</el-button>
-            <el-button type="danger" @click="playAudio(form.englishName)">Pronounce</el-button>
-            <el-button type="warning" @click="addNewItem">Add Word</el-button>
+            <el-button type="warning" @click="playAudio(form.englishName)">Pronounce</el-button>
+            <el-button type="primary" @click="addNewItem">Add Word</el-button>
         </div>
     </div>
 </template>
