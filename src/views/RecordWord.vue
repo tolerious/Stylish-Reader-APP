@@ -18,13 +18,19 @@
                 </div>
             </template>
             <div>
-                <el-divider content-position="left">No. {{ index + 1 }}</el-divider>
-                <template v-for="mean in card.meanings">
-                    <div class="meaning">{{ mean.en }}</div>
-                    <div class="meaning">{{ mean.zh }}</div>
-                    <template v-for="sentence in mean.sentences">
-                        <div class="sentence"> {{ sentence }}</div>
-                    </template>
+                <template v-for="dsenseObj in card.dsenseObjList">
+                    <el-card v-for="dsense in dsenseObj.defBlockObjList">
+                        <template #header>
+                            <div class="card-header">
+                                <span>{{ dsense.en }}</span>
+                            </div>
+                        </template>
+                        <div>{{ dsense.zh }}</div>
+                        <template v-for="sentence in dsense.sentence">
+                            <div>{{ sentence }}</div>
+                        </template>
+                    </el-card>
+
                 </template>
             </div>
         </el-card>
@@ -66,7 +72,7 @@ let wordDescription: Ref<WD>
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 const form: Ref<WDL> = ref({
-    englishName: 'good',
+    englishName: 'enjoy',
     wordDescriptionList: []
 })
 let defaultGroup = ref('')
@@ -141,7 +147,7 @@ async function getDefaultGroup() {
 
 <style scoped lang="less">
 .record-word-container {
-    width: 90%;
+    width: 95%;
     margin: 0 auto 50px auto;
 
     .card-header {
