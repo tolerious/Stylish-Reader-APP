@@ -1,15 +1,25 @@
 <template>
     <Header :title="'Record Word'" @go-back="handleGoBack" />
     <div class="record-word-container">
-        <el-form :inline="true" :model="form" label-width="80px">
-            <el-form-item label="Word:">
-                <el-input v-model="form.englishName"></el-input>
-                <el-button style="margin-left: 15px;" type="primary" @click="grabWord">查询</el-button>
-            </el-form-item>
-            <audio id="wordAudio" type="audio/mpeg" :src="audioUrl"></audio>
-
-        </el-form>
-        <el-collapse v-model="activeNames">
+        <div class="search-container">
+            <div class="search-label-container"> <span>Word:</span>
+            </div>
+            <div> <el-input style="width: 180px;" v-model="form.englishName"></el-input>
+            </div>
+            <div> <el-button style="margin-left: 15px;" type="primary" @click="grabWord">Search</el-button>
+            </div>
+        </div>
+        <div class="search-container">
+            <div class="search-label-container"><span>Group:</span></div>
+            <div>
+                <el-select style="width: 180px;" v-model="defaultGroup">
+                    <el-option value="" label=""></el-option>
+                    <el-option v-for="group in groupList" :value="group._id" :label="group.name"></el-option>
+                </el-select>
+            </div>
+        </div>
+        <audio id="wordAudio" type="audio/mpeg" :src="audioUrl"></audio>
+        <el-collapse v-if="cardList.length > 0" v-model="activeNames">
             <el-collapse-item :title="`${card.name} - ${card.property} - ${card.phonetic}`" :name="index"
                 v-for="card, index in cardList">
                 <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
@@ -28,10 +38,11 @@
                 </template>
             </el-collapse-item>
         </el-collapse>
+        <el-empty description="No Result." v-else />
         <div class="bottom-btn-group">
             <el-button type="primary">Confirm</el-button>
             <el-button type="danger" @click="playAudio(form.englishName)">Pronounce</el-button>
-            <el-button type="warning" @click="addNewItem">New Item</el-button>
+            <el-button type="warning" @click="addNewItem">Add Word</el-button>
         </div>
     </div>
 </template>
@@ -61,13 +72,14 @@ interface WDL {
 // #endregion
 
 // #region variable
+let groupID = ref('')
 const router = useRouter()
 let activeNames = ref([])
 let wordDescription: Ref<WD>
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 const form: Ref<WDL> = ref({
-    englishName: 'enjoy',
+    englishName: 'wok',
     wordDescriptionList: []
 })
 let defaultGroup = ref('')
@@ -85,13 +97,13 @@ onMounted(() => {
         sentence: '',
         group: '',
     })
-    form.value.wordDescriptionList.push(wordDescription.value)
     getDefaultGroup()
     getGroupList()
 })
 // #endregion
 
 // #region function
+
 function playAudio(word) {
     let audio = document.getElementById('wordAudio')
     audioUrl.value = originUrl.value + word
@@ -148,6 +160,19 @@ async function getDefaultGroup() {
 .record-word-container {
     width: 95%;
     margin: 0 auto 55px auto;
+
+    .search-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+
+        .search-label-container {
+            width: 50px;
+            text-align: right;
+        }
+    }
 
     .collapse-header {
         margin-bottom: 5px;
