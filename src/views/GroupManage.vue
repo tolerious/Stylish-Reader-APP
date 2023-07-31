@@ -6,10 +6,10 @@
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
         </el-form>
-        <div class="loop-word-item" v-for="group in groupList" :key="group._id">
+        <div v-if="groupList.length > 0" class="loop-word-item" v-for="group in groupList" :key="group._id">
             <div class="loop-word-left">
                 <div class="loop-word-left-top">{{ group.name }}</div>
-                <div class="loop-word-left-bottom">{{ group.words > 0 ? group.words : 0 }} words</div>
+                <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
             </div>
             <div class="loop-word-right">
                 <button @click="deleteGroup(group._id)">
@@ -17,6 +17,7 @@
                 </button>
             </div>
         </div>
+        <el-empty description="No Data." v-else />
         <div class="group-manage-bottom-btn">
             <el-button @click="createGroup" type="primary">Confirm</el-button>
         </div>
@@ -62,12 +63,14 @@ async function createGroup() {
 
 }
 async function deleteGroup(groupID) {
-    request({
+    const info = request({
         url: '/wordgroup', method: 'delete', data: {
             id: groupID
         }
     })
-    getGroupList()
+    if (info.code === 200) {
+        getGroupList()
+    }
 }
 function handleGoBack() {
     router.push('/')

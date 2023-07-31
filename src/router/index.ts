@@ -23,6 +23,7 @@ const router = createRouter({
       name: 'groupRecite',
       component: () => import('@/views/GroupRecite.vue')
     },
+    { path: '/wordlist/:groupID', name: 'word', component: () => import('@/views/WordList.vue') },
     {
       path: '/cycling',
       name: 'cycling',
@@ -52,7 +53,7 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: () => import('@/views/Settings.vue')
-    },
+    }
   ]
 })
 

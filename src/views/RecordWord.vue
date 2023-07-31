@@ -38,7 +38,7 @@
                 </template>
             </el-collapse-item>
         </el-collapse>
-        <el-empty description="No Result." v-else />
+        <el-empty description="No Data." v-else />
         <div class="bottom-btn-group">
             <el-button type="warning" @click="playAudio(form.englishName)">Pronounce</el-button>
             <el-button type="primary" @click="addNewItem">Add Word</el-button>
