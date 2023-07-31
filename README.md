@@ -5,6 +5,7 @@
 ## 功能列表
 
 - 创建单词组
+- 在单词组中加入新单词
 - 输入单词，自动查询单词中英文、发音、例句，方便加入单词组
 - 自动循环播放单词组中的单词
 - flash card 方式背单词
@@ -16,4 +17,4 @@
 
 ## ScreenShot
 
-![Alt text](image.png)
+![Alt text](<circle_screenshot_1_Vite App.png>)
