@@ -3,7 +3,8 @@
     <div class="recite-word-container">
         <div class="recite-word-inner-container">
             <div class="title-word-container" @click="showMeanings" v-if="showWord">
-                <span>Fucking Vue</span>
+                <span>{{ currentWordName }}</span>
+                <audio id="reciteWordAudio" type="audio/mpeg" :src="audioUrl"></audio>
             </div>
             <div class="meaning-collapse-container" v-else>
                 <el-collapse v-model="activeNames">
@@ -59,22 +60,54 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Header from '@/components/Header.vue'
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { request } from '@/utils/service'
 let showWord = ref(true)
+// #region lifecycle
 onMounted(async () => {
-    const info = await request({
-        url: "/word/list", method: 'post', data: {
-            "pageNo": 1,
-            "pageSize": 10
-        }
-    })
-    console.log(info);
+    console.log(route.params);
+    console.log(route.query);
+    source.value = route.params.source
+    switch (route.params.source) {
+        case 'normal':
+            break;
+        case 'group':
+            groupID.value = route.query.groupID
+            getWordsByGroupID(groupID.value)
+            interval.value = setInterval(() => {
+                let audio = document.getElementById('reciteWordAudio')
+                audioUrl.value = `https://dict.youdao.com/dictvoice?audio=${currentWordName.value}&type=1`
+                console.log(audioUrl.value);
+                audio.play()
+                console.log('...');
+
+            }, 10000)
+    }
 
 
 })
+// #endregion
+
+// #region variable
 let activeNames = ref(['1'])
+let audioUrl = ref('')
+let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
+let source = ref('')
+let groupID = ref('')
+let currentWordName = ref('')
+let wordList = ref([])
+let interval = ref(null)
 const router = useRouter()
+const route = useRoute()
+// #endregion
+
+// #region function
+async function getWordsByGroupID(id) {
+    let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
+    console.log(info.data);
+    wordList.value = info.data
+    currentWordName.value = wordList.value[0].wordDetail[0].name
+}
 function handleGoBack() {
     router.push('/')
 }
@@ -87,6 +120,7 @@ function preWord() {
 function nextWord() {
     showWord.value = true
 }
+// #endregion
 </script>
 
 <style lang="less" scoped>

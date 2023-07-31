@@ -14,7 +14,7 @@ const router = createRouter({
       component: () => import('@/views/HomePage.vue')
     },
     {
-      path: '/recite',
+      path: '/recite/:source',
       name: 'recite',
       component: () => import('@/views/ReciteWord.vue')
     },

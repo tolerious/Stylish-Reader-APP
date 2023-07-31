@@ -65,6 +65,7 @@ async function createGroup() {
 
 }
 async function cycling(groupID) {
+    router.push('/recite/group?groupID=' + groupID)
 
 }
 async function deleteGroup(groupID) {

@@ -79,7 +79,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 function redirect(condition: string) {
-    if (condition === 'recite') router.push('/recite')
+    if (condition === 'recite') router.push('/recite/normal')
     if (condition === 'group-recite') router.push('/group-recite')
     if (condition == 'cycling') router.push('/cycling')
     if (condition == 'feedback') router.push('/feedback')
