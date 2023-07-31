@@ -25,6 +25,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
+import { ElMessage, ElNotification } from 'element-plus';
+
 let userInfo = ref({
   username: '', password: ''
 })
@@ -34,7 +36,16 @@ async function login() {
   console.log(user.data.token);
   localStorage.setItem('token', user.data.token)
   if (user.data.token) {
-    router.push('/')
+    ElNotification({
+      message: 'Login Successfully', type: 'success', duration: 1200
+    })
+    setTimeout(() => {
+      router.push('/')
+    }, 1500);
+  } else {
+    ElNotification({
+      message: 'Login failed', type: 'fail', duration: 1200
+    })
   }
 }
 </script>

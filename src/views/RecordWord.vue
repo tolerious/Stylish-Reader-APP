@@ -52,6 +52,7 @@ import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
+import { ElMessage, ElNotification } from 'element-plus';
 
 // #region interface
 
@@ -126,16 +127,19 @@ async function grabWord() {
     playAudio(form.value.englishName)
 }
 
-function addNewItem() {
-    wordDescription = ref({
-        englishDescription: '',
-        partOfSpeech: '',
-        level: '',
-        chineseDescription: '',
-        sentence: '',
-        group: '',
+async function addNewItem() {
+    let d = {
+        wordDetail: cardList.value,
+        groupID: defaultGroup.value
+    }
+    const info = await request({
+        url: '/word', method: 'post', data: d
     })
-    form.value.wordDescriptionList.push(wordDescription.value)
+    if (info.code === 200) {
+        ElNotification({
+            message: "Add Successfully.", type: 'success', duration: 1200
+        })
+    }
 }
 function handleGoBack() {
     router.push('/')
