@@ -9,31 +9,25 @@
             <audio id="wordAudio" type="audio/mpeg" :src="audioUrl"></audio>
 
         </el-form>
-        <el-card v-for="card, index in cardList" :key="index" style="margin-bottom: 20px;">
-            <template #header>
-                <div class="card-header">
-                    <span>{{ card.name }} </span>
-                    <span>{{ card.property }} </span>
-                    <span> {{ card.phonetic }}</span>
-                </div>
-            </template>
-            <div>
+        <el-collapse v-model="activeNames">
+            <el-collapse-item :title="`${card.name} - ${card.property} - ${card.phonetic}`" :name="index"
+                v-for="card, index in cardList">
+                <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
                 <template v-for="dsenseObj in card.dsenseObjList">
-                    <el-card v-for="dsense in dsenseObj.defBlockObjList">
+                    <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.defBlockObjList">
                         <template #header>
-                            <div class="card-header">
-                                <span>{{ dsense.en }}</span>
+                            <div class="dsense-title-container">{{ dsense.en }}</div>
+                            <div class="dsense-title-container">{{ dsense.zh }}</div>
+                        </template>
+                        <div>
+                            <div v-for="sentence in dsense.sentence">
+                                {{ sentence }}
                             </div>
-                        </template>
-                        <div>{{ dsense.zh }}</div>
-                        <template v-for="sentence in dsense.sentence">
-                            <div>{{ sentence }}</div>
-                        </template>
+                        </div>
                     </el-card>
-
                 </template>
-            </div>
-        </el-card>
+            </el-collapse-item>
+        </el-collapse>
         <div class="bottom-btn-group">
             <el-button type="primary">Confirm</el-button>
             <el-button type="danger" @click="playAudio(form.englishName)">Pronounce</el-button>
@@ -68,6 +62,7 @@ interface WDL {
 
 // #region variable
 const router = useRouter()
+let activeNames = ref([])
 let wordDescription: Ref<WD>
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
@@ -113,6 +108,10 @@ async function grabWord() {
         }
     })
     cardList.value = info.data
+    activeNames.value = []
+    for (var i = 0; i < info.data.length; i++) {
+        activeNames.value.push(i)
+    }
     playAudio(form.value.englishName)
 }
 
@@ -148,21 +147,19 @@ async function getDefaultGroup() {
 <style scoped lang="less">
 .record-word-container {
     width: 95%;
-    margin: 0 auto 50px auto;
+    margin: 0 auto 55px auto;
 
-    .card-header {
-        height: 30px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 20px;
+    .collapse-header {
+        margin-bottom: 5px;
+        font-size: 15px;
+        color: #409eff;
         font-weight: bold;
-        font-size: 16px;
     }
 
-    .sentence {
-        color: rgb(255, 124, 10);
+    .dsense-title-container {
+        color: #409eff;
+        font-weight: 15px;
+        font-weight: bold;
     }
 
     .bottom-btn-group {
