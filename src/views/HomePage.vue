@@ -117,8 +117,8 @@ function redirect(condition: string) {
                 text-align: center;
 
                 &>div {
-                    color: #ff7c0a;
-                    font-weight: bold;
+                    color: white;
+                    // font-weight: bold;
                 }
 
                 &>p {
