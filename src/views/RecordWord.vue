@@ -28,51 +28,6 @@
                 </template>
             </div>
         </el-card>
-        <!-- <el-collapse v-model="activeNames">
-            <el-collapse-item v-for="item, index in  form.wordDescriptionList " :key="index" :title="`Option ${index + 1}`"
-                :name="index">
-                <el-form :model="item" label-width="80">
-                    <el-form-item label="EN">
-                        <el-input v-model="item.englishDescription"></el-input>
-                    </el-form-item>
-                    <el-form-item label="ZH">
-                        <el-input v-model="item.chineseDescription"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Sentence">
-                        <el-input v-model="item.sentence" type="textarea" :rows="5" label="Sentence"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Level">
-                        <el-select v-model="item.level">
-                            <el-option label="" value=""></el-option>
-                            <el-option label="A1" value="A1"></el-option>
-                            <el-option label="A2" value="A2"></el-option>
-                            <el-option label="B1" value="B1"></el-option>
-                            <el-option label="B2" value="B2"></el-option>
-                            <el-option label="C1" value="C1"></el-option>
-                            <el-option label="C2" value="C2"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Group">
-                        <el-select v-model="defaultGroup">
-                            <el-option label="" value=""></el-option>
-                            <el-option v-for="group in groupList" :key="group._id" :label="group.name"
-                                :value="group._id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Property">
-                        <el-select v-model="item.partOfSpeech">
-                            <el-option label="" value=""></el-option>
-                            <el-option label="n." value="n."></el-option>
-                            <el-option label="v." value="v."></el-option>
-                            <el-option label="adj." value="adj."></el-option>
-                            <el-option label="adv." value="adv."></el-option>
-                            <el-option label="prep." value="prep."></el-option>
-                        </el-select>
-                    </el-form-item>
-
-                </el-form>
-            </el-collapse-item>
-        </el-collapse> -->
         <div class="bottom-btn-group">
             <el-button type="primary">Confirm</el-button>
             <el-button type="danger" @click="playAudio(form.englishName)">Pronounce</el-button>
@@ -107,12 +62,11 @@ interface WDL {
 
 // #region variable
 const router = useRouter()
-const activeNames = ref(0)
 let wordDescription: Ref<WD>
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 const form: Ref<WDL> = ref({
-    englishName: 'enjoy',
+    englishName: 'good',
     wordDescriptionList: []
 })
 let defaultGroup = ref('')
