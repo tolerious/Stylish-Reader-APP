@@ -128,6 +128,10 @@ async function grabWord() {
 }
 
 async function addNewItem() {
+    if (cardList.value.length == 0) {
+        ElNotification({ message: 'Please search a word first.', type: 'warning', duration: 1200, })
+        return
+    }
     let d = {
         wordDetail: cardList.value,
         groupID: defaultGroup.value
@@ -137,7 +141,7 @@ async function addNewItem() {
     })
     if (info.code === 200) {
         ElNotification({
-            message: "Add Successfully.", type: 'success', duration: 1200
+            message: "Add Successfully.", type: 'success', duration: 1200, position: 'bottom-left'
         })
     }
 }

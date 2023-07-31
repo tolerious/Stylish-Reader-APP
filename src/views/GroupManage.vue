@@ -12,6 +12,9 @@
                 <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
             </div>
             <div class="loop-word-right">
+                <button @click="cycling(group._id)">
+                    <span>Cycling</span>
+                </button>
                 <button @click="deleteGroup(group._id)">
                     <span>Delete</span>
                 </button>
@@ -47,7 +50,6 @@ async function getGroupList() {
     const info = await request({
         url: '/wordgroup'
     })
-    console.log(info.data);
     groupList.value = info.data
 }
 async function createGroup() {
@@ -62,12 +64,16 @@ async function createGroup() {
     }
 
 }
+async function cycling(groupID) {
+
+}
 async function deleteGroup(groupID) {
-    const info = request({
+    const info = await request({
         url: '/wordgroup', method: 'delete', data: {
             id: groupID
         }
     })
+
     if (info.code === 200) {
         getGroupList()
     }
@@ -88,7 +94,7 @@ function handleGoBack() {
     justify-content: space-between;
 
     .loop-word-item {
-        height: 60px;
+        height: 65px;
         border: 1px solid #eeeeee;
         box-shadow: 2px 2px 2px #eeeeee;
         width: 90%;
@@ -119,12 +125,17 @@ function handleGoBack() {
             height: 100%;
             line-height: 60px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
 
             button {
                 margin: 0;
                 background-color: #eeeeee;
                 padding: 3px 5px;
                 border-radius: 3px;
+                width: 70px;
             }
 
             span {

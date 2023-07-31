@@ -28,8 +28,7 @@ function createService() {
         ElMessage.error('非本系统的接口')
         return Promise.reject(new Error('非本系统的接口'))
       }
-      console.log(code);
-      
+
       switch (code) {
         case 200:
           // 本系统采用 code === 0 来表示没有业务错误

@@ -18,11 +18,21 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+// #region variable
 const router = useRouter()
+// #endregion
+
+// #region lifecycle
+onMounted(() => { })
+// #endregion
+
+// #region function
 function handleGoBack() {
     router.push('/')
 }
+// #endregion
 </script>
 
 <style scoped lang="less">
