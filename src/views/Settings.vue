@@ -55,7 +55,8 @@ async function getDefaultGroup() {
     const info = await request({
         url: '/usersetting'
     })
-    defaultGroup.value = info.data[0].defaultGroupID
+    if (info.data.length > 0)
+        defaultGroup.value = info.data[0].defaultGroupID
 
 }
 // #endregion

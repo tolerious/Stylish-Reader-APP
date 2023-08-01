@@ -34,7 +34,7 @@
             </el-carousel>
         </div>
         <div class="body-container">
-            <div class="bottom-banner"><span>生命不息，学习不止！</span></div>
+            <div class="bottom-banner"><span>Stay Hungry, Stay Foolish！</span></div>
             <el-row justify="space-around">
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('group-manage')">Manage Group</el-card>
