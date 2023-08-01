@@ -13,7 +13,6 @@
                     </div>
                 </el-carousel-item>
                 <el-carousel-item>
-                    <!-- <img src='@/assets/images/slider-02.jpg' alt="" srcset=""> -->
                     <div class="daily-word-container">
                         <div class="daily-word-container-inner">
                             <div>FUIYOH</div>
@@ -40,8 +39,7 @@
                     <el-card shadow="always" @click="redirect('group-manage')">Manage Group</el-card>
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('group-recite')">
-                        Word List</el-card>
+                    <el-card shadow="always" @click="redirect('record')">Record Word</el-card>
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
@@ -49,8 +47,7 @@
                     <el-card shadow="always" @click="redirect('recite')"> Flash Card </el-card>
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('record')">Record Word</el-card>
-
+                    <el-card shadow="always" @click="redirect('feedback')">Feedback & Help</el-card>
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
@@ -58,19 +55,10 @@
                     <el-card shadow="always" style="color:#ff7c0a;font-weight: bold;">Support Me</el-card>
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('feedback')">Feedback</el-card>
-                </el-col>
-            </el-row>
-            <el-row justify="space-around" style="margin-top: 15px;">
-                <el-col :span="11">
                     <el-card shadow="always" @click="redirect('settings')">Settings</el-card>
-                </el-col>
-                <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('help')">Help</el-card>
                 </el-col>
             </el-row>
         </div>
-
     </div>
 </template>
 
@@ -112,13 +100,11 @@ function redirect(condition: string) {
             &-inner {
                 width: 80%;
                 height: 50%;
-                // background-color: blue;
                 margin: 0 auto;
                 text-align: center;
 
                 &>div {
                     color: white;
-                    // font-weight: bold;
                 }
 
                 &>p {
@@ -139,6 +125,7 @@ function redirect(condition: string) {
         font-size: 12px;
         text-align: center;
         color: #ff7c0a;
+        cursor: pointer;
     }
 }
 </style>

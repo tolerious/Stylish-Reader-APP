@@ -1,5 +1,5 @@
 <template>
-    <Header :title="'Feedback'" @go-back="handleGoBack" />
+    <Header title="Feedback & Help" @go-back="handleGoBack" />
     <div class="feedback-container">
         <el-form :model="form" label-width="120px">
             <el-form-item required label="Contact Info:">
@@ -29,8 +29,7 @@ function handleGoBack() {
 <style scoped lang="less">
 .feedback-container {
     width: 100%;
-    padding: 0 3px;
+    padding: 30px 8px 8px 0;
     box-sizing: border-box;
-    padding-top: 30px;
 }
 </style>

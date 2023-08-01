@@ -132,6 +132,10 @@ async function addNewItem() {
         ElNotification({ message: 'Please search a word first.', type: 'warning', duration: 1200, })
         return
     }
+    if (!defaultGroup.value) {
+        ElNotification({ message: 'Select a group first', type: 'warning', duration: 1200 })
+        return
+    }
     let d = {
         wordDetail: cardList.value,
         groupID: defaultGroup.value
