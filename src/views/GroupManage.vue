@@ -12,12 +12,23 @@
                 <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
             </div>
             <div class="loop-word-right">
-                <button @click="cycling(group._id)">
-                    <span>Cycling</span>
-                </button>
-                <button @click="deleteGroup(group._id)">
-                    <span>Delete</span>
-                </button>
+                <div class="loop-word-right-left">
+                    <button @click="handleClick('setting', group._id)">
+                        <span>Settings</span>
+                    </button>
+                    <button @click="handleClick('delete', group._id)">
+                        <span>Delete</span>
+                    </button>
+                </div>
+                <div class="loop-word-right-right">
+                    <button @click="handleClick('manage', group._id)">
+                        <span>Words</span>
+                    </button>
+                    <button @click="handleClick('cycling', group._id)">
+                        <span>Cycling</span>
+                    </button>
+                </div>
+
             </div>
         </div>
         <el-empty description="No Data." v-else />
@@ -30,6 +41,7 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
 import { request } from '@/utils/service';
+import { ElNotification } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -46,6 +58,35 @@ onMounted(async () => {
 // #endregion
 
 // #region function
+async function handleClick(type, id) {
+    switch (type) {
+        case 'delete':
+            const info = await request({
+                url: '/wordgroup', method: 'delete', data: {
+                    id: id
+                }
+            })
+
+            if (info.code === 200) {
+                getGroupList()
+            }
+            break;
+        case 'setting':
+            ElNotification({ message: 'Not support yet', type: 'warning', duration: 1200 })
+
+            break;
+        case 'manage':
+            router.push('/wordlist/' + id)
+            break;
+        case 'cycling':
+            router.push('/recite/group?groupID=' + id)
+            break;
+        default:
+            ElNotification({ message: 'Not support yet', type: 'warning', duration: 1200 })
+            break;
+    }
+
+}
 async function getGroupList() {
     const info = await request({
         url: '/wordgroup'
@@ -64,21 +105,7 @@ async function createGroup() {
     }
 
 }
-async function cycling(groupID) {
-    router.push('/recite/group?groupID=' + groupID)
 
-}
-async function deleteGroup(groupID) {
-    const info = await request({
-        url: '/wordgroup', method: 'delete', data: {
-            id: groupID
-        }
-    })
-
-    if (info.code === 200) {
-        getGroupList()
-    }
-}
 function handleGoBack() {
     router.push('/')
 }
@@ -108,7 +135,7 @@ function handleGoBack() {
         padding: 0 5px;
 
         .loop-word-left {
-            width: 70%;
+            width: 40%;
             height: 100%;
             font-size: 14px;
 
@@ -122,29 +149,41 @@ function handleGoBack() {
         }
 
         .loop-word-right {
-            width: 30%;
+            width: 160px;
             height: 100%;
             line-height: 60px;
             text-align: center;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: space-around;
 
-            button {
-                margin: 0;
-                background-color: #eeeeee;
-                padding: 3px 5px;
-                border-radius: 3px;
-                width: 70px;
+            &-left,
+            &-right {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                height: 100%;
+
+                button {
+                    margin: 0;
+                    background-color: #eeeeee;
+                    padding: 3px 5px;
+                    border-radius: 3px;
+                    width: 70px;
+                }
+
+                span {
+                    background: linear-gradient(to right, red, blue);
+                    color: transparent;
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                }
             }
 
-            span {
-                background: linear-gradient(to right, red, blue);
-                color: transparent;
-                background-clip: text;
-                -webkit-background-clip: text;
-            }
+
+
         }
     }
 

@@ -111,6 +111,13 @@ const route = useRoute()
 // #endregion
 
 // #region function
+function sleep(ms) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve
+        }, ms);
+    })
+}
 async function getWordsByGroupID(id) {
     let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
     console.log(info.data);
@@ -119,7 +126,7 @@ async function getWordsByGroupID(id) {
         currentWordName.value = info.data[0].wordDetail[0].name
 }
 function handleGoBack() {
-    router.push('/')
+    router.go(-1)
 }
 function showMeanings() {
     showWord.value = !showWord.value

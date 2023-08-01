@@ -18,6 +18,7 @@ import Header from '@/components/Header.vue'
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service';
+import { ElNotification } from 'element-plus';
 
 // #region variable
 let defaultGroup = ref('')
@@ -35,9 +36,18 @@ onMounted(async () => {
 // #region function
 async function handleChange(e) {
     console.log(e);
+    if (!e) {
+        ElNotification({ message: "Default group can't be none.", type: 'warning', duration: 1200 })
+        return
+    }
     const info = await request({
         url: '/usersetting', method: 'post', data: { defaultGroupID: e }
     })
+    if (info.code === 200) {
+        ElNotification({ message: 'Update Successfully', type: 'success', duration: 1200 })
+    } else {
+        ElNotification({ message: 'Update Filed', type: 'error', duration: 1200 })
+    }
 
 
 }
