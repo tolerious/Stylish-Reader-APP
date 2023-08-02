@@ -2,21 +2,25 @@
     <Header :title="'Record Word'" @go-back="handleGoBack" />
     <div class="record-word-container">
         <div class="search-container">
-            <div class="search-label-container"> <span>Word:</span>
+            <div class="search-label-container">
+                <span>Word:</span>
             </div>
             <div> <el-input style="width: 180px;" v-model="form.englishName"></el-input>
             </div>
-            <div> <el-button style="margin-left: 15px;" type="primary" @click="grabWord">Search</el-button>
+            <div> <el-button type="primary" @click="grabWord">Search</el-button>
             </div>
         </div>
         <div class="search-container">
-            <div class="search-label-container"><span>Group:</span></div>
+            <div class="search-label-container">
+                <span>Group:</span>
+            </div>
             <div>
                 <el-select style="width: 180px;" v-model="defaultGroup">
                     <el-option value="" label=""></el-option>
                     <el-option v-for="group in groupList" :value="group._id" :label="group.name"></el-option>
                 </el-select>
             </div>
+            <div><el-button type="warning" @click="playAudio(form.englishName)">&nbsp;Audio&nbsp;</el-button></div>
         </div>
         <audio id="wordAudio" type="audio/mpeg" :src="audioUrl"></audio>
         <el-collapse v-if="cardList.length > 0" v-model="activeNames">
@@ -177,8 +181,13 @@ async function getDefaultGroup() {
         display: flex;
         flex-direction: row;
         align-items: center;
+        justify-content: space-between;
         gap: 10px;
         margin-bottom: 10px;
+
+        &>div:nth-child(3) {
+            width: 100px;
+        }
 
         .search-label-container {
             width: 50px;
