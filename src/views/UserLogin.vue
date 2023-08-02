@@ -12,7 +12,7 @@
               <el-input v-model="userInfo.password" type="password"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button>取消</el-button>
+              <el-button @click="register">注册</el-button>
               <el-button type="primary" @click="login">登陆</el-button>
             </el-form-item>
           </el-form>
@@ -31,6 +31,10 @@ let userInfo = ref({
   username: '', password: ''
 })
 const router = useRouter()
+// #region function
+function register() {
+  router.push('/register')
+}
 async function login() {
   const user = await request({ url: '/logic/login', method: 'post', data: userInfo.value }) as any
   console.log(user.data.token);
@@ -48,6 +52,7 @@ async function login() {
     })
   }
 }
+// #endregion
 </script>
 <style lang="less" scoped>
 .login-container {
