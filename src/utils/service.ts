@@ -1,5 +1,5 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from 'axios'
-import { ElMessage } from 'element-plus'
+import { ElNotification } from 'element-plus'
 import { get, merge } from 'lodash-es'
 import { useUserStore } from '@/stores/user'
 // #region
@@ -25,8 +25,8 @@ function createService() {
       const code = apiData.code
       // 如果没有 code, 代表这不是项目后端开发的 api
       if (code === undefined) {
-        ElMessage.error('非本系统的接口')
-        return Promise.reject(new Error('非本系统的接口'))
+        ElNotification({ type: 'error', message: 'API not in system', duration: 1200 })
+        return Promise.reject(new Error('API not in system'))
       }
 
       switch (code) {
@@ -34,16 +34,16 @@ function createService() {
           // 本系统采用 code === 0 来表示没有业务错误
           return apiData
         case 401:
-          ElMessage.error(apiData.msg)
+          ElNotification({ type: 'error', message: apiData.msg, duration: 1200 })
           const t = useUserStore()
           t.reset()
           return apiData
         case 400:
-          ElMessage.error(apiData.msg)
+          ElNotification({ message: apiData.msg, duration: 1200, type: 'error' })
           return apiData
         default:
           // 不是正确的 code
-          ElMessage.error(apiData.message || 'Error')
+          ElNotification({ type: 'error', duration: 1200, message: apiData.message || 'Error' })
           return Promise.reject(new Error('Error'))
       }
     },
@@ -89,7 +89,7 @@ function createService() {
         default:
           break
       }
-      ElMessage.error(error.message)
+      ElNotification({ type: 'error', duration: 1200, message: error.message })
       return Promise.reject(error)
     }
   )
