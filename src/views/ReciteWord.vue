@@ -5,52 +5,30 @@
             <template v-if="wordList.length > 0">
                 <div class="title-word-container" @click="showMeanings" v-if="showWord">
                     <span>{{ currentWordName }}</span>
-                    <audio id="reciteWordAudio" type="audio/mpeg" :src="audioUrl"></audio>
                 </div>
                 <div class="meaning-collapse-container" v-else>
-                    <el-collapse v-model="activeNames">
-                        <el-collapse-item title="First Meaning" name="1">
-                            <div class="english-meaning-content">
-                                <div><span>a strong feeling such as love or anger, or strong feelings in general</span>
-                                </div>
-                            </div>
-                            <div class="chinese-meaning-content">感情，情感；情绪；激情</div>
-                            <div class="sentence-container">
-                                <p> Like a lot of men, he finds it hard to express his emotions. </p>
-                                <p>像很多男人一样，他不大会表达自己的感情。</p>
-                                <p>My mother was overcome with emotion and burst into tears. </p>
-                                <p>我母亲控制不住自己的感情，泪如雨下。 </p>
-                            </div>
-                        </el-collapse-item>
-                        <el-collapse-item title="First Meaning" name="2">
-                            <div class="english-meaning-content">
-                                <div><span>a strong feeling such as love or anger, or strong feelings in general</span>
-                                </div>
-                            </div>
-                            <div class="chinese-meaning-content">感情，情感；情绪；激情</div>
-                            <div class="sentence-container">
-                                <p> Like a lot of men, he finds it hard to express his emotions. </p>
-                                <p>像很多男人一样，他不大会表达自己的感情。</p>
-                                <p>My mother was overcome with emotion and burst into tears. </p>
-                                <p>我母亲控制不住自己的感情，泪如雨下。 </p>
-                            </div>
-                        </el-collapse-item>
-                        <el-collapse-item title="First Meaning" name="3">
-                            <div class="english-meaning-content">
-                                <div><span>a strong feeling such as love or anger, or strong feelings in general</span>
-                                </div>
-                            </div>
-                            <div class="chinese-meaning-content">感情，情感；情绪；激情</div>
-                            <div class="sentence-container">
-                                <p> Like a lot of men, he finds it hard to express his emotions. </p>
-                                <p>像很多男人一样，他不大会表达自己的感情。</p>
-                                <p>My mother was overcome with emotion and burst into tears. </p>
-                                <p>我母亲控制不住自己的感情，泪如雨下。 </p>
-                            </div>
+                    <el-collapse v-if="currentWordObj.wordDetail.length > 0" v-model="activeNames">
+                        <el-collapse-item :title="`${card.name} - ${card.property} - ${card.phonetic}`" :name="index"
+                            v-for="card, index in currentWordObj.wordDetail">
+                            <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
+                            <template v-for="dsenseObj in card.dsenseObjList">
+                                <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.defBlockObjList">
+                                    <template #header>
+                                        <div class="dsense-title-container">{{ dsense.en }}</div>
+                                        <div class="dsense-title-container">{{ dsense.zh }}</div>
+                                    </template>
+                                    <div>
+                                        <div v-for="sentence in dsense.sentence">
+                                            {{ sentence }}
+                                        </div>
+                                    </div>
+                                </el-card>
+                            </template>
                         </el-collapse-item>
                     </el-collapse>
                 </div>
                 <div class="bottom-btn-group">
+                    <audio id="reciteWordAudio" type="audio/mpeg" :src="audioUrl"></audio>
                     <el-row>
                         <el-col :span="8"> <el-button type="danger" @click="showMeanings">Overturn</el-button></el-col>
                         <el-col :span="8"> <el-button type="info" @click="preWord">Prev</el-button></el-col>
@@ -74,26 +52,8 @@ import { request } from '@/utils/service'
 let showWord = ref(true)
 // #region lifecycle
 onMounted(async () => {
-    console.log(route.params);
-    console.log(route.query);
     source.value = route.params.source
-    switch (route.params.source) {
-        case 'normal':
-            break;
-        case 'group':
-            groupID.value = route.query.groupID
-            getWordsByGroupID(groupID.value)
-            interval.value = setInterval(() => {
-                let audio = document.getElementById('reciteWordAudio')
-                audioUrl.value = `https://dict.youdao.com/dictvoice?audio=${currentWordName.value}&type=1`
-                console.log(audioUrl.value);
-                audio.play()
-                console.log('...');
-
-            }, 10000)
-    }
-
-
+    cycleWord()
 })
 // #endregion
 
@@ -104,26 +64,67 @@ let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let source = ref('')
 let groupID = ref('')
 let currentWordName = ref('')
+let currentWordObj = ref(null)
 let wordList = ref([])
-let interval = ref(null)
 const router = useRouter()
 const route = useRoute()
 // #endregion
 
 // #region function
+
+async function cycleWord() {
+    switch (route.params.source) {
+        case 'normal':
+            break;
+        case 'group':
+            groupID.value = route.query.groupID
+            await getWordsByGroupID(groupID.value)
+            for (let f of generateItem()) {
+                currentWordName.value = f.wordDetail[0].name
+                currentWordObj.value = f
+                let r = await audioSourceReady(f.wordDetail[0].name)
+                let rs = await audioSourceReady(f.wordDetail[0].name)
+                await sleep(5000)
+
+            }
+    }
+
+}
+function* generateItem() {
+    for (let i = 0; i < wordList.value.length; i++) {
+        yield wordList.value[i]
+    }
+}
+function audioSourceReady(name) {
+    return new Promise(resolve => {
+        let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
+        let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
+        if (url === audio.src) {
+            audio.play()
+            resolve(true)
+
+        } else {
+            audioUrl.value = url
+            audio?.addEventListener('loadeddata', async () => {
+                audio.play();
+                await sleep(3000)
+                resolve(true)
+            })
+        }
+
+    })
+
+}
 function sleep(ms) {
     return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve
-        }, ms);
+        setTimeout(resolve, ms);
     })
 }
 async function getWordsByGroupID(id) {
     let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
-    console.log(info.data);
     wordList.value = info.data
-    if (info.data.length > 0)
-        currentWordName.value = info.data[0].wordDetail[0].name
+    if (wordList.value.length > 0)
+        currentWordName.value = wordList.value[0].wordDetail[0].name
 }
 function handleGoBack() {
     router.go(-1)

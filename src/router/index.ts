@@ -25,11 +25,6 @@ const router = createRouter({
     },
     { path: '/wordlist/:groupID', name: 'word', component: () => import('@/views/WordList.vue') },
     {
-      path: '/cycling',
-      name: 'cycling',
-      component: () => import('@/views/Cycling.vue')
-    },
-    {
       path: '/feedback',
       name: 'feedback',
       component: () => import('@/views/Feedback.vue')

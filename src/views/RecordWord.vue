@@ -52,7 +52,7 @@ import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
-import { ElMessage, ElNotification } from 'element-plus';
+import { ElNotification } from 'element-plus';
 
 // #region interface
 
@@ -79,7 +79,7 @@ let wordDescription: Ref<WD>
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 const form: Ref<WDL> = ref({
-    englishName: 'wok',
+    englishName: '',
     wordDescriptionList: []
 })
 let defaultGroup = ref('')
@@ -147,6 +147,7 @@ async function addNewItem() {
         ElNotification({
             message: "Add Successfully.", type: 'success', duration: 1200, position: 'bottom-left'
         })
+        form.value.englishName = ''
     }
 }
 function handleGoBack() {
