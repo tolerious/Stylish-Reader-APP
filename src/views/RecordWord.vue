@@ -97,8 +97,17 @@ let cardList = ref([])
 onMounted(() => {
     document.addEventListener('keydown', (e) => {
         if (e.ctrlKey && e.shiftKey && e.keyCode == 76) {
-            grabWordInput.value.focus()
+            if (grabWordInput.value)
+                grabWordInput.value.focus()
         }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 59) {
+            addNewItem()
+        }
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 188) {
+            if (form.value.englishName)
+                playAudio(form.value.englishName)
+        }
+
     })
     wordDescription = ref({
         englishDescription: '',
@@ -121,7 +130,10 @@ function focusInput() {
 }
 
 function playAudio(word) {
-    if (!word) { ElMessage({ message: 'Please input word first', type: 'warning', duration: 1200 }); return }
+    if (!word) {
+        ElMessage({ message: 'Please input word first', type: 'warning', duration: 1200 });
+        return
+    }
     let audio = document.getElementById('wordAudio')
     audioUrl.value = originUrl.value + word
     setTimeout(() => {
