@@ -8,7 +8,7 @@
                 </div>
                 <div class="meaning-collapse-container" v-else>
                     <el-collapse v-if="currentWordObj.wordDetail.length > 0" v-model="activeNames">
-                        <el-collapse-item :title="`${card.name} - ${card.property} - ${card.phonetic}`" :name="index"
+                        <el-collapse-item :title="`${card.name}`" :name="index"
                             v-for="card, index in currentWordObj.wordDetail">
                             <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
                             <template v-for="dsenseObj in card.dsenseObjList">
@@ -99,7 +99,7 @@ function audioSourceReady(name) {
     return new Promise(resolve => {
         let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
         let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
-        if (url === audio.src) {
+        if (audio && url === audio.src) {
             audio.play()
             resolve(true)
 
