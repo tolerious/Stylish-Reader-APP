@@ -12,7 +12,13 @@
                 </button>
             </div>
         </div>
-        <el-empty description="No Words." v-else />
+        <template v-else>
+            <el-empty description="No Words." />
+            <div class="bottom-btn-group">
+                <el-button type="primary" @click="addWord">Add Word</el-button>
+            </div>
+        </template>
+
     </div>
 </template>
 
@@ -32,6 +38,9 @@ let groupID = ref('')
 
 
 // #region function
+function addWord() {
+    router.push('/record-word')
+}
 function visitWordDetail() {
     console.log('word detail...');
 
@@ -130,6 +139,18 @@ onMounted(() => {
                 -webkit-background-clip: text;
             }
         }
+    }
+
+    .bottom-btn-group {
+        text-align: center;
+        height: 30px;
+        position: fixed;
+        bottom: 15px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 90%;
     }
 }
 </style>
