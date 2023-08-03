@@ -17,4 +17,5 @@
 
 ## ScreenShot
 
-![Alt text](<circle_screenshot_1_Vite App.png>)
+
+![Alt text](Animation.gif)
