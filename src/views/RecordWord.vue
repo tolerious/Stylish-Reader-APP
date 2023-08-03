@@ -5,7 +5,8 @@
             <div class="search-label-container">
                 <span>Word:</span>
             </div>
-            <div> <el-input style="width: 180px;" v-model="form.englishName"></el-input>
+            <div> <el-input autofocus="true" ref="grabWordInput" @keyup.enter="grabWord" style="width: 180px;"
+                    v-model="form.englishName"></el-input>
             </div>
             <div> <el-button type="primary" @click="grabWord">Search</el-button>
             </div>
@@ -56,7 +57,7 @@ import { onMounted, ref } from 'vue';
 import type { Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
-import { ElNotification } from 'element-plus';
+import { ElMessage, ElNotification } from 'element-plus';
 
 // #region interface
 
@@ -76,6 +77,7 @@ interface WDL {
 // #endregion
 
 // #region variable
+const grabWordInput = ref(null)
 let groupID = ref('')
 const router = useRouter()
 let activeNames = ref([])
@@ -93,6 +95,11 @@ let cardList = ref([])
 
 // #region lifecycle
 onMounted(() => {
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 76) {
+            grabWordInput.value.focus()
+        }
+    })
     wordDescription = ref({
         englishDescription: '',
         partOfSpeech: '',
@@ -108,7 +115,13 @@ onMounted(() => {
 
 // #region function
 
+function focusInput() {
+    console.log('...');
+
+}
+
 function playAudio(word) {
+    if (!word) { ElMessage({ message: 'Please input word first', type: 'warning', duration: 1200 }); return }
     let audio = document.getElementById('wordAudio')
     audioUrl.value = originUrl.value + word
     setTimeout(() => {

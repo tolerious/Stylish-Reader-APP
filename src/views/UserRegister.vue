@@ -4,8 +4,8 @@
             <el-row><el-col :span="24"> <el-divider content-position="center">欢迎使用燃烧英语</el-divider></el-col></el-row>
             <el-row>
                 <el-col :span="20">
-                    <el-form ref="formRef" :rules="rules" label-width="100px" status-icon>
-                        <el-form-item label="输入用户名" prop="usernames">
+                    <el-form :model="userInfo" ref="formRef" :rules="rules" label-width="100px" status-icon>
+                        <el-form-item label="输入用户名" prop="username">
                             <el-input v-model="userInfo.username" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="输入密码" prop="password">
@@ -28,30 +28,46 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
-import { ElNotification } from 'element-plus';
+import { ElMessage, ElNotification } from 'element-plus';
 
 
 // #region function
 const validateUserName = (rule: any, vc: any, callback: any) => {
-    console.log(rule);
-    console.log(vc);
-    callback(vc)
+    if (!vc) {
+        callback(new Error('Please input username'))
+    } else {
+        callback()
+    }
 }
 function validatePassword(rule: any, value: any, callback: any) {
-    console.log(rule);
-    console.log(value);
+    if (!value) {
+        callback(new Error('Please input password'))
+    } else {
+        callback()
+    }
 }
 function validateCheckPassword(rule: any, value: any, callback: any) {
-    console.log(rule);
-    console.log(value);
+    if (!value) { callback(new Error('Please input password')) } else {
+        if (userInfo.value.password != value) {
+            callback(new Error("Two inputs won't match"))
+        } else {
+            callback()
+        }
+    }
 }
-const register = () => {
-    request({
-        url: '/user', method: 'post', data: {
+const register = async () => {
+    const info = await request({
+        url: '/user/create', method: 'post', data: {
             username: userInfo.value.username,
             password: userInfo.value.password
         }
     })
+    if (info.code === 200) {
+        ElMessage({ message: 'Successfully!', type: 'success', duration: 1200 })
+        router.push('/')
+    } else {
+        ElMessage({ message: info.msg, duration: 1200, type: 'error' })
+    }
 }
 const goBack = () => {
     router.go(-1)
@@ -78,7 +94,7 @@ async function login() {
 // #region variable
 const formRef = ref()
 const rules = ref({
-    usernames: [{ validator: validateUserName, trigger: 'blur' }],
+    username: [{ validator: validateUserName, trigger: 'blur' }],
     password: [{ validator: validatePassword, trigger: 'blur' }],
     repeatPassword: [{ validator: validateCheckPassword, trigger: 'blur' }]
 })
