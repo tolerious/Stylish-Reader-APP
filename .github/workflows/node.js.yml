@@ -33,7 +33,13 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
             - args: [--global, gulp, prettier, typescript]
-    - run: npm install pnpm
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
     - run: pnpm install
     - run: pnpm run build --if-present
     - run: pnpm test
