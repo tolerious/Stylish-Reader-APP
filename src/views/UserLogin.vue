@@ -22,7 +22,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
 import { ElMessage, ElNotification } from 'element-plus';
@@ -31,6 +31,11 @@ let userInfo = ref({
   username: '', password: ''
 })
 const router = useRouter()
+
+onMounted(() => {
+  localStorage.setItem('token', '')
+})
+
 // #region function
 function register() {
   router.push('/register')

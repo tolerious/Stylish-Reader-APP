@@ -14,10 +14,10 @@
         </div>
         <template v-else>
             <el-empty description="No Words." />
-            <div class="bottom-btn-group">
-                <el-button type="primary" @click="addWord">Add Word</el-button>
-            </div>
         </template>
+        <div class="bottom-btn-group">
+            <el-button type="primary" @click="addWord">Add Word</el-button>
+        </div>
 
     </div>
 </template>
@@ -27,7 +27,7 @@ import Header from '@/components/Header.vue'
 import { request } from '@/utils/service';
 import { ElNotification } from 'element-plus';
 import { onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 
 // #region variable
 const router = useRouter()

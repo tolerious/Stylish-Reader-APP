@@ -2,7 +2,7 @@
     <Header title="Flash Card" @goBack="handleGoBack"></Header>
     <div class="recite-word-container">
         <div class="recite-word-inner-container">
-            <template v-if="wordList.length > 0">
+            <template v-if="wordList.length > 0 || shouldShowCard">
                 <div class="title-word-container" @click="showMeanings" v-if="showWord">
                     <span>{{ currentWordName }}</span>
                 </div>
@@ -31,8 +31,8 @@
                     <audio id="reciteWordAudio" type="audio/mpeg" :src="audioUrl"></audio>
                     <el-row>
                         <el-col :span="8"> <el-button type="danger" @click="showMeanings">Overturn</el-button></el-col>
-                        <el-col :span="8"> <el-button type="info" @click="preWord">Prev</el-button></el-col>
-                        <el-col :span="8"> <el-button type="primary" @click="nextWord">Next</el-button></el-col>
+                        <el-col :span="8"> <el-button type="info" @click="wordMotion('prev')">Prev</el-button></el-col>
+                        <el-col :span="8"> <el-button type="primary" @click="wordMotion('next')">Next</el-button></el-col>
                     </el-row>
                 </div>
             </template>
@@ -47,8 +47,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import Header from '@/components/Header.vue'
-import { useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { request } from '@/utils/service'
+import { ElMessage } from 'element-plus';
 let showWord = ref(true)
 // #region lifecycle
 onMounted(async () => {
@@ -58,7 +59,10 @@ onMounted(async () => {
 // #endregion
 
 // #region variable
-let activeNames = ref(['1'])
+onBeforeRouteLeave((from, to) => {
+
+})
+let activeNames = ref([0])
 let audioUrl = ref('')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let source = ref('')
@@ -66,15 +70,26 @@ let groupID = ref('')
 let currentWordName = ref('')
 let currentWordObj = ref(null)
 let wordList = ref([])
+let shouldShowCard = ref(true)
 const router = useRouter()
 const route = useRoute()
 // #endregion
 
 // #region function
 
+async function getNextWord() {
+    let info = await request({ url: '/word/only/one' })
+    if (info.data.length > 0) {
+        currentWordObj = info.data[0]
+        currentWordName.value = info.data[0].wordDetail[0].name
+    }
+}
+
 async function cycleWord() {
     switch (route.params.source) {
         case 'normal':
+            // 普通模式，每次只获取一个单词
+            getNextWord()
             break;
         case 'group':
             groupID.value = route.query.groupID
@@ -132,12 +147,16 @@ function handleGoBack() {
 function showMeanings() {
     showWord.value = !showWord.value
 }
-function preWord() {
+function wordMotion(motion: string) {
     showWord.value = true
+    if (motion === 'prev') {
+        ElMessage({ message: 'Not supported yet' })
+    }
+    if (motion === 'next') {
+        getNextWord()
+    }
 }
-function nextWord() {
-    showWord.value = true
-}
+
 // #endregion
 </script>
 
