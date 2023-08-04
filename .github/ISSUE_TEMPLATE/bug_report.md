@@ -7,21 +7,18 @@ assignees: tolerious
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**简要描述该Bug**
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**复现步骤**
+1. 
+2. 
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**期望的结果**
 
-**Additional context**
-Add any other context about the problem here.
+
+**截图**
+
+
+
+**其它补充性内容**
