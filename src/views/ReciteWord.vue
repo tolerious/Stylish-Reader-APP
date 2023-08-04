@@ -23,6 +23,17 @@
                                         </div>
                                     </div>
                                 </el-card>
+                                <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.phraseBlockObjList">
+                                    <template #header>
+                                        <div class="dsense-title-container">{{ dsense.en }}</div>
+                                        <div class="dsense-title-container">{{ dsense.zh }}</div>
+                                    </template>
+                                    <div>
+                                        <div v-for="sentence in dsense.sentence">
+                                            {{ sentence }}
+                                        </div>
+                                    </div>
+                                </el-card>
                             </template>
                         </el-collapse-item>
                     </el-collapse>
