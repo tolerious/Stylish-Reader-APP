@@ -42,8 +42,8 @@
                     <audio id="reciteWordAudio" autoplay type="audio/mpeg" :src="audioUrl"></audio>
                     <el-row justify="space-around">
                         <el-col :span="8"> <el-button type="danger" @click="showMeanings">Overturn</el-button></el-col>
-                        <el-col :span="8" v-if="source === 'group'"> <el-button type="info"
-                                @click="wordMotion('prev')">Prev</el-button></el-col>
+                        <!-- <el-col :span="8" v-if="source === 'group'"> <el-button type="info"
+                                @click="wordMotion('prev')">Prev</el-button></el-col> -->
                         <el-col :span="8" v-if="source === 'group'"> <el-button type="primary"
                                 @click="wordMotion('next')">Next</el-button></el-col>
                     </el-row>
