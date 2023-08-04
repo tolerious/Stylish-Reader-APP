@@ -32,3 +32,20 @@ jobs:
     - run: pnpm install
     - run: pnpm run build
     - run: pwd && ls
+
+    - name: Deploy
+      uses: easingthemes/ssh-deploy@v2.1.5
+      env: 
+        #私钥
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
+          #SCp参数
+          ARGS: "-rltgoDzvO --delete"
+          #源目录
+          SOURCE: "./dist"
+          #服务器Ip:换成你的服务器iP
+          REMOTE_HOST:  ${{ secrets.SERVER_IP_ADDRESS }}
+          #用户
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          #目标地址
+          TARGET: "/var/www/html"
+
