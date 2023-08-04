@@ -41,7 +41,7 @@ jobs:
           #SCp参数
           ARGS: "-rltgoDzvO --delete"
           #源目录
-          SOURCE: "./dist"
+          SOURCE: "./"
           #服务器Ip:换成你的服务器iP
           REMOTE_HOST:  ${{ secrets.SERVER_IP_ADDRESS }}
           #用户
