@@ -80,6 +80,7 @@ const route = useRoute()
 async function getNextWord() {
     let info = await request({ url: '/word/only/one' })
     if (info.data.length > 0) {
+        console.log('...')
         currentWordObj = info.data[0]
         currentWordName.value = info.data[0].wordDetail[0].name
     }
@@ -89,7 +90,9 @@ async function cycleWord() {
     switch (route.params.source) {
         case 'normal':
             // 普通模式，每次只获取一个单词
-            getNextWord()
+            await getNextWord()
+            await sleep(2000)
+            let b = await audioSourceReady(currentWordName.value)
             break;
         case 'group':
             groupID.value = route.query.groupID
@@ -111,6 +114,8 @@ function* generateItem() {
     }
 }
 function audioSourceReady(name) {
+    console.log(name);
+
     return new Promise(resolve => {
         let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
         let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
@@ -147,13 +152,14 @@ function handleGoBack() {
 function showMeanings() {
     showWord.value = !showWord.value
 }
-function wordMotion(motion: string) {
+async function wordMotion(motion: string) {
     showWord.value = true
     if (motion === 'prev') {
         ElMessage({ message: 'Not supported yet' })
     }
     if (motion === 'next') {
-        getNextWord()
+        await getNextWord()
+        await audioSourceReady(currentWordName.value)
     }
 }
 
