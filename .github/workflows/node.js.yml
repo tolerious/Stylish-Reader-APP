@@ -31,8 +31,6 @@ jobs:
           version: 8
     - run: pnpm install
     - run: pnpm run build
-    - run: pwd && ls
-
     - name: Deploy
       uses: easingthemes/ssh-deploy@v2.1.5
       env: 
