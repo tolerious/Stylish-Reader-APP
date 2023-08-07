@@ -7,7 +7,7 @@ assignees: tolerious
 
 ---
 
-** 你希望添加什么功能  **
+**你希望添加什么功能**
 
 
 
@@ -16,4 +16,4 @@ assignees: tolerious
 
 
 
-** 其它补充内容 **
+**其它补充内容**
