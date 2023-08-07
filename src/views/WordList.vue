@@ -42,7 +42,6 @@ function addWord() {
     router.push('/record-word')
 }
 function visitWordDetail() {
-    console.log('word detail...');
 
 }
 async function deleteWord(id) {
@@ -61,10 +60,9 @@ async function getWordList(groupID) {
         method: 'post',
         data: { groupID: groupID }
     })
-    console.log(info);
     wordList.value = info.data
-
 }
+
 // #endregion
 
 // #region lifecycle

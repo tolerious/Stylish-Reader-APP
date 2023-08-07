@@ -4,7 +4,8 @@
         <div class="recite-word-inner-container">
             <template v-if="wordList.length > 0 || shouldShowCard">
                 <div class="title-word-container" @click="showMeanings" v-if="showWord">
-                    <span>{{ currentWordName }}</span>
+                    <div class="word">{{ currentWordName }}</div>
+                    <span class="phonetic">{{ currentWordObj?.wordDetail[0].phonetic }}</span>
                 </div>
                 <div class="meaning-collapse-container" v-else>
                     <el-collapse v-if="currentWordObj.wordDetail.length > 0" v-model="activeNames">
@@ -41,10 +42,11 @@
                 <div class="bottom-btn-group">
                     <audio id="reciteWordAudio" autoplay type="audio/mpeg" :src="audioUrl"></audio>
                     <el-row justify="space-around">
-                        <el-col :span="8"> <el-button type="danger" @click="showMeanings">Overturn</el-button></el-col>
-                        <!-- <el-col :span="8" v-if="source === 'group'"> <el-button type="info"
-                                @click="wordMotion('prev')">Prev</el-button></el-col> -->
-                        <el-col :span="8" v-if="source === 'group'"> <el-button type="primary"
+                        <el-col :span="6"> <el-button type="danger" @click="showMeanings">Rollback</el-button></el-col>
+                        <el-col :span="6"> <el-button type="success" @click="pronounce">Audio</el-button></el-col>
+                        <el-col :span="6" v-if="source === 'normal'"> <el-button type="info"
+                                @click="wordMotion('prev')">Prev</el-button></el-col>
+                        <el-col :span="6" v-if="source === 'normal'"> <el-button type="primary"
                                 @click="wordMotion('next')">Next</el-button></el-col>
                     </el-row>
                 </div>
@@ -75,6 +77,8 @@ onMounted(async () => {
 onBeforeRouteLeave((from, to) => {
 
 })
+let defaultGroup = ref('')
+let currentIndex = 0
 let activeNames = ref([0])
 let audioUrl = ref('')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
@@ -90,10 +94,13 @@ const route = useRoute()
 
 // #region function
 
+async function pronounce() {
+    let b = await audioSourceReady(currentWordName.value)
+}
+
 async function getNextWord() {
     let info = await request({ url: '/word/only/one' })
     if (info.data.length > 0) {
-        console.log('...')
         currentWordObj = info.data[0]
         currentWordName.value = info.data[0].wordDetail[0].name
     }
@@ -103,9 +110,10 @@ async function cycleWord() {
     switch (route.params.source) {
         case 'normal':
             // 普通模式，每次只获取一个单词
+            await getDefaultGroup()
+            await getWordsByGroupID(defaultGroup.value)
             await getNextWord()
-            await sleep(2000)
-            let b = await audioSourceReady(currentWordName.value)
+            await audioSourceReady(currentWordName.value)
             break;
         case 'group':
             groupID.value = route.query.groupID
@@ -121,14 +129,18 @@ async function cycleWord() {
     }
 
 }
+async function getDefaultGroup() {
+    const info = await request({
+        url: '/usersetting', method: 'post'
+    })
+    defaultGroup.value = info.data.defaultGroupID
+}
 function* generateItem() {
     for (let i = 0; i < wordList.value.length; i++) {
         yield wordList.value[i]
     }
 }
 function audioSourceReady(name) {
-    console.log(name);
-
     return new Promise(resolve => {
         let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
         let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
@@ -168,10 +180,17 @@ function showMeanings() {
 async function wordMotion(motion: string) {
     showWord.value = true
     if (motion === 'prev') {
-        ElMessage({ message: 'Not supported yet' })
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = wordList.value.length - 1
+        currentWordObj.value = wordList.value[currentIndex]
+        currentWordName.value = currentWordObj.value.wordDetail[0].name
+        await audioSourceReady(currentWordName.value)
     }
     if (motion === 'next') {
-        await getNextWord()
+        currentIndex++;
+        if (currentIndex > wordList.value.length - 1) currentIndex = 0
+        currentWordObj.value = wordList.value[currentIndex]
+        currentWordName.value = currentWordObj.value.wordDetail[0].name
         await audioSourceReady(currentWordName.value)
     }
 }
@@ -200,13 +219,39 @@ async function wordMotion(motion: string) {
             border: 1px solid #eeeeee;
             border-radius: 5px;
             box-shadow: 2px 2px 2p #eeeeee;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
+            // display: flex;
+            // flex-direction: column;
+            // justify-content: space-around;
+            // align-items: center;
             color: #ff7c0a;
             font-weight: bold;
             margin-top: 40px;
+            position: relative;
+
+            .word {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 40%;
+                margin: auto;
+                display: block;
+                width: 90%;
+                height: 40px;
+                line-height: 40px;
+            }
+
+            .phonetic {
+                position: absolute;
+                top: calc(40% + 40px);
+                font-size: 13px;
+                left: 0;
+                right: 0;
+                margin: auto;
+                height: 20px;
+                color: black;
+                font-weight: normal;
+
+            }
 
         }
 

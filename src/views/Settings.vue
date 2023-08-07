@@ -35,7 +35,6 @@ onMounted(async () => {
 
 // #region function
 async function handleChange(e) {
-    console.log(e);
     if (!e) {
         ElNotification({ message: "Default group can't be none.", type: 'warning', duration: 1200 })
         return
@@ -58,7 +57,6 @@ async function getGroupList() {
     const info = await request({
         url: '/wordgroup'
     })
-    console.log(info.data);
     groupList.value = info.data
 }
 async function getDefaultGroup() {

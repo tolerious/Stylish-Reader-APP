@@ -74,7 +74,6 @@ const goBack = () => {
 }
 async function login() {
     const user = await request({ url: '/logic/login', method: 'post', data: userInfo.value }) as any
-    console.log(user.data.token);
     localStorage.setItem('token', user.data.token)
     if (user.data.token) {
         ElNotification({

@@ -135,11 +135,6 @@ onMounted(() => {
 
 // #region function
 
-function focusInput() {
-    console.log('...');
-
-}
-
 function playAudio(word) {
     if (!word) {
         ElMessage({ message: 'Please input word first', type: 'warning', duration: 1200 });
