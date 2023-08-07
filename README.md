@@ -13,8 +13,8 @@
 
 ## 计划开发的功能
 
-- 通过背诵的单词自动推送英文文章进行阅读，巩固单词背诵
-- 可以在单词组广场看到其他人创建的公开单词组
+具体可以参照 [Issues 列表](https://github.com/tolerious/English-Burning-Frontend/labels/enhancement)
+
 
 ## ScreenShot
 
