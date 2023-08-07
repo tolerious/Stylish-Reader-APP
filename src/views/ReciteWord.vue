@@ -4,7 +4,7 @@
         <div class="recite-word-inner-container">
             <template v-if="wordList.length > 0 || shouldShowCard">
                 <div class="title-word-container" @click="showMeanings" v-if="showWord">
-                    <div class="word">{{ currentWordName }}</div>
+                    <div class="word">{{ currentWordObj?.wordDetail[0].name }}</div>
                     <span class="phonetic">{{ currentWordObj?.wordDetail[0].phonetic }}</span>
                 </div>
                 <div class="meaning-collapse-container" v-else>
@@ -98,22 +98,13 @@ async function pronounce() {
     let b = await audioSourceReady(currentWordName.value)
 }
 
-async function getNextWord() {
-    let info = await request({ url: '/word/only/one' })
-    if (info.data.length > 0) {
-        currentWordObj = info.data[0]
-        currentWordName.value = info.data[0].wordDetail[0].name
-    }
-}
-
 async function cycleWord() {
     switch (route.params.source) {
         case 'normal':
             // 普通模式，每次只获取一个单词
             await getDefaultGroup()
             await getWordsByGroupID(defaultGroup.value)
-            await getNextWord()
-            await audioSourceReady(currentWordName.value)
+            await audioSourceReady(currentWordObj?.value.wordDetail[0].name)
             break;
         case 'group':
             groupID.value = route.query.groupID
@@ -166,10 +157,15 @@ function sleep(ms) {
     })
 }
 async function getWordsByGroupID(id) {
+
     let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
     wordList.value = info.data
-    if (wordList.value.length > 0)
+    console.log(wordList.value)
+    if (wordList.value.length > 0) {
         currentWordName.value = wordList.value[0].wordDetail[0].name
+        currentWordObj.value = wordList.value[0]
+
+    }
 }
 function handleGoBack() {
     router.go(-1)
