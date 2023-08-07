@@ -13,7 +13,8 @@
 
 ## 计划开发的功能
 
-具体可以参照 [Issues 列表](https://github.com/tolerious/English-Burning-Frontend/labels/enhancement)
+具体可以参照 [Issues 列表](https://github.com/tolerious/English-Burning-Frontend/labels/enhancement)中的 `Enhancement` 标签。
+
 
 
 ## ScreenShot
