@@ -206,6 +206,7 @@ async function wordMotion(motion: string) {
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
+        margin-bottom: 40px;
 
         .title-word-container {
             text-align: center;
