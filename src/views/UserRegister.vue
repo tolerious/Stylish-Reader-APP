@@ -73,6 +73,11 @@ function validatePassword(rule: any, value: any, callback: any) {
     }
 }
 async function sendCode() {
+    if (!userInfo.value.username) {
+        ElMessage({ type: 'error', message: 'Input phone number first' })
+        return
+    }
+
     let p = await request({ url: '/user/exist', data: { username: userInfo.value.username }, method: 'post' })
     if (p.data === 'can') {
         let info = await request({ url: '/sms', method: 'post', data: { username: userInfo.value.username } })
