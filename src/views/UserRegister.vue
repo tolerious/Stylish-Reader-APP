@@ -30,6 +30,7 @@
                 </el-col>
             </el-row>
         </div>
+        <div class="bottom"><span> <a href="https://beian.miit.gov.cn">沪ICP备18005507号-10</a></span></div>
     </div>
 </template>
 <script setup lang="ts">
@@ -136,7 +137,6 @@ const router = useRouter()
 </script>
 <style lang="less" scoped>
 .login-container {
-    background-color: blue;
     width: 100%;
     position: relative;
     top: 150px;
@@ -158,6 +158,14 @@ const router = useRouter()
             justify-content: space-between;
             align-items: center;
         }
+    }
+
+    .bottom {
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        width: 100%;
+        font-size: 12px;
     }
 }
 </style>
