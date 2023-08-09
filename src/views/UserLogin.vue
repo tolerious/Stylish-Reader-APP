@@ -44,6 +44,7 @@ function register() {
 async function login() {
   const user = await request({ url: '/logic/login', method: 'post', data: userInfo.value }) as any
   localStorage.setItem('token', user.data.token)
+  localStorage.setItem('username', user.data.username)
   if (user.data.token) {
     ElNotification({
       message: 'Login Successfully', type: 'success', duration: 1200
