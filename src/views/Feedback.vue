@@ -22,7 +22,7 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter()
 const form = ref({ name: '', region: '', desc: '' })
 function handleGoBack() {
-    router.push('/')
+    router.push('/home')
 }
 </script>
 

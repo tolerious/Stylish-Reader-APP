@@ -57,7 +57,7 @@ async function handleChange(e) {
 
 }
 function handleGoBack() {
-    router.push('/')
+    router.push('/home')
 }
 async function getGroupList() {
     const info = await request({

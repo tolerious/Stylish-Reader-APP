@@ -50,7 +50,7 @@ async function login() {
       message: 'Login Successfully', type: 'success', duration: 1200
     })
     setTimeout(() => {
-      router.push('/')
+      router.push('/home')
     }, 1500);
   }
 }

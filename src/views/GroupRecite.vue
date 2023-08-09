@@ -44,7 +44,7 @@ async function getGroupList() {
     groupList.value = info.data
 }
 function handleGoBack() {
-    router.push('/')
+    router.push('/home')
 }
 // #endregion
 </script>

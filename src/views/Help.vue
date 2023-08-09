@@ -15,7 +15,7 @@ const router = useRouter()
 
 // #region function
 function handleGoBack() {
-    router.push('/')
+    router.push('/home')
 }
 // #endregion
 

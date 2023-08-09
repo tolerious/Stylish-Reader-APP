@@ -180,13 +180,13 @@ async function addNewItem() {
     })
     if (info.code === 200) {
         ElNotification({
-            message: "Add Successfully.", type: 'success', duration: 1200, position: 'bottom-left'
+            message: "Add Successfully.", type: 'success', duration: 500
         })
         form.value.englishName = ''
     }
 }
 function handleGoBack() {
-    router.push('/')
+    router.push('/home')
 }
 async function getGroupList() {
     const info = await request({

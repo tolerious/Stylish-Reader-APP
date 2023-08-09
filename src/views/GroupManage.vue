@@ -106,7 +106,7 @@ async function createGroup() {
 }
 
 function handleGoBack() {
-    router.push('/')
+    router.push('/home')
 }
 // #endregion
 </script>
