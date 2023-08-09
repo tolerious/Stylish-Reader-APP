@@ -5,7 +5,7 @@
       <el-row>
         <el-col :span="20">
           <el-form label-width="100px">
-            <el-form-item label="Username">
+            <el-form-item label="Phone">
               <el-input v-model="userInfo.username"></el-input>
             </el-form-item>
             <el-form-item label="Password">
@@ -50,10 +50,6 @@ async function login() {
     setTimeout(() => {
       router.push('/')
     }, 1500);
-  } else {
-    ElNotification({
-      message: 'Login failed', type: 'fail', duration: 1200
-    })
   }
 }
 // #endregion

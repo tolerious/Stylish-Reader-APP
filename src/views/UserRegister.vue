@@ -13,11 +13,13 @@
                             <div class="code-container">
                                 <el-input maxlength="4" clearable placeholder="Sms code" style="width:70%;"
                                     v-model="userInfo.code" autocomplete="off"></el-input>
-                                <el-button style="width: 25%;" type="primary">Send</el-button>
+                                <el-button :disabled="sendCodeBtnDisable" style="width: 25%;" type="primary"
+                                    @click="sendCode">Send</el-button>
                             </div>
                         </el-form-item>
                         <el-form-item label="Password" prop="password">
-                            <el-input clearable v-model="userInfo.password" type="password" autocomplete="off"></el-input>
+                            <el-input placeholder="Input password" clearable v-model="userInfo.password" type="password"
+                                autocomplete="off"></el-input>
                         </el-form-item>
 
                         <el-form-item>
@@ -38,11 +40,18 @@ import { ElMessage, ElNotification, type FormInstance } from 'element-plus';
 
 
 // #region function
-const validateUserName = (rule: any, vc: any, callback: any) => {
-    if (!vc || vc.trim().length != 11) {
-        callback(new Error('Username invalid'))
+const validateUserName = async (rule: any, vc: any, callback: any) => {
+    if (/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(vc)) {
+        let p = await request({ url: '/user/exist', data: { username: vc }, method: 'post' })
+        if (p.data === 'can') {
+            sendCodeBtnDisable.value = false
+            callback()
+        } else {
+            sendCodeBtnDisable.value = true
+            callback(new Error(p.msg))
+        }
     } else {
-        callback()
+        callback(new Error('Username invalid'))
     }
 }
 
@@ -62,23 +71,45 @@ function validatePassword(rule: any, value: any, callback: any) {
         callback()
     }
 }
-const register = async (formEl: FormInstance | undefined) => {
-    formEl?.validate(valid => {
-        console.log(valid);
+async function sendCode() {
+    let p = await request({ url: '/user/exist', data: { username: userInfo.value.username }, method: 'post' })
+    if (p.data === 'can') {
+        let info = await request({ url: '/sms', method: 'post', data: { username: userInfo.value.username } })
+        console.log(info);
 
+        if (info.code === 200) {
+            ElMessage({ type: 'success', message: 'Send successfully' })
+        } else {
+            ElMessage({ type: 'error', message: info.data })
+        }
+    } else {
+        ElMessage({ type: 'error', message: p.msg })
+
+    }
+
+}
+const register = (formEl: FormInstance | undefined) => {
+    formEl?.validate(async valid => {
+        console.log(valid);
+        if (valid) {
+            const info = await request({
+                url: '/user/create', method: 'post', data: {
+                    username: userInfo.value.username,
+                    password: userInfo.value.password,
+                    code: userInfo.value.code
+                }
+            })
+            if (info.code === 200) {
+                ElMessage({ message: 'Successfully!', type: 'success', duration: 1200 })
+                router.push('/login')
+            } else {
+                ElMessage({ message: info.msg, duration: 1200, type: 'error' })
+            }
+        } else {
+            ElMessage({ message: 'Info not correct', type: 'error', duration: 1200 })
+        }
     })
-    // const info = await request({
-    //     url: '/user/create', method: 'post', data: {
-    //         username: userInfo.value.username,
-    //         password: userInfo.value.password
-    //     }
-    // })
-    // if (info.code === 200) {
-    //     ElMessage({ message: 'Successfully!', type: 'success', duration: 1200 })
-    //     router.push('/')
-    // } else {
-    //     ElMessage({ message: info.msg, duration: 1200, type: 'error' })
-    // }
+
 }
 const goBack = () => {
     router.go(-1)
@@ -88,6 +119,7 @@ const goBack = () => {
 
 // #region variable
 const formRef = ref()
+const sendCodeBtnDisable = ref(false)
 const rules = ref({
     username: [{ validator: validateUserName, trigger: 'blur' }],
     password: [{ validator: validatePassword, trigger: 'blur' }],
