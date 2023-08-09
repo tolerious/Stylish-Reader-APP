@@ -81,8 +81,6 @@ async function sendCode() {
     let p = await request({ url: '/user/exist', data: { username: userInfo.value.username }, method: 'post' })
     if (p.data === 'can') {
         let info = await request({ url: '/sms', method: 'post', data: { username: userInfo.value.username } })
-        console.log(info);
-
         if (info.code === 200) {
             ElMessage({ type: 'success', message: 'Send successfully' })
         } else {
@@ -96,7 +94,6 @@ async function sendCode() {
 }
 const register = (formEl: FormInstance | undefined) => {
     formEl?.validate(async valid => {
-        console.log(valid);
         if (valid) {
             const info = await request({
                 url: '/user/create', method: 'post', data: {
