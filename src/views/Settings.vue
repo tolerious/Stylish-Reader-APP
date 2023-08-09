@@ -2,6 +2,9 @@
     <Header title="Settings" @go-back="handleGoBack" />
     <div class="settings-container">
         <el-descriptions title="User Settings">
+            <template #extra>
+                <el-button type="primary" @click="logout">Log Out</el-button>
+            </template>
             <el-descriptions-item label="Default Group">
                 <el-select v-model="defaultGroup" @change="handleChange">
                     <el-option value=""></el-option>
@@ -34,6 +37,9 @@ onMounted(async () => {
 // #endregion
 
 // #region function
+function logout() {
+    router.push('/login')
+}
 async function handleChange(e) {
     if (!e) {
         ElNotification({ message: "Default group can't be none.", type: 'warning', duration: 1200 })
