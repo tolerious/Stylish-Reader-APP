@@ -19,7 +19,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="bottom"><span> <a href="https://beian.miit.gov.cn">沪ICP备18005507号-10</a></span></div>
+    <div class="bottom"><span>上海薰紫信息科技有限公司-<a href="https://beian.miit.gov.cn">沪ICP备18005507号-10</a></span></div>
   </div>
 </template>
 <script setup lang="ts">
