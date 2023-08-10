@@ -183,6 +183,7 @@ async function addNewItem() {
             message: "Add Successfully.", type: 'success', duration: 500
         })
         form.value.englishName = ''
+        cardList.value = []
     }
 }
 function handleGoBack() {
