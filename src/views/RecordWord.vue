@@ -88,6 +88,7 @@ interface WDL {
 // #endregion
 
 // #region variable
+let timer = ref(null)
 const grabWordInput = ref(null)
 let groupID = ref('')
 const router = useRouter()
@@ -107,17 +108,23 @@ let cardList = ref([])
 // #region lifecycle
 onMounted(() => {
     document.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 76) {
-            if (grabWordInput.value)
-                grabWordInput.value.focus()
+        if (timer.value) {
+            clearTimeout(timer.value)
         }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 59) {
-            addNewItem()
-        }
-        if (e.ctrlKey && e.shiftKey && e.keyCode == 188) {
-            if (form.value.englishName)
-                playAudio(form.value.englishName)
-        }
+        timer.value = setTimeout(() => {
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 76) {
+                if (grabWordInput.value)
+                    grabWordInput.value.focus()
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 59) {
+                addNewItem()
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 188) {
+                if (form.value.englishName)
+                    playAudio(form.value.englishName)
+            }
+        }, 1200);
+
 
     })
     wordDescription = ref({
