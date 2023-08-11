@@ -46,6 +46,11 @@ const router = createRouter({
       component: () => import('@/views/GroupManage.vue')
     },
     {
+      path: '/group/setting/:groupID',
+      name: 'groupSetting',
+      component: () => import('@/views/GroupSetting.vue')
+    },
+    {
       path: '/help',
       name: 'help',
       component: () => import('@/views/Help.vue')

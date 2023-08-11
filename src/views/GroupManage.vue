@@ -72,7 +72,7 @@ async function handleClick(type, id) {
             }
             break;
         case 'setting':
-            ElNotification({ message: 'Not support yet', type: 'warning', duration: 1200 })
+            router.push('/group/setting/'+id)
             break;
         case 'manage':
             router.push('/wordlist/' + id)
