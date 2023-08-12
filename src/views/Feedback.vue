@@ -1,7 +1,7 @@
 <template>
     <Header title="Feedback & Help" @go-back="handleGoBack" />
     <div class="feedback-container">
-        <el-form :model="form" label-width="120px">
+        <!-- <el-form :model="form" label-width="120px">
             <el-form-item required label="Contact Info:">
                 <el-input placeholder="Leave Wechat,QQ or Email here." v-model="form.name" />
             </el-form-item>
@@ -10,7 +10,13 @@
             </el-form-item><el-form-item>
                 <el-button type="primary">Submit</el-button>
             </el-form-item>
-        </el-form>
+        </el-form> -->
+        <div class="img-container">
+            <img style="width: 100%;"
+                src="https://github.com/tolerious/English-Burning-Website/blob/master/docs/src/public/wechat.png?raw=true"
+                alt="">
+            <a href="https://englishburning.com/how-to-use.html">点击查看使用教程</a>
+        </div>
 
     </div>
 </template>
@@ -31,5 +37,11 @@ function handleGoBack() {
     width: 100%;
     padding: 30px 8px 8px 0;
     box-sizing: border-box;
+
+    .img-container {
+        width: 90%;
+        text-align: center;
+        margin: 0 auto;
+    }
 }
 </style>
