@@ -14,7 +14,8 @@
                                 <el-input maxlength="4" clearable placeholder="Sms code" style="width:70%;"
                                     v-model="userInfo.code" autocomplete="off"></el-input>
                                 <el-button :disabled="sendCodeBtnDisable" style="width: 25%;" type="primary"
-                                    @click="sendCode">Send</el-button>
+                                    @click="sendCode"><span v-if="showSendText">Send</span><span v-else>{{
+                                        intervalCount }}</span></el-button>
                             </div>
                         </el-form-item>
                         <el-form-item label="Password" prop="password">
@@ -34,12 +35,14 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { request } from '@/utils/service'
 import { ElMessage, ElNotification, type FormInstance } from 'element-plus';
 
 
+onMounted(() => {
+})
 // #region function
 const validateUserName = async (rule: any, vc: any, callback: any) => {
     if (/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(vc)) {
@@ -77,12 +80,21 @@ async function sendCode() {
         ElMessage({ type: 'error', message: 'Input phone number first' })
         return
     }
-
+    if (!showSendText.value) return
+    showSendText.value = false
     let p = await request({ url: '/user/exist', data: { username: userInfo.value.username }, method: 'post' })
     if (p.data === 'can') {
         let info = await request({ url: '/sms', method: 'post', data: { username: userInfo.value.username } })
         if (info.code === 200) {
             ElMessage({ type: 'success', message: 'Send successfully' })
+            sendInterval.value = setInterval(() => {
+                intervalCount.value--
+                if (intervalCount.value == 0) {
+                    intervalCount.value = 30
+                    showSendText.value = true
+                    clearInterval(sendInterval.value)
+                }
+            }, 1500)
         } else {
             ElMessage({ type: 'error', message: info.data })
         }
@@ -121,6 +133,9 @@ const goBack = () => {
 // #endregion
 
 // #region variable
+let sendInterval = ref(null)
+let intervalCount = ref(30)
+let showSendText = ref(true)
 const formRef = ref()
 const sendCodeBtnDisable = ref(false)
 const rules = ref({
