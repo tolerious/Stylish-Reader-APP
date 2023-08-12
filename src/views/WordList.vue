@@ -1,7 +1,7 @@
 <template>
     <Header title="Word List" @goBack="handleGoBack" />
     <div class="loop-word-container">
-        <div v-if="wordList.length > 0" class="loop-word-item" @click="visitWordDetail" v-for="word in wordList">
+        <div v-if="wordList.length > 0" class="loop-word-item" @click="visitWordDetail(word)" v-for="word in wordList">
             <div class="loop-word-left">
                 <div>{{ word.wordDetail[0].name }}</div>
             </div>
@@ -9,6 +9,10 @@
                 <button @click.stop="deleteWord(word._id)">
                     <span>Delete</span>
                 </button>
+                <button @click.stop="playAudio(word.wordDetail[0].name)">
+                    <span>Audio</span>
+                </button>
+
             </div>
         </div>
         <template v-else>
@@ -17,7 +21,48 @@
         <div class="bottom-btn-group">
             <el-button type="primary" @click="addWord">Add Word</el-button>
         </div>
-
+        <audio id="wordListAudio" type="audio/mpeg" :src="audioUrl"></audio>
+        <el-dialog @close="handleDialogClose" v-model="centerDialogVisible" :title="currentWord.wordDetail[0].name"
+            style="max-height:85vh;overflow: scroll;" width="90%" align-center>
+            <el-collapse v-model="activeNames">
+                <el-collapse-item :title="`${card.name} - ${card.property} - ${card.phonetic}`" :name="index"
+                    v-for="card, index in currentWord.wordDetail">
+                    <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
+                    <template v-for="dsenseObj in card.dsenseObjList">
+                        <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.defBlockObjList">
+                            <template #header>
+                                <div class="dsense-title-container">{{ dsense.en }}</div>
+                                <div class="dsense-title-container">{{ dsense.zh }}</div>
+                            </template>
+                            <div>
+                                <div v-for="sentence in dsense.sentence">
+                                    {{ sentence }}
+                                </div>
+                            </div>
+                        </el-card>
+                        <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.phraseBlockObjList">
+                            <template #header>
+                                <div class="dsense-title-container">{{ dsense.en }}</div>
+                                <div class="dsense-title-container">{{ dsense.zh }}</div>
+                            </template>
+                            <div>
+                                <div v-for="sentence in dsense.sentence">
+                                    {{ sentence }}
+                                </div>
+                            </div>
+                        </el-card>
+                    </template>
+                </el-collapse-item>
+            </el-collapse>
+            <!-- <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="centerDialogVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="centerDialogVisible = false">
+                        Confirm
+                    </el-button>
+                </span>
+            </template> -->
+        </el-dialog>
     </div>
 </template>
 
@@ -26,22 +71,42 @@ import Header from '@/components/Header.vue'
 import { request } from '@/utils/service';
 import { ElNotification } from 'element-plus';
 import { onMounted, ref } from 'vue';
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 // #region variable
 const router = useRouter()
 const route = useRoute()
+let activeNames = ref([])
 let wordList = ref([])
 let groupID = ref('')
+let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
+let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
+let centerDialogVisible = ref(false)
+let currentWord = ref({ wordDetail: [{ name: '' }] })
 // #endregion
 
 
 // #region function
+function handleDialogClose() {
+    activeNames = []
+}
+function playAudio(word) {
+    if (!word) {
+        ElMessage({ message: 'Please input word first', type: 'warning', duration: 1200 });
+        return
+    }
+    let audio = document.getElementById('wordListAudio')
+    audioUrl.value = originUrl.value + word
+    setTimeout(() => {
+        audio.play()
+    }, 300);
+}
 function addWord() {
     router.push('/record-word')
 }
-function visitWordDetail() {
-
+function visitWordDetail(w) {
+    currentWord.value = w
+    centerDialogVisible.value = true
 }
 async function deleteWord(id) {
     const info = await request({ url: '/word', method: 'delete', data: { id: id, groupID: groupID.value } })
@@ -122,12 +187,17 @@ onMounted(() => {
             height: 100%;
             line-height: 60px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
 
             button {
                 margin: 0;
                 background-color: #eeeeee;
                 padding: 3px 5px;
                 border-radius: 3px;
+                width: 70px;
             }
 
             span {
