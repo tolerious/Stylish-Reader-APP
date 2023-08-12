@@ -72,7 +72,7 @@ async function handleClick(type, id) {
             }
             break;
         case 'setting':
-            router.push('/group/setting/'+id)
+            router.push('/group/setting/' + id)
             break;
         case 'manage':
             router.push('/wordlist/' + id)
@@ -101,6 +101,8 @@ async function createGroup() {
         })
         form.value.name = ''
         getGroupList()
+    } else {
+        ElNotification({ type: 'warning', message: 'Input group name.', duration: 1000 })
     }
 
 }
