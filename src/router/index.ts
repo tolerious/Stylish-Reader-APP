@@ -32,7 +32,7 @@ const router = createRouter({
     { path: '/wordlist/:groupID', name: 'word', component: () => import('@/views/WordList.vue') },
     {
       path: '/feedback',
-      name: 'feedback',
+      name: 'feedback', 
       component: () => import('@/views/Feedback.vue')
     },
     {
