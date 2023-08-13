@@ -1,11 +1,13 @@
 <template>
-    <div class="header-container">
-        <div class="left-header-container"><el-icon @click="goBack" v-if="showBack">
-                <Back />
-            </el-icon></div>
-        <div class="middle-header-container">{{ title }}</div>
-        <div class="right-header-container"></div>
-    </div>
+    <el-affix>
+        <div class="header-container">
+            <div class="left-header-container"><el-icon @click="goBack" v-if="showBack">
+                    <Back />
+                </el-icon></div>
+            <div class="middle-header-container">{{ title }}</div>
+            <div class="right-header-container"></div>
+        </div>
+    </el-affix>
 </template>
 
 <script setup lang="ts">
@@ -32,24 +34,26 @@ function goBack() {
 
 <style scoped lang="less">
 .header-container {
-    height: 40px;
+    height: 45px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background-color: white;
+    border-bottom: 1px solid #eeeeee;
 
     .left-header-container,
     .right-header-container {
         width: 10%;
         height: 100%;
-        line-height: 40px;
+        line-height: 45px;
         text-align: center;
     }
 
     .middle-header-container {
         width: 80%;
         height: 100%;
-        line-height: 40px;
+        line-height: 45px;
         text-align: center;
     }
 }

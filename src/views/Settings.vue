@@ -1,12 +1,15 @@
 <template>
     <Header title="Settings" @go-back="handleGoBack" />
     <div class="settings-container">
-        <el-descriptions title="User Settings">
+        <el-descriptions title="User Settings" direction="vertical" :column="1">
             <template #extra>
                 <el-button type="primary" @click="logout">Log Out</el-button>
             </template>
+            <el-descriptions-item label="UserName">
+                <el-input v-model="username" disabled=""></el-input>
+            </el-descriptions-item>
             <el-descriptions-item label="Default Group">
-                <el-select v-model="defaultGroup" @change="handleChange">
+                <el-select style="width: 100%;" v-model="defaultGroup" @change="handleChange">
                     <el-option value=""></el-option>
                     <el-option v-for="group in groupList" :key="group._id" :value="group._id"
                         :label="group.name"></el-option>
@@ -27,6 +30,7 @@ import { ElNotification } from 'element-plus';
 let defaultGroup = ref('')
 let groupList = ref([])
 const router = useRouter()
+let username = ref('tolerious')
 // #endregion
 
 // #region lifecycle
