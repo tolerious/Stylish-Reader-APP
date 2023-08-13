@@ -4,9 +4,8 @@ import { RouterView } from 'vue-router'
 
 <template>
   <RouterView />
+  <el-backtop :right="10" :bottom="40" />
 </template>
 
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>
