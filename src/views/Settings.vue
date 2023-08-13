@@ -30,13 +30,14 @@ import { ElNotification } from 'element-plus';
 let defaultGroup = ref('')
 let groupList = ref([])
 const router = useRouter()
-let username = ref('tolerious')
+let username = ref('')
 // #endregion
 
 // #region lifecycle
 onMounted(async () => {
     getGroupList()
     getDefaultGroup()
+    username.value = localStorage.getItem('username')
 })
 // #endregion
 
