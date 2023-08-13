@@ -1,7 +1,7 @@
 <template>
   <Header title="Public Groups" @go-back="handleGoBack" />
   <div class="group-square-container">
-    <div v-if="groupList.length > 0" class="loop-word-item" v-for="group in groupList" :key="group._id">
+    <div @click="handleClickGroup" v-if="groupList.length > 0" class="loop-word-item" v-for="group in groupList" :key="group._id">
       <div class="loop-word-left">
         <div class="loop-word-left-top">{{ group.name }}</div>
         <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
@@ -16,10 +16,10 @@
           </button> -->
         </div>
         <div class="loop-word-right-right">
-          <button @click="handleClick('flash', group._id)">
+          <button @click.stop="handleClick('flash', group._id)">
             <span>Flash</span>
           </button>
-          <button @click="handleClick('cycling', group._id)">
+          <button @click.stop="handleClick('cycling', group._id)">
             <span>Cycling</span>
           </button>
         </div>
@@ -49,6 +49,10 @@ onMounted(async () => {
 // #endregion
 
 // #region function
+async function handleClickGroup() {
+  console.log('...');
+  
+}
 async function handleClick(type, id) {
   switch (type) {
     case 'flash':
