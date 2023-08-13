@@ -1,11 +1,17 @@
 <template>
     <el-affix>
         <div class="header-container">
-            <div class="left-header-container"><el-icon @click="goBack" v-if="showBack">
+            <div class="left-header-container">
+                <el-icon :size="18" @click="goBack" v-if="showBack">
                     <Back />
-                </el-icon></div>
+                </el-icon>
+            </div>
             <div class="middle-header-container">{{ title }}</div>
-            <div class="right-header-container"></div>
+            <div class="right-header-container">
+                <el-icon :size="18" @click="goHome">
+                    <HomeFilled />
+                </el-icon>
+            </div>
         </div>
     </el-affix>
 </template>
@@ -29,7 +35,7 @@ const emit = defineEmits(['goBack'])
 function goBack() {
     emit('goBack')
 }
-
+const goHome = () => { router.push('/home') }
 </script>
 
 <style scoped lang="less">

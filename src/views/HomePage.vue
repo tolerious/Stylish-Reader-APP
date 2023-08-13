@@ -47,12 +47,13 @@
                     <el-card shadow="always" @click="redirect('recite')"> Flash Card </el-card>
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('feedback')">Feedback & Help</el-card>
+                    <el-card shadow="always" @click="redirect('square')">Words
+                        Square</el-card>
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
                 <el-col :span="11">
-                    <el-card shadow="always" style="color:#ff7c0a;font-weight: bold;">Support Me</el-card>
+                    <el-card shadow="always" @click="redirect('feedback')">Feedback & Help</el-card>
                 </el-col>
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('settings')">Settings</el-card>
@@ -69,12 +70,13 @@ const router = useRouter()
 function redirect(condition: string) {
     if (condition === 'recite') router.push('/recite/normal')
     if (condition === 'group-recite') router.push('/group-recite')
-    if (condition == 'cycling') router.push('/cycling')
-    if (condition == 'feedback') router.push('/feedback')
-    if (condition == 'group-manage') router.push('/group-manage')
-    if (condition == 'record') router.push('/record-word')
-    if (condition == 'settings') router.push('/settings')
-    if (condition == 'help') router.push('/help')
+    if (condition === 'cycling') router.push('/cycling')
+    if (condition === 'feedback') router.push('/feedback')
+    if (condition === 'group-manage') router.push('/group-manage')
+    if (condition === 'record') router.push('/record-word')
+    if (condition === 'settings') router.push('/settings')
+    if (condition === 'help') router.push('/help')
+    if (condition === 'square') router.push('/square')
 }
 </script>
 

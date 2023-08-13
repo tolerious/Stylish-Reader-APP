@@ -32,7 +32,7 @@ const router = createRouter({
     { path: '/wordlist/:groupID', name: 'word', component: () => import('@/views/WordList.vue') },
     {
       path: '/feedback',
-      name: 'feedback', 
+      name: 'feedback',
       component: () => import('@/views/Feedback.vue')
     },
     {
@@ -59,6 +59,16 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: () => import('@/views/Settings.vue')
+    },
+    {
+      path: '/square',
+      name: 'groupSquare',
+      component: () => import('@/views/GroupSquare.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: '404',
+      component: () => import('@/views/NotFound.vue')
     }
   ]
 })

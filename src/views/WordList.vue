@@ -144,6 +144,7 @@ onMounted(() => {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    margin-top: 15px;
     margin-bottom: 40px;
 
     .loop-word-item {

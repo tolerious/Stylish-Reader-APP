@@ -8,6 +8,7 @@
       <el-form-item label="Media">
         <el-input v-model="groupForm.groupMediaUrl" type="textarea"></el-input>
       </el-form-item>
+      <el-form-item label="Public"> <el-switch v-model="groupForm.isPublic" /></el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Update</el-button>
       </el-form-item>
@@ -26,6 +27,7 @@ import { useRoute, useRouter } from 'vue-router';
 const groupForm = ref({
   groupName: '',
   groupMediaUrl: '',
+  isPublic: false,
 })
 const router = useRouter()
 const route = useRoute()
@@ -45,9 +47,18 @@ const getGroupDetail = async (id) => {
   let d = info.data
   groupForm.value.groupName = d.name
   groupForm.value.groupMediaUrl = d.groupMediaUrl
+  groupForm.value.isPublic = d.isPublic
 }
 const onSubmit = async () => {
-  let info = await request({ url: '/wordgroup/update', data: { groupID: groupID.value, name: groupForm.value.groupName, groupMediaUrl: groupForm.value.groupMediaUrl }, method: 'post' })
+  let info = await request({
+    url: '/wordgroup/update',
+    data: {
+      isPublic: groupForm.value.isPublic,
+      groupID: groupID.value,
+      name: groupForm.value.groupName,
+      groupMediaUrl: groupForm.value.groupMediaUrl
+    }, method: 'post'
+  })
   if (info.code == 200) {
     ElNotification({ type: 'success', message: 'Update Successfully', duration: 1000 })
   } else {

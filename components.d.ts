@@ -30,6 +30,7 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
     ElSkeletonItem: typeof import('element-plus/es')['ElSkeletonItem']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElText: typeof import('element-plus/es')['ElText']
     Header: typeof import('./src/components/Header.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
