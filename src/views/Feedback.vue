@@ -13,7 +13,7 @@
         </el-form> -->
         <div class="img-container">
             <img style="width: 100%;"
-                src="https://github.com/tolerious/English-Burning-Website/blob/master/docs/src/public/wechat.png?raw=true"
+                src="@/assets/images/wechat.jpg"
                 alt="">
             <div><span>扫描上方二维码添加作者微信</span></div>
             <a href="https://englishburning.com/how-to-use.html">或点击查看使用教程</a>
