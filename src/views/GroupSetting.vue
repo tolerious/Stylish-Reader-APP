@@ -3,10 +3,15 @@
   <div class="group-setting-container">
     <el-form :model="groupForm" label-width="50px">
       <el-form-item label="Name">
-        <el-input v-model="groupForm.groupName"></el-input>
+        <el-input placeholder="Input group name" v-model="groupForm.groupName"></el-input>
       </el-form-item>
       <el-form-item label="Media">
-        <el-input v-model="groupForm.groupMediaUrl" type="textarea"></el-input>
+        <el-input placeholder="Input video url,split with ','" v-model="groupForm.groupMediaUrl"
+          type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="Article">
+        <el-input placeholder="Input article url,split with ','" v-model="groupForm.groupArticleUrl"
+          type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="Public"> <el-switch v-model="groupForm.isPublic" /></el-form-item>
       <el-form-item>
@@ -27,6 +32,7 @@ import { useRoute, useRouter } from 'vue-router';
 const groupForm = ref({
   groupName: '',
   groupMediaUrl: '',
+  groupArticleUrl: '',
   isPublic: false,
 })
 const router = useRouter()
@@ -47,6 +53,7 @@ const getGroupDetail = async (id) => {
   let d = info.data
   groupForm.value.groupName = d.name
   groupForm.value.groupMediaUrl = d.groupMediaUrl
+  groupForm.value.groupArticleUrl = d.groupArticleUrl
   groupForm.value.isPublic = d.isPublic
 }
 const onSubmit = async () => {
@@ -56,7 +63,8 @@ const onSubmit = async () => {
       isPublic: groupForm.value.isPublic,
       groupID: groupID.value,
       name: groupForm.value.groupName,
-      groupMediaUrl: groupForm.value.groupMediaUrl
+      groupMediaUrl: groupForm.value.groupMediaUrl,
+      groupArticleUrl: groupForm.value.groupArticleUrl,
     }, method: 'post'
   })
   if (info.code == 200) {

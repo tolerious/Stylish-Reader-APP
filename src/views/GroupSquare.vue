@@ -52,6 +52,7 @@ onMounted(async () => {
 async function handleClick(type, id) {
   switch (type) {
     case 'flash':
+      router.push('/recite/normal?sharedGroupID=' + id)
       break;
     case 'cycling':
       router.push('/recite/group?groupID=' + id)

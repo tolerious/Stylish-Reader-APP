@@ -69,6 +69,7 @@ let showWord = ref(true)
 // #region lifecycle
 onMounted(async () => {
     source.value = route.params.source
+    queryString.value = route.query
     cycleWord()
 })
 // #endregion
@@ -83,6 +84,7 @@ let activeNames = ref([0])
 let audioUrl = ref('')
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let source = ref('')
+let queryString = ref('')
 let groupID = ref('')
 let currentWordName = ref('')
 let currentWordObj = ref(null)
@@ -102,7 +104,11 @@ async function cycleWord() {
     switch (route.params.source) {
         case 'normal':
             // 普通模式，每次只获取一个单词
-            await getDefaultGroup()
+            if (queryString.value.sharedGroupID) {
+                defaultGroup.value = queryString.value.sharedGroupID
+            } else {
+                await getDefaultGroup()
+            }
             await getWordsByGroupID(defaultGroup.value)
             await audioSourceReady(currentWordObj?.value.wordDetail[0].name)
             break;
@@ -160,7 +166,6 @@ async function getWordsByGroupID(id) {
 
     let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
     wordList.value = info.data
-    console.log(wordList.value)
     if (wordList.value.length > 0) {
         currentWordName.value = wordList.value[0].wordDetail[0].name
         currentWordObj.value = wordList.value[0]
