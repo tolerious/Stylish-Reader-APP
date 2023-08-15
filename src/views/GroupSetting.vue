@@ -5,8 +5,12 @@
       <el-form-item label="Name">
         <el-input placeholder="Input group name" v-model="groupForm.groupName"></el-input>
       </el-form-item>
-      <el-form-item label="Media">
+      <el-form-item label="Video">
         <el-input placeholder="Input video url,split with ','" v-model="groupForm.groupMediaUrl"
+          type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item label="Audio">
+        <el-input placeholder="Input audio url,split with ','" v-model="groupForm.groupAudioUrl"
           type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="Article">
@@ -32,6 +36,7 @@ import { useRoute, useRouter } from 'vue-router';
 const groupForm = ref({
   groupName: '',
   groupMediaUrl: '',
+  groupAudioUrl:'',
   groupArticleUrl: '',
   isPublic: false,
 })
@@ -54,6 +59,7 @@ const getGroupDetail = async (id) => {
   groupForm.value.groupName = d.name
   groupForm.value.groupMediaUrl = d.groupMediaUrl
   groupForm.value.groupArticleUrl = d.groupArticleUrl
+  groupForm.value.groupAudioUrl = d.groupAudioUrl
   groupForm.value.isPublic = d.isPublic
 }
 const onSubmit = async () => {
@@ -64,6 +70,7 @@ const onSubmit = async () => {
       groupID: groupID.value,
       name: groupForm.value.groupName,
       groupMediaUrl: groupForm.value.groupMediaUrl,
+      groupAudioUrl: groupForm.value.groupAudioUrl,
       groupArticleUrl: groupForm.value.groupArticleUrl,
     }, method: 'post'
   })
