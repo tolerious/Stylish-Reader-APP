@@ -23,10 +23,10 @@
                 </div>
                 <div class="loop-word-right-right">
 
-                    <button @click="handleClick('setting', group._id)">
+                    <button @click.stop="handleClick('setting', group._id)">
                         <span>Settings</span>
                     </button>
-                    <button @click="handleClick('delete', group._id)">
+                    <button @click.stop="handleClick('delete', group._id)">
                         <span>Delete</span>
                     </button>
                 </div>
@@ -46,18 +46,18 @@
                 </div>
                 <div class="loop-word-right">
                     <div class="loop-word-right-left">
-                        <button @click="handleClick('setting', group._id)">
+                        <button @click.stop="handleClick('setting', group._id)">
                             <span>Settings</span>
                         </button>
-                        <button @click="handleClick('delete', group._id)">
+                        <button @click.stop="handleClick('delete', group._id)">
                             <span>Delete</span>
                         </button>
                     </div>
                     <div class="loop-word-right-right">
-                        <button @click="handleClick('manage', group._id)">
+                        <button @click.stop="handleClick('manage', group._id)">
                             <span>Words</span>
                         </button>
-                        <button @click="handleClick('cycling', group._id)">
+                        <button @click.stop="handleClick('cycling', group._id)">
                             <span>Cycling</span>
                         </button>
                     </div>
