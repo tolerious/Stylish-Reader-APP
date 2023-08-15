@@ -10,7 +10,7 @@
             v-for="group in groupList" :key="group._id">
             <div class="loop-word-left">
                 <div class="loop-word-left-top">{{ group.name }}</div>
-                <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
+                <div class="loop-word-left-bottom">{{ group.wordCount }} groups</div>
             </div>
             <div class="loop-word-right">
                 <div class="loop-word-right-left">
