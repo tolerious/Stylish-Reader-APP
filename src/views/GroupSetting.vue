@@ -18,10 +18,17 @@
           type="textarea"></el-input>
       </el-form-item>
       <el-form-item label="Public"> <el-switch v-model="groupForm.isPublic" /></el-form-item>
+      <el-form-item label="Parent">
+        <el-select style="width: 100%;" v-model="groupForm.parentGroupID" @change="handleChange">
+          <el-option value=""></el-option>
+          <el-option v-for="group in groupList" :key="group._id" :value="group._id" :label="group.name"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">Update</el-button>
       </el-form-item>
     </el-form>
+
   </div>
 </template>
 
@@ -36,19 +43,22 @@ import { useRoute, useRouter } from 'vue-router';
 const groupForm = ref({
   groupName: '',
   groupMediaUrl: '',
-  groupAudioUrl:'',
+  groupAudioUrl: '',
   groupArticleUrl: '',
   isPublic: false,
+  parentGroupID: ''
 })
 const router = useRouter()
 const route = useRoute()
 const groupID = ref('')
+let groupList = ref([])
 // #endregion
 
 // #region lifecycle
 onMounted(() => {
   groupID.value = route.params.groupID
   getGroupDetail()
+  getGroupList()
 })
 // #endregion
 
@@ -61,13 +71,23 @@ const getGroupDetail = async (id) => {
   groupForm.value.groupArticleUrl = d.groupArticleUrl
   groupForm.value.groupAudioUrl = d.groupAudioUrl
   groupForm.value.isPublic = d.isPublic
+  groupForm.value.parentGroupID = d.parentGroupID
 }
+
+async function getGroupList() {
+  const info = await request({
+    url: '/wordgroup'
+  })
+  groupList.value = info.data.filter(item => item._id != groupID.value)
+}
+
 const onSubmit = async () => {
   let info = await request({
     url: '/wordgroup/update',
     data: {
       isPublic: groupForm.value.isPublic,
       groupID: groupID.value,
+      parentGroupID: groupForm.value.parentGroupID,
       name: groupForm.value.groupName,
       groupMediaUrl: groupForm.value.groupMediaUrl,
       groupAudioUrl: groupForm.value.groupAudioUrl,
@@ -81,6 +101,7 @@ const onSubmit = async () => {
 
   }
 }
+
 const goBack = () => {
   router.go(-1)
 }

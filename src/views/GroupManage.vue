@@ -6,26 +6,28 @@
                 <el-input v-model="form.name"></el-input>
             </el-form-item>
         </el-form>
-        <div v-if="groupList.length > 0" class="loop-word-item" v-for="group in groupList" :key="group._id">
+        <div v-if="groupList.length > 0" @click="handleClickGroupItem(group)" class="loop-word-item"
+            v-for="group in groupList" :key="group._id">
             <div class="loop-word-left">
                 <div class="loop-word-left-top">{{ group.name }}</div>
                 <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
             </div>
             <div class="loop-word-right">
                 <div class="loop-word-right-left">
+                    <!-- <button @click="handleClick('manage', group._id)">
+                        <span>Words</span>
+                    </button> -->
+                    <!-- <button @click="handleClick('cycling', group._id)">
+                        <span>Cycling</span>
+                    </button> -->
+                </div>
+                <div class="loop-word-right-right">
+
                     <button @click="handleClick('setting', group._id)">
                         <span>Settings</span>
                     </button>
                     <button @click="handleClick('delete', group._id)">
                         <span>Delete</span>
-                    </button>
-                </div>
-                <div class="loop-word-right-right">
-                    <button @click="handleClick('manage', group._id)">
-                        <span>Words</span>
-                    </button>
-                    <button @click="handleClick('cycling', group._id)">
-                        <span>Cycling</span>
                     </button>
                 </div>
 
@@ -35,6 +37,34 @@
         <div class="group-manage-bottom-btn">
             <el-button @click="createGroup" type="primary">Confirm</el-button>
         </div>
+        <el-dialog v-model="groupDialog" title="Child Group" style="max-height:85vh;overflow: scroll;" width="90%"
+            align-center>
+            <div class="loop-word-item" v-for="group in childGroupList" :key="group._id">
+                <div class="loop-word-left">
+                    <div class="loop-word-left-top">{{ group.name }}</div>
+                    <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
+                </div>
+                <div class="loop-word-right">
+                    <div class="loop-word-right-left">
+                        <button @click="handleClick('setting', group._id)">
+                            <span>Settings</span>
+                        </button>
+                        <button @click="handleClick('delete', group._id)">
+                            <span>Delete</span>
+                        </button>
+                    </div>
+                    <div class="loop-word-right-right">
+                        <button @click="handleClick('manage', group._id)">
+                            <span>Words</span>
+                        </button>
+                        <button @click="handleClick('cycling', group._id)">
+                            <span>Cycling</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -46,9 +76,11 @@ import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 // #region variable
+let groupDialog = ref(false)
 const form = ref({ name: '' })
 const router = useRouter()
 let groupList = ref([])
+let childGroupList = ref([])
 // #endregion
 
 // #region lifecycle
@@ -58,6 +90,18 @@ onMounted(async () => {
 // #endregion
 
 // #region function
+async function handleClickGroupItem(item) {
+    childGroupList.value = await getChildGroup(item._id)
+    console.log(childGroupList.value);
+    if (childGroupList.value.length > 0) { groupDialog.value = true }
+    else {
+        ElNotification({ type: 'info', message: 'No child', duration: 800 })
+    }
+}
+async function getChildGroup(id) {
+    let info = await request({ url: '/wordgroup/children', data: { parentGroupID: id }, method: 'post' })
+    return info.data
+}
 async function handleClick(type, id) {
     switch (type) {
         case 'delete':
@@ -126,7 +170,7 @@ function handleGoBack() {
         height: 65px;
         border: 1px solid #eeeeee;
         box-shadow: 2px 2px 2px #eeeeee;
-        width: 90%;
+        width: 100%;
         border-radius: 5px;
         margin-bottom: 10px;
         display: flex;
@@ -136,7 +180,7 @@ function handleGoBack() {
         padding: 0 5px;
 
         .loop-word-left {
-            width: 40%;
+            width: 45%;
             height: 100%;
             font-size: 14px;
 
