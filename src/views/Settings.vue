@@ -66,7 +66,7 @@ function handleGoBack() {
 }
 async function getGroupList() {
     const info = await request({
-        url: '/wordgroup'
+        url: '/wordgroup/child'
     })
     groupList.value = info.data
 }

@@ -5,19 +5,21 @@
       <el-form-item label="Name">
         <el-input placeholder="Input group name" v-model="groupForm.groupName"></el-input>
       </el-form-item>
-      <el-form-item label="Video">
-        <el-input placeholder="Input video url,split with ','" v-model="groupForm.groupMediaUrl"
-          type="textarea"></el-input>
-      </el-form-item>
-      <el-form-item label="Audio">
-        <el-input placeholder="Input audio url,split with ','" v-model="groupForm.groupAudioUrl"
-          type="textarea"></el-input>
-      </el-form-item>
-      <el-form-item label="Article">
-        <el-input placeholder="Input article url,split with ','" v-model="groupForm.groupArticleUrl"
-          type="textarea"></el-input>
-      </el-form-item>
-      <el-form-item label="Public"> <el-switch v-model="groupForm.isPublic" /></el-form-item>
+      <template v-if="!groupForm.hasChild">
+        <el-form-item label="Video">
+          <el-input placeholder="Input video url,split with ','" v-model="groupForm.groupMediaUrl"
+            type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="Audio">
+          <el-input placeholder="Input audio url,split with ','" v-model="groupForm.groupAudioUrl"
+            type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="Article">
+          <el-input placeholder="Input article url,split with ','" v-model="groupForm.groupArticleUrl"
+            type="textarea"></el-input>
+        </el-form-item>
+        <el-form-item label="Public"> <el-switch v-model="groupForm.isPublic" /></el-form-item>
+      </template>
       <el-form-item label="Parent">
         <el-select style="width: 100%;" v-model="groupForm.parentGroupID" @change="handleChange">
           <el-option value=""></el-option>
@@ -28,7 +30,6 @@
         <el-button type="primary" @click="onSubmit">Update</el-button>
       </el-form-item>
     </el-form>
-
   </div>
 </template>
 
@@ -46,7 +47,8 @@ const groupForm = ref({
   groupAudioUrl: '',
   groupArticleUrl: '',
   isPublic: false,
-  parentGroupID: ''
+  parentGroupID: '',
+  hasChild: false,
 })
 const router = useRouter()
 const route = useRoute()
@@ -72,6 +74,7 @@ const getGroupDetail = async (id) => {
   groupForm.value.groupAudioUrl = d.groupAudioUrl
   groupForm.value.isPublic = d.isPublic
   groupForm.value.parentGroupID = d.parentGroupID
+  groupForm.value.hasChild = d.hasChild
 }
 
 async function getGroupList() {

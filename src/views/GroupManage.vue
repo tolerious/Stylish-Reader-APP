@@ -81,6 +81,7 @@ const form = ref({ name: '' })
 const router = useRouter()
 let groupList = ref([])
 let childGroupList = ref([])
+let currentClickedParentGroup = ref('')
 // #endregion
 
 // #region lifecycle
@@ -91,8 +92,8 @@ onMounted(async () => {
 
 // #region function
 async function handleClickGroupItem(item) {
+    currentClickedParentGroup.value = item
     childGroupList.value = await getChildGroup(item._id)
-    console.log(childGroupList.value);
     if (childGroupList.value.length > 0) { groupDialog.value = true }
     else {
         ElNotification({ type: 'info', message: 'No child', duration: 800 })
@@ -113,6 +114,7 @@ async function handleClick(type, id) {
 
             if (info.code === 200) {
                 getGroupList()
+                childGroupList.value = await getChildGroup(currentClickedParentGroup.value._id)
             }
             break;
         case 'setting':
