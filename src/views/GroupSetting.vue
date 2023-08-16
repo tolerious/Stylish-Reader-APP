@@ -81,7 +81,7 @@ async function getGroupList() {
   const info = await request({
     url: '/wordgroup'
   })
-  groupList.value = info.data.filter(item => item._id != groupID.value)
+  groupList.value = info.data.list.filter(item => item._id != groupID.value)
 }
 
 const onSubmit = async () => {

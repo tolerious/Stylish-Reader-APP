@@ -41,7 +41,7 @@ async function getGroupList() {
     const info = await request({
         url: '/wordgroup'
     })
-    groupList.value = info.data
+    groupList.value = info.data.list
 }
 function handleGoBack() {
     router.push('/home')

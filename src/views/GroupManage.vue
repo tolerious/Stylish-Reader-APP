@@ -10,7 +10,7 @@
             v-for="group in groupList" :key="group._id">
             <div class="loop-word-left">
                 <div class="loop-word-left-top">{{ group.name }}</div>
-                <div class="loop-word-left-bottom">{{ group.wordCount }} groups</div>
+                <div class="loop-word-left-bottom">Child Group: {{ group.childCount }}</div>
             </div>
             <div class="loop-word-right">
                 <div class="loop-word-right-left">
@@ -136,7 +136,8 @@ async function getGroupList() {
     const info = await request({
         url: '/wordgroup'
     })
-    groupList.value = info.data
+    let agg = info.data.aggregate
+    groupList.value = info.data.list.map(item => { item['childCount'] = agg[item._id]; return item })
 }
 async function createGroup() {
     if (form.value.name) {
