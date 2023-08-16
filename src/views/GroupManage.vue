@@ -167,6 +167,7 @@ function handleGoBack() {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    margin-top: 15px;
 
     .loop-word-item {
         height: 65px;
