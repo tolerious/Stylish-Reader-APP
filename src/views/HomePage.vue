@@ -92,7 +92,9 @@ function redirect(condition: string) {
 
         .daily-word-container {
             padding: 3px 5px;
-            background-color: rgba(0, 255, 255, 0.6);
+            // background-color: rgba(0, 255, 255, 0.6);
+            background-color: rgb(255, 124, 10);
+
             height: 100%;
             display: flex;
             flex-direction: row;

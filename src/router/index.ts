@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import('@/views/UserLogin.vue')
     },
     {
+      path: '/sharing/:groupID',
+      name: 'sharingPoster',
+      component: () => import('@/views/Sharing.vue')
+    },
+    {
       path: '/register',
       name: 'register',
       component: () => import('@/views/UserRegister.vue')
