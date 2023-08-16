@@ -1,8 +1,8 @@
 <template>
   <Header title="Public Groups" @go-back="handleGoBack" />
   <div class="group-square-container">
-    <div @click="handleClickGroup" v-if="groupList.length > 0" class="loop-word-item" v-for="group in groupList"
-      :key="group._id">
+    <div @click="handleClickGroup(group._id)" v-if="groupList.length > 0" class="loop-word-item"
+      v-for="group in groupList" :key="group._id">
       <div class="loop-word-left">
         <div class="loop-word-left-top">{{ group.name }}</div>
         <div class="loop-word-left-bottom">{{ group.wordCount }} words</div>
@@ -50,8 +50,8 @@ onMounted(async () => {
 // #endregion
 
 // #region function
-async function handleClickGroup() {
-
+async function handleClickGroup(id) {
+  router.push('/wordlist/' + id)
 }
 async function handleClick(type, id) {
   switch (type) {

@@ -29,7 +29,7 @@ const pingPong = async () => {
   const info = await request({ url: '/logic/pingpong' })
   if (info.code === 200) setTimeout(() => {
     router.push('/home')
-  }, 1000);
+  }, 200);
 }
 // #endregion
 </script>
