@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>截至目前为止，APP 已收录1111个词组</span></div>
+    <div class="footer"><span>截至目前为止，APP 已收录{{groupInfo.groupCount}}个词组</span></div>
   </div>
   <div id="sharing-pic-container" class="sharing-pic-container">
     <div class="sharing-pic-container-inner" v-if="!showDom">
