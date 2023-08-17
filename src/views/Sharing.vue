@@ -66,23 +66,23 @@ onMounted(async () => {
   await getWordList()
   await getGroupDetail()
 
-  // setTimeout(() => {
-  //   var node = document.getElementById('app');
-  //   htmlToImage.toPng(node)
-  //     .then(function (dataUrl) {
-  //       var img = new Image();
-  //       img.src = dataUrl;
-  //       imgBase.value = dataUrl
-  //       img.style.height = '99vh'
-  //       setTimeout(() => {
-  //         document.getElementById('sharing-pic-container')!.appendChild(img);
-  //       }, 1000);
-  //       showDom.value = false
-  //     })
-  //     .catch(function (error) {
-  //       console.error('oops, something went wrong!', error);
-  //     });
-  // }, 300);
+  setTimeout(() => {
+    var node = document.getElementById('app');
+    htmlToImage.toPng(node)
+      .then(function (dataUrl) {
+        var img = new Image();
+        img.src = dataUrl;
+        imgBase.value = dataUrl
+        img.style.height = '99vh'
+        setTimeout(() => {
+          document.getElementById('sharing-pic-container')!.appendChild(img);
+        }, 1000);
+        showDom.value = false
+      })
+      .catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      });
+  }, 300);
 
 })
 
