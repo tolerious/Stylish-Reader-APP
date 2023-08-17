@@ -219,7 +219,6 @@ onMounted(() => {
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
-        width: 90%;
     }
 }
 </style>
