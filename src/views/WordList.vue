@@ -114,8 +114,13 @@ function playAudio(word) {
         audio.play()
     }, 300);
 }
-function addWord() {
-    router.push('/record-word')
+async function addWord() {
+    const info = await request({ url: '/usersetting', method: 'post', data: { defaultGroupID: groupID.value } })
+    if (info.code === 200) {
+        router.push('/record-word')
+    } else {
+        ElNotification({ message: 'Update Filed', type: 'error', duration: 1200 })
+    }
 }
 function visitWordDetail(w) {
     currentWord.value = w
