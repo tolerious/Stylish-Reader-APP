@@ -27,6 +27,7 @@
         </el-select>
       </el-form-item>
       <el-form-item>
+        <el-button type="info" @click="goSharing" v-if="!groupForm.hasChild">QR Code</el-button>
         <el-button type="primary" @click="onSubmit">Update</el-button>
       </el-form-item>
     </el-form>
@@ -65,6 +66,13 @@ onMounted(() => {
 // #endregion
 
 // #region function
+
+const handleChange = () => { }
+
+const goSharing = () => {
+  router.push('/sharing/' + groupID.value)
+}
+
 const getGroupDetail = async (id) => {
   let info = await request({ url: '/wordgroup/detail', data: { groupID: groupID.value }, method: 'post' })
   let d = info.data
