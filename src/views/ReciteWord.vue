@@ -42,8 +42,8 @@
                 <div class="bottom-btn-group">
                     <audio id="reciteWordAudio" autoplay type="audio/mpeg" :src="audioUrl"></audio>
                     <el-row justify="space-around">
-                        <el-col :span="6"> <el-button type="danger" @click="showMeanings">Rollback</el-button></el-col>
                         <el-col :span="6"> <el-button type="success" @click="pronounce">Audio</el-button></el-col>
+                        <el-col :span="6"> <el-button type="danger" @click="showMeanings">Rollback</el-button></el-col>
                         <el-col :span="6" v-if="source === 'normal'"> <el-button type="info"
                                 @click="wordMotion('prev')">Prev</el-button></el-col>
                         <el-col :span="6" v-if="source === 'normal'"> <el-button type="primary"
