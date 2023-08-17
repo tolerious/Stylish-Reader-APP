@@ -69,7 +69,7 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
 import { request } from '@/utils/service';
-import { ElNotification } from 'element-plus';
+import { ElMessageBox, ElNotification } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -109,11 +109,16 @@ function visitWordDetail(w) {
     centerDialogVisible.value = true
 }
 async function deleteWord(id) {
-    const info = await request({ url: '/word', method: 'delete', data: { id: id, groupID: groupID.value } })
-    if (info.code === 200) {
-        ElNotification({ message: 'Delete Successfully', type: 'success', duration: 800 })
-        getWordList(groupID.value)
-    }
+    ElMessageBox.confirm('Do you want to delete this word?', 'Delete Word').then(async () => {
+        const info = await request({ url: '/word', method: 'delete', data: { id: id, groupID: groupID.value } })
+        if (info.code === 200) {
+            ElNotification({ message: 'Delete Successfully', type: 'success', duration: 800 })
+            getWordList(groupID.value)
+        }
+    }).catch(() => {
+
+    })
+
 }
 function handleGoBack() {
     router.go(-1)
