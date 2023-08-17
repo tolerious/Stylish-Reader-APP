@@ -6,7 +6,7 @@
                 <div>{{ word.wordDetail[0].name }}</div>
             </div>
             <div class="loop-word-right">
-                <button @click.stop="deleteWord(word._id)">
+                <button v-if="addWordVisible" @click.stop="deleteWord(word._id)">
                     <span>Delete</span>
                 </button>
                 <button @click.stop="playAudio(word.wordDetail[0].name)">
@@ -19,7 +19,7 @@
             <el-empty description="No Words." />
         </template>
         <div class="bottom-btn-group">
-            <el-button type="primary" @click="addWord">Add Word</el-button>
+            <el-button type="primary" v-if="addWordVisible" @click="addWord">Add Word</el-button>
         </div>
         <audio id="wordListAudio" type="audio/mpeg" :src="audioUrl"></audio>
         <el-dialog @close="handleDialogClose" v-model="centerDialogVisible" :title="currentWord.wordDetail[0].name"
@@ -74,6 +74,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 // #region variable
+let addWordVisible = ref(true)
 const router = useRouter()
 const route = useRoute()
 let activeNames = ref([])
@@ -87,6 +88,18 @@ let currentWord = ref({ wordDetail: [{ name: '' }] })
 
 
 // #region function
+
+async function getGroupBelongs2Me() {
+    const info = await request({ url: '/wordgroup/child', })
+    let a = info.data.map(item => item._id)
+    if (a.indexOf(groupID.value) > -1) {
+        // 当前分享的词组属于我
+        addWordVisible.value = true
+    } else {
+        addWordVisible.value = false
+    }
+}
+
 function handleDialogClose() {
     activeNames = []
 }
@@ -135,8 +148,9 @@ async function getWordList(groupID) {
 // #endregion
 
 // #region lifecycle
-onMounted(() => {
+onMounted(async () => {
     groupID.value = route.params.groupID
+    await getGroupBelongs2Me()
     getWordList(groupID.value)
 })
 // #endregion
