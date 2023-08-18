@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>截至目前为止，APP 已收录{{groupInfo.groupCount}}个词组</span></div>
+    <div class="footer"><span>截至目前为止，APP 已收录{{ groupInfo.groupCount }}个词组</span></div>
   </div>
   <div id="sharing-pic-container" class="sharing-pic-container">
     <div class="sharing-pic-container-inner" v-if="!showDom">
@@ -45,7 +45,7 @@ import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
-
+import html2canvas from "html2canvas";
 // #region variable
 let route = useRoute()
 let groupCount = ref(0)
@@ -66,23 +66,30 @@ onMounted(async () => {
   await getWordList()
   await getGroupDetail()
 
-  setTimeout(() => {
-    var node = document.getElementById('app');
-    htmlToImage.toPng(node)
-      .then(function (dataUrl) {
-        var img = new Image();
-        img.src = dataUrl;
-        imgBase.value = dataUrl
-        img.style.height = '99vh'
-        setTimeout(() => {
-          document.getElementById('sharing-pic-container')!.appendChild(img);
-        }, 1000);
-        showDom.value = false
-      })
-      .catch(function (error) {
-        console.error('oops, something went wrong!', error);
-      });
-  }, 300);
+
+  html2canvas(document.querySelector("#app")).then(canvas => {
+    showDom.value = false
+    document.getElementById('sharing-pic-container')!.appendChild(canvas);
+  });
+
+
+  // setTimeout(() => {
+  //   var node = document.getElementById('app');
+  //   htmlToImage.toPng(node)
+  //     .then(function (dataUrl) {
+  //       var img = new Image();
+  //       img.src = dataUrl;
+  //       imgBase.value = dataUrl
+  //       img.style.height = '99vh'
+  //       setTimeout(() => {
+  //         document.getElementById('sharing-pic-container')!.appendChild(img);
+  //       }, 1000);
+  //       showDom.value = false
+  //     })
+  //     .catch(function (error) {
+  //       console.error('oops, something went wrong!', error);
+  //     });
+  // }, 300);
 
 })
 
@@ -143,7 +150,7 @@ function goHome() {
       align-items: center;
 
       img {
-        width: 100%;
+        height: 100%;
       }
     }
 
