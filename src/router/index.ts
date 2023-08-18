@@ -29,6 +29,11 @@ const router = createRouter({
       name: 'recite',
       component: () => import('@/views/ReciteWord.vue')
     },
+    {
+      path: '/group/review/:groupID',
+      name: 'groupReview',
+      component: () => import('@/views/GroupReviewDetail.vue')
+    },
     // {
     //   path: '/group-recite',
     //   name: 'groupRecite',

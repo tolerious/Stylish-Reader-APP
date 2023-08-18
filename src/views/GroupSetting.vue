@@ -28,6 +28,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="info" @click="goSharing" v-if="!groupForm.hasChild">Sharing</el-button>
+        <el-button type="warning" @click="goReview" v-if="!groupForm.hasChild">Review</el-button>
         <el-button type="primary" @click="onSubmit">Update</el-button>
       </el-form-item>
     </el-form>
@@ -66,6 +67,10 @@ onMounted(() => {
 // #endregion
 
 // #region function
+
+const goReview = () => {
+  router.push('/group/review/' + groupID.value)
+}
 
 const handleChange = () => { }
 
