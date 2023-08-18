@@ -43,8 +43,6 @@
 import { request } from '@/utils/service';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import * as htmlToImage from 'html-to-image';
-import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import html2canvas from "html2canvas";
 // #region variable
 let route = useRoute()
@@ -81,25 +79,6 @@ onMounted(async () => {
     document.getElementById('sharing-pic-container')!.appendChild(img);
     canvas1.style.display = 'none'
   });
-
-
-  // setTimeout(() => {
-  //   var node = document.getElementById('app');
-  //   htmlToImage.toPng(node)
-  //     .then(function (dataUrl) {
-  //       var img = new Image();
-  //       img.src = dataUrl;
-  //       imgBase.value = dataUrl
-  //       img.style.height = '99vh'
-  //       setTimeout(() => {
-  //         document.getElementById('sharing-pic-container')!.appendChild(img);
-  //       }, 1000);
-  //       showDom.value = false
-  //     })
-  //     .catch(function (error) {
-  //       console.error('oops, something went wrong!', error);
-  //     });
-  // }, 300);
 
 })
 
