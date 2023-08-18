@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span>截至目前为止，APP 已收录{{ groupInfo.groupCount }}个词组</span></div>
+    <div class="footer"><span>English Burning 已收录{{ groupInfo.groupCount }}个词组</span></div>
   </div>
   <div id="sharing-pic-container" class="sharing-pic-container">
     <div class="sharing-pic-container-inner" v-if="!showDom">
@@ -65,20 +65,20 @@ onMounted(async () => {
   await getGroupDetail()
 
 
-  html2canvas(document.querySelector("#app")).then(canvas => {
-    showDom.value = false
-    document.getElementById('sharing-pic-container')!.appendChild(canvas);
-    let canvas1 = document.querySelector('canvas')
-    let dataURL = canvas1.toDataURL()
-    // var newTab = window.open('about:blank', 'image from canvas');
-    // newTab.document.write("<img src='" + dataURL + "' alt='from canvas'/>");
-    var img = new Image();
-    img.src = dataURL;
-    imgBase.value = dataURL
-    img.style.height = '99vh'
-    document.getElementById('sharing-pic-container')!.appendChild(img);
-    canvas1.style.display = 'none'
-  });
+  // html2canvas(document.querySelector("#app")).then(canvas => {
+  //   showDom.value = false
+  //   document.getElementById('sharing-pic-container')!.appendChild(canvas);
+  //   let canvas1 = document.querySelector('canvas')
+  //   let dataURL = canvas1.toDataURL()
+  //   // var newTab = window.open('about:blank', 'image from canvas');
+  //   // newTab.document.write("<img src='" + dataURL + "' alt='from canvas'/>");
+  //   var img = new Image();
+  //   img.src = dataURL;
+  //   imgBase.value = dataURL
+  //   img.style.height = '99vh'
+  //   document.getElementById('sharing-pic-container')!.appendChild(img);
+  //   canvas1.style.display = 'none'
+  // });
 
 })
 
@@ -121,6 +121,7 @@ function goHome() {
   position: relative;
 
   .sharing-inner-container {
+    padding: 12px 2px;
     // border: 1px dashed rgb(255, 124, 10);
     width: 90%;
     height: 65%;
