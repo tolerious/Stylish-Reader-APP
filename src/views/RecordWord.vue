@@ -112,13 +112,16 @@ onMounted(() => {
             clearTimeout(timer.value)
         }
         timer.value = setTimeout(() => {
+            // 76 for focusing,l
             if (e.ctrlKey && e.shiftKey && e.keyCode == 76) {
                 if (grabWordInput.value)
                     grabWordInput.value.focus()
             }
+            // 59 for adding, ;
             if (e.ctrlKey && e.shiftKey && e.keyCode == 59) {
                 addNewItem()
             }
+            // 188 for audio, ,
             if (e.ctrlKey && e.shiftKey && e.keyCode == 188) {
                 if (form.value.englishName)
                     playAudio(form.value.englishName)
