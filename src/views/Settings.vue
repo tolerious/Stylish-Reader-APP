@@ -86,5 +86,6 @@ async function getDefaultGroup() {
 .settings-container {
     width: 90%;
     margin: 0 auto 30px auto;
+    margin-top: 15px;
 }
 </style>

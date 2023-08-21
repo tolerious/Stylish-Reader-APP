@@ -218,6 +218,7 @@ async function getDefaultGroup() {
 .record-word-container {
     width: 95%;
     margin: 0 auto 55px auto;
+    margin-top: 15px;
 
     .search-container {
         display: flex;
