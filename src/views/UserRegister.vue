@@ -56,6 +56,7 @@ const validateUserName = async (rule: any, vc: any, callback: any) => {
         }
     } else {
         callback(new Error('Username invalid'))
+        sendCodeBtnDisable.value =  true 
     }
 }
 
