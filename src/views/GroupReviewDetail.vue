@@ -26,8 +26,8 @@
         <div class="title-container">
           <h3>Article</h3>
         </div>
-        <div class="content-container">
-          <iframe class="iframe-container" src="http://example.com" frameborder="0"></iframe>
+        <div class="content-container" v-for="article in articleList">
+          <iframe class="iframe-container" :src="article" frameborder="0"></iframe>
         </div>
       </div>
       <div class="review-words-btn-group">
@@ -59,7 +59,7 @@ onMounted(() => {
 
 // #region function
 function handleWordReview() {
-  router.push('/recite/normal/?sharedGroupID='+groupID.value)
+  router.push('/recite/normal/?sharedGroupID=' + groupID.value)
 }
 function goBack() { router.go(-1) }
 
@@ -76,6 +76,10 @@ const videoList = computed(() => {
 
 const audioList = computed(() => {
   return groupDetail.value.groupAudioUrl?.split(',').filter(item => !!item)
+})
+
+const articleList = computed(() => {
+  return groupDetail.value.groupArticleUrl?.split(',').filter(item => !!item)
 })
 
 </script>
@@ -104,6 +108,7 @@ const audioList = computed(() => {
       .content-container {
         iframe {
           width: 100%;
+          height: 300px;
         }
       }
 

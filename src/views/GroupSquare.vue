@@ -20,9 +20,12 @@
           <button @click.stop="handleClick('flash', group._id)">
             <span>Flash</span>
           </button>
-          <button @click.stop="handleClick('cycling', group._id)">
-            <span>Cycling</span>
+          <button @click.stop="handleClick('review', group._id)">
+            <span>Review</span>
           </button>
+          <!-- <button @click.stop="handleClick('cycling', group._id)">
+            <span>Cycling</span>
+          </button> -->
         </div>
 
       </div>
@@ -60,6 +63,9 @@ async function handleClick(type, id) {
       break;
     case 'cycling':
       router.push('/recite/group?groupID=' + id)
+      break;
+    case 'review':
+      router.push('/group/review/' + id);
       break;
     default:
       ElNotification({ message: 'Not support yet', type: 'warning', duration: 1200 })

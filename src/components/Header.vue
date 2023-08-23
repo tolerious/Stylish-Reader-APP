@@ -1,14 +1,14 @@
 <template>
     <el-affix>
         <div class="header-container">
-            <div class="left-header-container">
-                <el-icon :size="18" @click="goBack" v-if="showBack">
+            <div class="left-header-container" @click="goBack">
+                <el-icon :size="20" v-if="showBack">
                     <Back />
                 </el-icon>
             </div>
             <div class="middle-header-container">{{ title }}</div>
-            <div class="right-header-container">
-                <el-icon :size="18" @click="goHome">
+            <div class="right-header-container" @click="goHome">
+                <el-icon :size="20">
                     <HomeFilled />
                 </el-icon>
             </div>
@@ -52,8 +52,11 @@ const goHome = () => { router.push('/home') }
     .right-header-container {
         width: 10%;
         height: 100%;
-        line-height: 45px;
         text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
     }
 
     .middle-header-container {
