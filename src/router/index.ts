@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: '/recite/:source',
       name: 'recite',
-      component: () => import('@/views/ReciteWord.vue')
+      component: () => import('@/views/FlashCard.vue')
     },
     {
       path: '/group/review/:groupID',
