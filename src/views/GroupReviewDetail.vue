@@ -27,7 +27,7 @@
           <h3>Article</h3>
         </div>
         <div class="content-container" v-for="article in articleList">
-          <iframe class="iframe-container" :src="article" frameborder="0"></iframe>
+          <div><a :href="article" target="_self">{{ article }}</a></div>
         </div>
       </div>
       <div class="review-words-btn-group">
@@ -105,12 +105,7 @@ const articleList = computed(() => {
 
       }
 
-      .content-container {
-        iframe {
-          width: 100%;
-          height: 300px;
-        }
-      }
+      .content-container {}
 
       video {
         width: 100%;
