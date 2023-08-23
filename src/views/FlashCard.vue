@@ -41,25 +41,32 @@
                 </div>
                 <div class="bottom-btn-group">
                     <audio id="reciteWordAudio" autoplay type="audio/mpeg" :src="audioUrl"></audio>
+                    <div class="bottom-btn-group-inner">
+                        <el-button type="success" @click="pronounce">Audio</el-button>
+                        <el-button type="danger" @click="goWordList">Word List</el-button>
+                        <el-button v-if="source === 'normal'" type="info" @click="wordMotion('prev')">Prev</el-button>
+                        <el-button v-if="source === 'normal'" type="primary" @click="wordMotion('next')">Next</el-button>
+                    </div>
                     <el-row justify="space-around">
-                        <el-col :span="6"> <el-button type="success" @click="pronounce">Audio</el-button></el-col>
-                        <el-col :span="6"> <el-button type="danger" @click="showMeanings">Rollback</el-button></el-col>
-                        <el-col :span="6" v-if="source === 'normal'"> <el-button type="info"
-                                @click="wordMotion('prev')">Prev</el-button></el-col>
-                        <el-col :span="6" v-if="source === 'normal'"> <el-button type="primary"
-                                @click="wordMotion('next')">Next</el-button></el-col>
+                        <el-col :span="6"> </el-col>
+                        <el-col :span="6"> </el-col>
+                        <el-col :span="6" v-if="source === 'normal'"> </el-col>
+                        <el-col :span="6" v-if="source === 'normal'"> </el-col>
                     </el-row>
                 </div>
             </template>
             <template v-else>
                 <el-empty description="No Data." />
             </template>
-
+            <div class="roll-back">
+                <el-button @click="showMeanings" :icon="Refresh" size="large" circle />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { Refresh } from "@element-plus/icons-vue";
 import { onMounted, ref } from 'vue';
 import Header from '@/components/Header.vue'
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
@@ -82,10 +89,8 @@ let defaultGroup = ref('')
 let currentIndex = 0
 let activeNames = ref([0])
 let audioUrl = ref('')
-let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
 let source = ref('')
 let queryString = ref('')
-let groupID = ref('')
 let currentWordName = ref('')
 let currentWordObj = ref(null)
 let wordList = ref([])
@@ -95,6 +100,10 @@ const route = useRoute()
 // #endregion
 
 // #region function
+
+function goWordList() {
+    router.push('/wordlist/' + defaultGroup.value)
+}
 
 async function pronounce() {
     let b = await audioSourceReady(currentWordName.value)
@@ -113,8 +122,8 @@ async function cycleWord() {
             await audioSourceReady(currentWordObj?.value.wordDetail[0].name)
             break;
         case 'group':
-            groupID.value = route.query.groupID
-            await getWordsByGroupID(groupID.value)
+            defaultGroup.value = route.query.groupID
+            await getWordsByGroupID(defaultGroup.value)
             for (let f of generateItem()) {
                 currentWordName.value = f.wordDetail[0].name
                 currentWordObj.value = f
@@ -201,7 +210,6 @@ async function wordMotion(motion: string) {
 
 <style lang="less" scoped>
 .recite-word-container {
-
     .recite-word-inner-container {
         margin: 0 auto;
         width: 80%;
@@ -283,7 +291,28 @@ async function wordMotion(motion: string) {
             height: 40px;
             border-bottom: 1px solid #eeeeee;
             text-align: center;
+
+            &-inner {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+            }
         }
+    }
+
+    .roll-back {
+        position: fixed;
+        // background-color: blue;
+        height: 40px;
+        width: 40px;
+        bottom: 120px;
+        right: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
     }
 }
 </style>
