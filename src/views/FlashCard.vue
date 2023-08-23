@@ -151,6 +151,8 @@ function audioSourceReady(name) {
         let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
         let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
         if (audio && url === audio.src) {
+            audio.pause()
+            audio.currentTime = 0
             audio.play()
             resolve(true)
 
