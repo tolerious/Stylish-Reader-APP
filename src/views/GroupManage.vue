@@ -10,7 +10,7 @@
             v-for="group in groupList" :key="group._id">
             <div class="loop-word-left">
                 <div class="loop-word-left-top">{{ group.name }}</div>
-                <div class="loop-word-left-bottom">Child Group: {{ group.childCount }}</div>
+                <div class="loop-word-left-bottom">Child Group: {{ group.childCount || 0 }}</div>
             </div>
             <div class="loop-word-right">
                 <div class="loop-word-right-left">
@@ -171,7 +171,7 @@ function handleGoBack() {
     margin-top: 15px;
 
     .loop-word-item {
-        height: 65px;
+        min-height: 65px;
         border: 1px solid #eeeeee;
         box-shadow: 2px 2px 2px #eeeeee;
         width: 100%;
@@ -190,10 +190,12 @@ function handleGoBack() {
 
             .loop-word-left-top {
                 height: 60%;
+                color: #333;
             }
 
             .loop-word-left-bottom {
                 height: 40%;
+                color: grey;
             }
         }
 
