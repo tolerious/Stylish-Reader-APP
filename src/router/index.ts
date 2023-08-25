@@ -18,6 +18,11 @@ const router = createRouter({
       name: 'register',
       component: () => import('@/views/UserRegister.vue')
     },
+    {
+      path: '/review/word',
+      name: 'reviewWord',
+      component: () => import('@/views/ReviewWord.vue')
+    },
     { path: '/', name: 'skeleton', component: () => import('@/views/Skeleton.vue') },
     {
       path: '/home',
