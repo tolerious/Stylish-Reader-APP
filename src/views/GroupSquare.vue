@@ -95,7 +95,7 @@ function handleGoBack() {
   justify-content: space-between;
 
   .loop-word-item {
-    height: 65px;
+    min-height: 65px;
     border: 1px solid #eeeeee;
     box-shadow: 2px 2px 2px #eeeeee;
     width: 90%;
