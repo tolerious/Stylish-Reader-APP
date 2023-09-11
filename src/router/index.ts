@@ -19,7 +19,7 @@ const router = createRouter({
       component: () => import('@/views/UserRegister.vue')
     },
     {
-      path: '/review/word',
+      path: '/review/word/:groupID',
       name: 'reviewWord',
       component: () => import('@/views/ReviewWord.vue')
     },

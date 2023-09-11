@@ -31,7 +31,8 @@
         </div>
       </div>
       <div class="review-words-btn-group">
-        <el-button type="primary" @click="handleWordReview">单词复习</el-button>
+        <el-button type="primary" @click="handleWordReview">Words Review</el-button>
+        <el-button type="primary" @click="handleWordsTest">Words Test</el-button>
       </div>
     </div>
   </div>
@@ -58,6 +59,11 @@ onMounted(() => {
 })
 
 // #region function
+
+function handleWordsTest() {
+  router.push('/review/word/' + groupID.value)
+}
+
 function handleWordReview() {
   router.push('/recite/normal/?sharedGroupID=' + groupID.value)
 }
