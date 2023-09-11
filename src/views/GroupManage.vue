@@ -1,9 +1,9 @@
 <template>
     <Header title="Manage Group" @go-back="handleGoBack" />
     <div class="group-manage-container">
-        <el-form label-width="110px" :model="form" class="demo-from-inline">
+        <el-form @submit.prevent="createGroup" label-width="110px" :model="form" class="demo-from-inline">
             <el-form-item label="Group Name:">
-                <el-input v-model="form.name"></el-input>
+                <el-input  v-model="form.name"></el-input>
             </el-form-item>
         </el-form>
         <div v-if="groupList.length > 0" @click="handleClickGroupItem(group)" class="loop-word-item"
