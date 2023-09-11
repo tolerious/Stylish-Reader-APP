@@ -150,7 +150,7 @@ const goBack = () => {
 let sendInterval = ref(null);
 let intervalCount = ref(30);
 let showSendText = ref(true);
-consgitt formRef = ref();
+const formRef = ref();
 const sendCodeBtnDisable = ref(false);
 const rules = ref({
     username: [{ validator: validateUserName, trigger: 'blur' }],
