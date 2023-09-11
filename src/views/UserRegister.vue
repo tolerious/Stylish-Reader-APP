@@ -1,31 +1,32 @@
 <template>
     <div class="login-container">
         <div class="inner-login-container">
-            <el-row><el-col :span="24"> <el-divider content-position="center">欢迎使用燃烧英语</el-divider></el-col></el-row>
+            <el-row><el-col :span="24"> <el-divider content-position="center">欢迎使用燃烧英语</el-divider></el-col>
+            </el-row>
             <el-row>
                 <el-col :span="20">
                     <el-form :model="userInfo" ref="formRef" :rules="rules" label-width="100px" status-icon>
-                        <el-form-item label="Phone" prop="username">
-                            <el-input maxlength="11" clearable placeholder="Input phone number" v-model="userInfo.username"
+                        <el-form-item label="用户名" prop="username">
+                            <el-input maxlength="11" clearable placeholder="请输入用户名" v-model="userInfo.username"
                                 autocomplete="off"></el-input>
                         </el-form-item>
-                        <el-form-item label="Code" prop="code">
+                        <!-- <el-form-item label="Code" prop="code">
                             <div class="code-container">
-                                <el-input maxlength="4" clearable placeholder="Sms code" style="width:70%;"
+                                <el-input maxlength="4" clearable placeholder="Sms code" style="width: 70%"
                                     v-model="userInfo.code" autocomplete="off"></el-input>
-                                <el-button :disabled="sendCodeBtnDisable" style="width: 25%;" type="primary"
-                                    @click="sendCode"><span v-if="showSendText">Send</span><span v-else>{{
-                                        intervalCount }}</span></el-button>
+                                <el-button :disabled="sendCodeBtnDisable" style="width: 25%" type="primary"
+                                    @click="sendCode"><span v-if="showSendText">Send</span><span v-else>{{ intervalCount
+                                    }}</span></el-button>
                             </div>
-                        </el-form-item>
-                        <el-form-item label="Password" prop="password">
-                            <el-input placeholder="Input password" clearable v-model="userInfo.password" type="password"
+                        </el-form-item> -->
+                        <el-form-item label="密码" prop="password">
+                            <el-input placeholder="请输入密码" clearable v-model="userInfo.password" type="text"
                                 autocomplete="off"></el-input>
                         </el-form-item>
 
                         <el-form-item>
-                            <el-button @click="goBack">Back</el-button>
-                            <el-button type="primary" @click="register(formRef)">Register</el-button>
+                            <el-button @click="goBack">返回</el-button>
+                            <el-button type="primary" @click="register(formRef)">提交</el-button>
                         </el-form-item>
                     </el-form>
                 </el-col>
@@ -37,121 +38,132 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { request } from '@/utils/service'
-import { ElMessage, ElNotification, type FormInstance } from 'element-plus';
+import { request } from '@/utils/service';
+import { ElMessage, type FormInstance } from 'element-plus';
 
-
-onMounted(() => {
-})
+onMounted(() => { });
 // #region function
 const validateUserName = async (rule: any, vc: any, callback: any) => {
-    if (/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(vc)) {
-        let p = await request({ url: '/user/exist', data: { username: vc }, method: 'post' })
-        if (p.data === 'can') {
-            sendCodeBtnDisable.value = false
-            callback()
-        } else {
-            sendCodeBtnDisable.value = true
-            callback(new Error(p.msg))
-        }
-    } else {
-        callback(new Error('Username invalid'))
-        sendCodeBtnDisable.value =  true 
-    }
-}
+    // if (/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(vc)) {
+    //     let p = await request({ url: '/user/exist', data: { username: vc }, method: 'post' });
+    //     if (p.data === 'can') {
+    //         sendCodeBtnDisable.value = false;
+    //         callback();
+    //     } else {
+    //         sendCodeBtnDisable.value = true;
+    //         callback(new Error(p.msg));
+    //     }
+    // } else {
+    //     callback(new Error('Username invalid'));
+    //     sendCodeBtnDisable.value = true;
+    // }
+
+    // ------------------
+    callback()
+};
 
 function validateCode(rule: any, value: any, callback: any) {
-    let r = /^[0-9]*$/
-    if (r && r.test(value) && value.length == 4) {
-        callback()
-    } else {
-        callback(new Error('Please enter code'))
-    }
+    // let r = /^[0-9]*$/;
+    // if (r && r.test(value) && value.length == 4) {
+    //     callback();
+    // } else {
+    //     callback(new Error('Please enter code'));
+    // }
+
+    callback()
 }
 
 function validatePassword(rule: any, value: any, callback: any) {
     if (!value) {
-        callback(new Error('Please input password'))
+        callback(new Error('Please input password'));
     } else {
-        callback()
+        callback();
     }
 }
 async function sendCode() {
     if (!userInfo.value.username) {
-        ElMessage({ type: 'error', message: 'Input phone number first' })
-        return
+        ElMessage({ type: 'error', message: 'Input phone number first' });
+        return;
     }
-    if (!showSendText.value) return
-    showSendText.value = false
-    let p = await request({ url: '/user/exist', data: { username: userInfo.value.username }, method: 'post' })
+    if (!showSendText.value) return;
+    showSendText.value = false;
+    let p = await request({
+        url: '/user/exist',
+        data: { username: userInfo.value.username },
+        method: 'post',
+    });
     if (p.data === 'can') {
-        let info = await request({ url: '/sms', method: 'post', data: { username: userInfo.value.username } })
+        let info = await request({
+            url: '/sms',
+            method: 'post',
+            data: { username: userInfo.value.username },
+        });
         if (info.code === 200) {
-            ElMessage({ type: 'success', message: 'Send successfully' })
+            ElMessage({ type: 'success', message: 'Send successfully' });
             sendInterval.value = setInterval(() => {
-                intervalCount.value--
+                intervalCount.value--;
                 if (intervalCount.value == 0) {
-                    intervalCount.value = 30
-                    showSendText.value = true
-                    clearInterval(sendInterval.value)
+                    intervalCount.value = 30;
+                    showSendText.value = true;
+                    clearInterval(sendInterval.value);
                 }
-            }, 1500)
+            }, 1500);
         } else {
-            ElMessage({ type: 'error', message: info.data })
+            ElMessage({ type: 'error', message: info.data });
         }
     } else {
-        ElMessage({ type: 'error', message: p.msg })
-
+        ElMessage({ type: 'error', message: p.msg });
     }
-
 }
 const register = (formEl: FormInstance | undefined) => {
     formEl?.validate(async valid => {
         if (valid) {
             const info = await request({
-                url: '/user/create', method: 'post', data: {
+                url: '/user/create',
+                method: 'post',
+                data: {
                     username: userInfo.value.username,
                     password: userInfo.value.password,
-                    code: userInfo.value.code
-                }
-            })
+                    code: userInfo.value.code,
+                    ignore: true
+                },
+            });
+
             if (info.code === 200) {
-                ElMessage({ message: 'Successfully!', type: 'success', duration: 1200 })
-                router.push('/login')
+                ElMessage({ message: 'Successfully!', duration: 1200 });
+                router.push('/login');
             } else {
-                ElMessage({ message: info.msg, duration: 1200, type: 'error' })
+                ElMessage({ message: info.msg, duration: 1200, type: 'error' });
             }
         } else {
-            ElMessage({ message: 'Info not correct', type: 'error', duration: 1200 })
+            ElMessage({ message: 'Info not correct', type: 'error', duration: 1200 });
         }
-    })
-
-}
+    });
+};
 const goBack = () => {
-    router.go(-1)
-}
+    router.go(-1);
+};
 
 // #endregion
 
 // #region variable
-let sendInterval = ref(null)
-let intervalCount = ref(30)
-let showSendText = ref(true)
-const formRef = ref()
-const sendCodeBtnDisable = ref(false)
+let sendInterval = ref(null);
+let intervalCount = ref(30);
+let showSendText = ref(true);
+consgitt formRef = ref();
+const sendCodeBtnDisable = ref(false);
 const rules = ref({
     username: [{ validator: validateUserName, trigger: 'blur' }],
     password: [{ validator: validatePassword, trigger: 'blur' }],
-    code: [{ validator: validateCode, trigger: 'blur' }]
-})
+    code: [{ validator: validateCode, trigger: 'blur' }],
+});
 let userInfo = ref({
     username: '',
     password: '',
     code: '',
-})
-const router = useRouter()
+});
+const router = useRouter();
 // #endregion
-
 </script>
 <style lang="less" scoped>
 .login-container {

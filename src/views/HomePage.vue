@@ -36,27 +36,27 @@
             <div class="bottom-banner"><span>Stay Hungry, Stay Foolish！</span></div>
             <el-row justify="space-around">
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('group-manage')">Manage Group</el-card>
+                    <el-card shadow="always" @click="redirect('group-manage')">词组管理</el-card>
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('record')">Record Word</el-card>
-                </el-col>
-            </el-row>
-            <el-row justify="space-around" style="margin-top: 15px;">
-                <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('recite')"> Flash Card </el-card>
-                </el-col>
-                <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('square')">Words
-                        Square</el-card>
+                    <el-card shadow="always" @click="redirect('record')">单词查询</el-card>
                 </el-col>
             </el-row>
             <el-row justify="space-around" style="margin-top: 15px;">
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('feedback')">Feedback & Help</el-card>
+                    <el-card shadow="always" @click="redirect('recite')"> 单词背诵 </el-card>
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('settings')">Settings</el-card>
+                    <el-card shadow="always" @click="redirect('square')">词组广场
+                        </el-card>
+                </el-col>
+            </el-row>
+            <el-row justify="space-around" style="margin-top: 15px;">
+                <el-col :span="11">
+                    <el-card shadow="always" @click="redirect('feedback')">反馈建议</el-card>
+                </el-col>
+                <el-col :span="11">
+                    <el-card shadow="always" @click="redirect('settings')">用户设置</el-card>
                 </el-col>
             </el-row>
         </div>
