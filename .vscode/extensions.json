@@ -1,3 +1,20 @@
 {
-  "recommendations": ["Vue.volar", "Vue.vscode-typescript-vue-plugin"]
+    "recommendations": [
+        "vue.volar",
+        "vue.vscode-typescript-vue-plugin",
+        "dbaeumer.vscode-eslint",
+        "ms-azuretools.vscode-docker",
+        "editorconfig.editorconfig",
+        "codezombiech.gitignore",
+        "yzhang.markdown-all-in-one",
+        "mongodb.mongodb-vscode",
+        "wiensss.region-highlighter",
+        "christian-kohler.npm-intellisense",
+        "donjayamanne.githistory",
+        "mhutchie.git-graph",
+        "donjayamanne.git-extension-pack",
+        "waderyan.gitblame",
+        "huizhou.githd",
+        "eamodio.gitlens"
+    ]
 }
