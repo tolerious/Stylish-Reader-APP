@@ -1,12 +1,12 @@
 <template>
   <Header title="good" @go-back="handleGoBack"></Header>
-  <div class="review-word-container">
+  <div class="review-word-container" v-if="realWordList.length > 0">
     <div class="review-word-container-inner">
       <div class="review-word-container-inner-title">
-        <span>{{ realWordList[0].enName }}</span> 的含义是？
+        <span>{{ currentWord.enName }}</span> 的含义是？
       </div>
       <div class="review-word-container-inner-body">
-        <div class="review-word-container-inner-body-item" v-for="word in realWordList">
+        <div class="review-word-container-inner-body-item" v-for="word in realWordList" :key="word.cnName">
           <el-radio :label="word.cnName" v-model="answer" class="radio-class">
             {{ word.cnName }}
           </el-radio>
@@ -34,6 +34,7 @@ const choiceList = ref([1, 2, 3, 4])
 const groupID = ref('')
 let wordList = ref([])
 let realWordList = ref([])
+let currentWord = ref('')
 let currentPos = ref(0)
 
 // #endregion
@@ -71,9 +72,9 @@ function generateArray(count) {
   return a
 }
 
-function generateArrayNumber(pos) {
-  let a = generateArray(wordList.value.length)
-  let ge = getRandomArrayElements(a, 3)
+function generateArrayNumber(pos, length, arrayLength) {
+  let a = generateArray(length)
+  let ge = getRandomArrayElements(a, arrayLength)
   // console.log(`First generate: ${ge}`);
   while (ge.indexOf(pos) > -1) {
     ge = getRandomArrayElements(a, 3)
@@ -86,15 +87,19 @@ function generateArrayNumber(pos) {
 function generateWordList(pos) {
   let wl = []
   let wlv = wordList.value
-  console.log(wlv);
   wl.push({ enName: wlv[pos].wordDetail[0].name, cnName: wlv[pos].wordDetail[0].dsenseObjList[0].defBlockObjList[0].zh, isCorrect: true })
-  let a = generateArrayNumber(pos)
+  let a = generateArrayNumber(pos, wordList.value.length, 3)
   a.forEach(item => {
     wl.push({ enName: wlv[item].wordDetail[0].name, cnName: wlv[item].wordDetail[0].dsenseObjList[0].defBlockObjList[0].zh, isCorrect: false })
   })
-  console.log(a)
-  console.log(wl)
-  return wl
+  currentWord.value = wl[0]
+  console.log(currentWord.value)
+  // 需要随机排列下，不然正确答案永远在第一个
+  let n = generateArrayNumber(9, 4, 4)
+  return n.map(item => {
+    return wl[item]
+  })
+
 }
 
 async function getWordList(groupID: string) {
@@ -110,7 +115,6 @@ async function getWordList(groupID: string) {
   // 生成可以供测试的单词列表
   wordList.value = info.data
   realWordList.value = generateWordList(0)
-  // console.log(info.data);
 }
 // #endregion
 </script>
