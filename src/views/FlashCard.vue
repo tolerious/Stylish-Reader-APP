@@ -71,7 +71,6 @@ import { onMounted, ref } from 'vue';
 import Header from '@/components/Header.vue'
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
 import { request } from '@/utils/service'
-import { ElMessage } from 'element-plus';
 let showWord = ref(true)
 // #region lifecycle
 onMounted(async () => {
