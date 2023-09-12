@@ -3,7 +3,7 @@
   <div class="review-word-container" v-if="realWordList.length > 0">
     <div class="review-word-container-inner">
       <div class="review-word-container-inner-title">
-        <span>{{ currentWord.enName }}</span> 的含义是？
+        <span>Current Pos: {{ currentPos }}</span> <span>{{ currentWord.enName }}</span> 的含义是？
       </div>
       <div class="review-word-container-inner-body">
         <div class="review-word-container-inner-body-item" v-for="word in realWordList" :key="word.cnName">
@@ -12,8 +12,8 @@
           </el-radio>
         </div>
         <div class="btn-group">
-          <el-button type="warning">Prev</el-button>
-          <el-button type="primary">Next</el-button>
+          <el-button type="warning" @click="handleClick('prev')">Prev</el-button>
+          <el-button type="primary" @click="handleClick('next')">Next</el-button>
         </div>
       </div>
     </div>
@@ -47,6 +47,25 @@ onMounted(() => {
 // #endregion
 
 // #region function
+const handleClick = (params: string) => {
+  switch (params) {
+    case 'prev':
+      if (currentPos.value > 0) {
+        currentPos.value--
+        realWordList.value = generateWordList(currentPos.value)
+      }
+      break;
+    case 'next':
+      if (currentPos.value < wordList.value.length - 1) {
+        currentPos.value++
+        realWordList.value = generateWordList(currentPos.value)
+      }
+      break;
+    default:
+      break;
+  }
+
+}
 const handleGoBack = () => {
   router.go(-1)
 }
@@ -114,6 +133,8 @@ async function getWordList(groupID: string) {
   }
   // 生成可以供测试的单词列表
   wordList.value = info.data
+  console.log(wordList.value);
+
   realWordList.value = generateWordList(0)
 }
 // #endregion
