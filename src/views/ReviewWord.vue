@@ -1,8 +1,10 @@
 <template>
     <Header title="good" @go-back="handleGoBack"></Header>
     <div class="relearn-container" v-if="relearnVisible">
-        <el-card shadow="always"> Always </el-card>
-        <el-card shadow="always"> Always </el-card>
+        <el-card v-for="word in incorrectWordList" :key="word.wordDetail" shadow="always">
+            <span class="color-orange">{{ word.wordDetail[0].name }}</span> &nbsp;&nbsp;
+            {{ word.wordDetail[0].dsenseObjList[0].defBlockObjList[0].zh }}
+        </el-card>
     </div>
     <div class="review-word-container" v-if="realWordList.length > 0 && !relearnVisible">
         <div class="review-word-container-inner">
@@ -57,8 +59,11 @@ let currentWord = ref('');
 let currentPos = ref(0);
 let customerChoiceObj = ref({});
 let resultVisible = ref(false);
-let relearnVisible = ref(true);
+let relearnVisible = ref(false);
+// 存放错误单词的uuid
 let incorrectAnswerList = ref([]);
+// 存放错误单词列表
+let incorrectWordList = ref([]);
 // #endregion
 
 // #region lifecycle
@@ -94,6 +99,7 @@ const correctAnswer = () => {
             allExamList.value[index].isCorrect = true;
             correct++;
         } else {
+            incorrectAnswerList.value.push(item[index]);
             wrong++;
         }
     });
@@ -137,7 +143,12 @@ const handleClick = (params: string) => {
             renderResultData();
             break;
         case 'relearn':
-            relearnVisible = true;
+            relearnVisible.value = true;
+            wordList.value.forEach(item => {
+                if (incorrectAnswerList.value.indexOf(item.uuid) > -1) {
+                    incorrectWordList.value.push(item);
+                }
+            });
             break;
         default:
             break;
@@ -251,6 +262,10 @@ async function getWordList(groupID: string) {
     display: grid;
     grid-template-columns: 1fr;
     grid-row-gap: 15px;
+    .color-orange {
+        color: var(--vt-c-primary);
+        font-weight: bold;
+    }
 }
 .review-word-container {
     .error {
