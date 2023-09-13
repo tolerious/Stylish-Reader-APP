@@ -9,7 +9,7 @@
     <div class="review-word-container" v-if="realWordList.length > 0 && !relearnVisible">
         <div class="review-word-container-inner">
             <div class="review-word-container-inner-title">
-                {{ currentPos }} <span>{{ currentWord.enName }}</span>
+                <span>{{ currentWord.enName }}</span>
             </div>
             <div class="review-word-container-inner-body">
                 <div class="review-word-container-inner-body-item" v-for="word in realWordList" :key="word.cnName">

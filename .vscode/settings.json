@@ -1,0 +1,9 @@
+{
+    "cSpell.words": ["endregion"],
+    "files.autoSave": "afterDelay",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#ff7c0a",
+        "titleBar.inactiveBackground": "#ff7c0a"
+    }
+}
