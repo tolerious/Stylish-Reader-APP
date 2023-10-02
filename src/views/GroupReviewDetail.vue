@@ -6,20 +6,22 @@
         <div class="title-container">
           <h3>Video</h3>
         </div>
-        <div class="content-container" v-for="video in videoList">
-          <video controls>
+        <div class="content-container" v-for="video in videoList" :key="video">
+          <!-- <video controls>
             <source :src="video" type="video/webm" />
-          </video>
+          </video> -->
+          <a :href="video">{{ video }}</a>
         </div>
       </div>
       <div class="group-review-detail-inner-block">
         <div class="title-container">
           <h3>Audio</h3>
         </div>
-        <div class="content-container" v-for="audio in audioList">
-          <audio controls :src="audio">
+        <div class="content-container" v-for="audio in audioList" :key="audio">
+          <!-- <audio controls :src="audio">
             <a href="/media/cc0-audio/t-rex-roar.mp3"> Download audio </a>
-          </audio>
+          </audio> -->
+          <a :href="audio">{{ audio }}</a>
         </div>
       </div>
       <div class="group-review-detail-inner-block">
