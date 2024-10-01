@@ -2,7 +2,6 @@
   "name": "english-burning",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm",
   "type": "module",
   "scripts": {
     "dev": "vite",
