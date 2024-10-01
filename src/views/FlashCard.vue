@@ -9,11 +9,14 @@
                 </div>
                 <div class="meaning-collapse-container" v-else>
                     <el-collapse v-if="currentWordObj.wordDetail.length > 0" v-model="activeNames">
-                        <el-collapse-item :title="`${card.name}`" :name="index"
-                            v-for="card, index in currentWordObj.wordDetail">
+                        <el-collapse-item
+                            :title="`${card.name}`"
+                            :name="index"
+                            v-for="(card, index) in currentWordObj.wordDetail"
+                        >
                             <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
                             <template v-for="dsenseObj in card.dsenseObjList">
-                                <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.defBlockObjList">
+                                <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.defBlockObjList">
                                     <template #header>
                                         <div class="dsense-title-container">{{ dsense.en }}</div>
                                         <div class="dsense-title-container">{{ dsense.zh }}</div>
@@ -24,7 +27,7 @@
                                         </div>
                                     </div>
                                 </el-card>
-                                <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.phraseBlockObjList">
+                                <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.phraseBlockObjList">
                                     <template #header>
                                         <div class="dsense-title-container">{{ dsense.en }}</div>
                                         <div class="dsense-title-container">{{ dsense.zh }}</div>
@@ -45,7 +48,9 @@
                         <el-button type="success" @click="pronounce">Audio</el-button>
                         <el-button type="danger" @click="goWordList">Word List</el-button>
                         <el-button v-if="source === 'normal'" type="info" @click="wordMotion('prev')">Prev</el-button>
-                        <el-button v-if="source === 'normal'" type="primary" @click="wordMotion('next')">Next</el-button>
+                        <el-button v-if="source === 'normal'" type="primary" @click="wordMotion('next')"
+                            >Next</el-button
+                        >
                     </div>
                     <el-row justify="space-around">
                         <el-col :span="6"> </el-col>
@@ -66,46 +71,46 @@
 </template>
 
 <script setup lang="ts">
-import { Refresh } from "@element-plus/icons-vue";
+import { Refresh } from '@element-plus/icons-vue';
 import { onMounted, ref } from 'vue';
-import Header from '@/components/Header.vue'
+import Header from '@/components/Header.vue';
 import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
-import { request } from '@/utils/service'
-let showWord = ref(true)
+import { request } from '@/utils/service';
+let showWord = ref(true);
 // #region lifecycle
 onMounted(async () => {
-    source.value = route.params.source
-    queryString.value = route.query
-    cycleWord()
-})
+    source.value = route.params.source;
+    queryString.value = route.query;
+    cycleWord();
+    const groupId = route.params.groupId;
+    console.log(groupId);
+});
 // #endregion
 
 // #region variable
-onBeforeRouteLeave((from, to) => {
-
-})
-let defaultGroup = ref('')
-let currentIndex = 0
-let activeNames = ref([0])
-let audioUrl = ref('')
-let source = ref('')
-let queryString = ref('')
-let currentWordName = ref('')
-let currentWordObj = ref(null)
-let wordList = ref([])
-let shouldShowCard = ref(true)
-const router = useRouter()
-const route = useRoute()
+onBeforeRouteLeave((from, to) => {});
+let defaultGroup = ref('');
+let currentIndex = 0;
+let activeNames = ref([0]);
+let audioUrl = ref('');
+let source = ref('');
+let queryString = ref('');
+let currentWordName = ref('');
+let currentWordObj = ref(null);
+let wordList = ref([]);
+let shouldShowCard = ref(true);
+const router = useRouter();
+const route = useRoute();
 // #endregion
 
 // #region function
 
 function goWordList() {
-    router.push('/wordlist/' + defaultGroup.value)
+    router.push('/wordlist/' + defaultGroup.value);
 }
 
 async function pronounce() {
-    let b = await audioSourceReady(currentWordName.value)
+    let b = await audioSourceReady(currentWordName.value);
 }
 
 async function cycleWord() {
@@ -113,96 +118,90 @@ async function cycleWord() {
         case 'normal':
             // 普通模式，每次只获取一个单词
             if (queryString.value.sharedGroupID) {
-                defaultGroup.value = queryString.value.sharedGroupID
+                defaultGroup.value = queryString.value.sharedGroupID;
             } else {
-                await getDefaultGroup()
+                await getDefaultGroup();
             }
-            await getWordsByGroupID(defaultGroup.value)
-            await audioSourceReady(currentWordObj?.value.wordDetail[0].name)
+            await getWordsByGroupID(defaultGroup.value);
+            await audioSourceReady(currentWordObj?.value.wordDetail[0].name);
             break;
         case 'group':
-            defaultGroup.value = route.query.groupID
-            await getWordsByGroupID(defaultGroup.value)
+            defaultGroup.value = route.query.groupID;
+            await getWordsByGroupID(defaultGroup.value);
             for (let f of generateItem()) {
-                currentWordName.value = f.wordDetail[0].name
-                currentWordObj.value = f
-                let r = await audioSourceReady(f.wordDetail[0].name)
-                let rs = await audioSourceReady(f.wordDetail[0].name)
-                await sleep(5000)
-
+                currentWordName.value = f.wordDetail[0].name;
+                currentWordObj.value = f;
+                let r = await audioSourceReady(f.wordDetail[0].name);
+                let rs = await audioSourceReady(f.wordDetail[0].name);
+                await sleep(5000);
             }
     }
-
 }
 async function getDefaultGroup() {
     const info = await request({
-        url: '/usersetting', method: 'post'
-    })
-    defaultGroup.value = info.data.defaultGroupID
+        url: '/usersetting',
+        method: 'post',
+    });
+    defaultGroup.value = info.data.defaultGroupID;
 }
 function* generateItem() {
     for (let i = 0; i < wordList.value.length; i++) {
-        yield wordList.value[i]
+        yield wordList.value[i];
     }
 }
 function audioSourceReady(name) {
     return new Promise(resolve => {
-        let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
-        let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
+        let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement;
+        let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`;
         if (audio && url === audio.src) {
-            audio.pause()
-            audio.currentTime = 0
-            audio.play()
-            resolve(true)
-
+            audio.pause();
+            audio.currentTime = 0;
+            audio.play();
+            resolve(true);
         } else {
-            audioUrl.value = url
+            audioUrl.value = url;
             audio?.addEventListener('loadeddata', async () => {
                 audio.play();
-                await sleep(3000)
-                resolve(true)
-            })
+                await sleep(3000);
+                resolve(true);
+            });
         }
-
-    })
-
+    });
 }
 function sleep(ms) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
         setTimeout(resolve, ms);
-    })
+    });
 }
 async function getWordsByGroupID(id) {
-
-    let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
-    wordList.value = info.data
+    let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } });
+    wordList.value = info.data;
     if (wordList.value.length > 0) {
-        currentWordName.value = wordList.value[0].wordDetail[0].name
-        currentWordObj.value = wordList.value[0]
-
+        currentWordName.value = wordList.value[0].wordDetail[0].name;
+        currentWordObj.value = wordList.value[0];
     }
 }
 function handleGoBack() {
-    router.go(-1)
+    router.go(-1);
 }
 function showMeanings() {
-    showWord.value = !showWord.value
+    showWord.value = !showWord.value;
 }
 async function wordMotion(motion: string) {
-    showWord.value = true
+    showWord.value = true;
     if (motion === 'prev') {
         currentIndex--;
-        if (currentIndex < 0) currentIndex = wordList.value.length - 1
-        currentWordObj.value = wordList.value[currentIndex]
-        currentWordName.value = currentWordObj.value.wordDetail[0].name
-        await audioSourceReady(currentWordName.value)
+        if (currentIndex < 0) currentIndex = wordList.value.length - 1;
+        currentWordObj.value = wordList.value[currentIndex];
+        currentWordName.value = currentWordObj.value.wordDetail[0].name;
+        await audioSourceReady(currentWordName.value);
     }
     if (motion === 'next') {
         currentIndex++;
-        if (currentIndex > wordList.value.length - 1) currentIndex = 0
-        currentWordObj.value = wordList.value[currentIndex]
-        currentWordName.value = currentWordObj.value.wordDetail[0].name
-        await audioSourceReady(currentWordName.value)
+        if (currentIndex > wordList.value.length - 1) currentIndex = 0;
+        currentWordObj.value = wordList.value[currentIndex];
+        currentWordName.value = currentWordObj.value.wordDetail[0].name;
+        await audioSourceReady(currentWordName.value);
     }
 }
 
@@ -261,9 +260,7 @@ async function wordMotion(motion: string) {
                 height: 20px;
                 color: black;
                 font-weight: normal;
-
             }
-
         }
 
         .meaning-collapse-container {
@@ -313,7 +310,6 @@ async function wordMotion(motion: string) {
         flex-direction: row;
         justify-content: space-around;
         align-items: center;
-
     }
 }
 </style>

@@ -33,7 +33,7 @@
         </div>
         <div class="body-container">
             <div class="bottom-banner"><span>Stay Hungry, Stay Foolish！</span></div>
-            
+
             <el-row justify="space-around">
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('group-manage')">我的词组</el-card>
@@ -62,10 +62,13 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { request } from '@/utils/service';
 
 const router = useRouter();
+const defaultGroupID = ref('');
 function redirect(condition: string) {
-    if (condition === 'recite') router.push('/recite/normal');
+    if (condition === 'recite') router.push('/recite/' + defaultGroupID.value);
     if (condition === 'group-recite') router.push('/group-recite');
     if (condition === 'cycling') router.push('/cycling');
     if (condition === 'feedback') router.push('/feedback');
@@ -74,6 +77,19 @@ function redirect(condition: string) {
     if (condition === 'settings') router.push('/settings');
     if (condition === 'help') router.push('/help');
     if (condition === 'square') router.push('/square');
+}
+
+onMounted(async () => {
+    await getUserSettings();
+});
+
+async function getUserSettings() {
+    const setting = await request({
+        url: '/usersetting',
+        method: 'post',
+    });
+    defaultGroupID.value = setting.data.defaultGroupID;
+    console.log(defaultGroupID.value);
 }
 </script>
 

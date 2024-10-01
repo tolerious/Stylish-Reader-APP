@@ -30,7 +30,7 @@ const router = createRouter({
       component: () => import('@/views/HomePage.vue')
     },
     {
-      path: '/recite/:source',
+      path: '/recite/:groupId',
       name: 'recite',
       component: () => import('@/views/FlashCard.vue')
     },
