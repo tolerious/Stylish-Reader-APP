@@ -1,4 +1,4 @@
-# English Burning 英语学习软件
+# Stylish Reader 英语学习软件
 [![Burning English Frontend CI](https://github.com/tolerious/English-Burning-Frontend/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/tolerious/English-Burning-Frontend/actions/workflows/node.js.yml)
 
 作为一个英语学习的爱好者，我深知单词对于英语学习的重要性。这也是这款软件创建的初衷，希望它能够成为英语爱好者们的好帮手。
