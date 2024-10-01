@@ -32,6 +32,7 @@ jobs:
     - run: pnpm install
     - run: pnpm run build
     - name: Deploy
+      if: github.ref == 'refs/heads/master'
       uses: easingthemes/ssh-deploy@v2.1.5
       env: 
         #私钥
