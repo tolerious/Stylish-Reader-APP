@@ -2,6 +2,7 @@
     <Header title="我的词组" @go-back="handleGoBack" />
     <div class="px-4 mt-4" v-if="groupList.length > 0">
         <div
+            @click="redirectReciteWord(group._id)"
             v-for="group in groupList"
             :key="group._id"
             word-group
@@ -39,6 +40,10 @@ async function getGroupList() {
 
 function handleGoBack() {
     router.push('/home');
+}
+
+function redirectReciteWord(groupId: string) {
+    router.push(`/recite/${groupId}`);
 }
 </script>
 

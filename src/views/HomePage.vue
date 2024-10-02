@@ -32,7 +32,9 @@
             </el-carousel>
         </div>
         <div class="body-container">
-            <div class="bottom-banner"><span>Stay Hungry, Stay Foolish！</span></div>
+            <div class="text-sm my-4 cursor-pointer text-center text-pink-500">
+                <span>Stay Hungry, Stay Foolish！</span>
+            </div>
 
             <el-row justify="space-around">
                 <el-col :span="11">
@@ -105,7 +107,6 @@ async function getUserSettings() {
 
         .daily-word-container {
             padding: 3px 5px;
-            // background-color: rgba(0, 255, 255, 0.6);
             background-color: rgb(255, 124, 10);
 
             height: 100%;
@@ -133,14 +134,6 @@ async function getUserSettings() {
 
     .body-container {
         margin-top: 15px;
-    }
-
-    .bottom-banner {
-        margin: 10px auto;
-        font-size: 12px;
-        text-align: center;
-        color: #ff7c0a;
-        cursor: pointer;
     }
 }
 </style>
