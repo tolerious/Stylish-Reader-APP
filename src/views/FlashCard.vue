@@ -13,7 +13,7 @@
             card-container
             class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-sm mt-9 h-3/5 overflow-y-scroll"
         >
-            <div class="text-3xl text-center">{{ currentWord.en }}</div>
+            <div class="text-3xl text-center text-pink-600">{{ currentWord.en }}</div>
             <div class="text-center text-normal">{{ currentTranslation.phonetic }}</div>
             <div translation-container class="px-2">
                 <div
