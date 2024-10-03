@@ -91,7 +91,6 @@ async function getUserSettings() {
         method: 'post',
     });
     defaultGroupID.value = setting.data.defaultGroupID;
-    console.log(defaultGroupID.value);
 }
 </script>
 

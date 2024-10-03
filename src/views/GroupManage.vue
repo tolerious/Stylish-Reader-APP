@@ -34,7 +34,6 @@ async function getGroupList() {
         url: '/wordgroup',
     });
     const list = info.data.list.filter(group => group.wordCount > 0);
-    console.log(list);
     groupList.value = list;
 }
 
