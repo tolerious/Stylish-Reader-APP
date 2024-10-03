@@ -7,7 +7,7 @@
             name=""
             rows="10"
             class="w-full mt-3 border-[1px] border-gray-300 px-2"
-            id=""
+            placeholder="请输入您宝贵的建议"
         ></textarea>
         <button
             @click="submitFeedback"

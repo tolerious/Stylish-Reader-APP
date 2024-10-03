@@ -77,6 +77,11 @@ import { request } from '@/utils/service';
 
 const router = useRouter();
 const defaultGroupID = ref('');
+
+onMounted(async () => {
+    await getGroupList();
+});
+
 function redirect(condition: string) {
     if (condition === 'recite') router.push('/recite/' + defaultGroupID.value);
     if (condition === 'group-recite') router.push('/group-recite');
@@ -89,9 +94,13 @@ function redirect(condition: string) {
     if (condition === 'square') router.push('/square');
 }
 
-onMounted(async () => {
-    await getUserSettings();
-});
+async function getGroupList() {
+    const info = await request({
+        url: '/wordgroup',
+    });
+    const g = info.data.list.find(group => group.wordCount > 0);
+    defaultGroupID.value = g._id;
+}
 
 async function getUserSettings() {
     const setting = await request({

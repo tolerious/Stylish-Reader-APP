@@ -108,6 +108,7 @@ function navigateWord(text: string) {
             ElNotification({ type: 'info', title: '单词已学完', message: '选择其他词组继续学习吧' });
         }
     }
+    isTranslationVisible.value = false;
 }
 </script>
 1
