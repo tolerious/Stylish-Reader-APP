@@ -123,7 +123,7 @@ async function getUserSettings() {
 
         .daily-word-container {
             padding: 3px 5px;
-            background-color: rgb(255, 124, 10);
+            background-color: #ec4899;
 
             height: 100%;
             display: flex;
