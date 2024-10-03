@@ -38,10 +38,14 @@
 
             <el-row justify="space-around">
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('group-manage')">我的词组</el-card>
+                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('group-manage')"
+                        >我的词组</el-card
+                    >
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('recite')"> 单词背诵 </el-card>
+                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('recite')">
+                        单词背诵
+                    </el-card>
                 </el-col>
             </el-row>
             <!-- <el-row justify="space-around" style="margin-top: 15px">
@@ -52,10 +56,14 @@
             </el-row> -->
             <el-row justify="space-around" style="margin-top: 15px">
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('feedback')">反馈建议</el-card>
+                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('feedback')"
+                        >反馈建议</el-card
+                    >
                 </el-col>
                 <el-col :span="11">
-                    <el-card shadow="always" @click="redirect('settings')">用户设置</el-card>
+                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('settings')"
+                        >用户设置</el-card
+                    >
                 </el-col>
             </el-row>
         </div>
