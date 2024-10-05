@@ -34,6 +34,7 @@
         <div class="body-container">
             <div class="text-sm my-4 cursor-pointer text-center text-pink-500">
                 <span>Stay Hungry, Stay Foolish！</span>
+                <!-- <span>加入VIP体验更多功能</span> -->
             </div>
 
             <el-row justify="space-around">
@@ -66,6 +67,9 @@
                     >
                 </el-col>
             </el-row>
+            <div class="px-1">
+                <canvas id="collection"></canvas>
+            </div>
         </div>
     </div>
 </template>
@@ -74,13 +78,59 @@
 import { useRouter } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { request } from '@/utils/service';
+import Chart from 'chart.js/auto';
 
+const data = [
+    { year: '周一', count: 10 },
+    { year: '周二', count: 20 },
+    { year: '周三', count: 15 },
+    { year: '周四', count: 25 },
+    { year: '周五', count: 22 },
+    { year: '周六', count: 30 },
+    { year: '周日', count: 28 },
+];
 const router = useRouter();
 const defaultGroupID = ref('');
 
 onMounted(async () => {
     await getGroupList();
+    createCollectionChart();
 });
+
+function createCollectionChart() {
+    const dom = document.getElementById('collection');
+
+    if (dom) {
+        const chart = new Chart('collection', {
+            type: 'bar',
+            data: {
+                labels: data.map(row => row.year),
+                datasets: [
+                    {
+                        label: '本周收藏单词统计',
+                        data: data.map(row => row.count),
+                    },
+                ],
+            },
+            options: {
+                backgroundColor: '#fb7185',
+                // layout: { padding: 3 },
+                font: {
+                    weight: 'bold',
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                weight: 'bold',
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+}
 
 function redirect(condition: string) {
     if (condition === 'recite') router.push('/recite/' + defaultGroupID.value);
