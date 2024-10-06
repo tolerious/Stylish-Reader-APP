@@ -79,7 +79,7 @@
 </template>
 <script setup lang="ts">
 import { request } from '@/utils/service';
-import { ElNotification } from 'element-plus';
+import { ElMessage, ElNotification } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -96,8 +96,28 @@ onMounted(() => {
     localStorage.setItem('token', '');
 });
 
-function register() {
-    router.push('/register');
+async function register() {
+    const r = await request({
+        url: '/user/create',
+        method: 'post',
+        data: {
+            username: userInfo.value.username,
+            password: userInfo.value.password,
+            ignore: true,
+            source: 'app',
+        },
+    });
+    console.log(r);
+    if (r.code === 200) {
+        ElNotification({
+            message: '注册成功，请登录',
+            type: 'success',
+            duration: 1200,
+        });
+        isLogin.value = true;
+    } else {
+        ElMessage({ message: r.msg, duration: 1200, type: 'error' });
+    }
 }
 
 async function login() {

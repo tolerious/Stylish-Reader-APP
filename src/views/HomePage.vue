@@ -149,7 +149,11 @@ async function getGroupList() {
         url: '/wordgroup',
     });
     const g = info.data.list.find(group => group.wordCount > 0);
-    defaultGroupID.value = g._id;
+    if (g) {
+        defaultGroupID.value = g._id;
+    } else {
+        defaultGroupID.value = '';
+    }
 }
 
 async function getUserSettings() {
