@@ -67,7 +67,7 @@
                     >
                 </el-col>
             </el-row>
-            <div class="px-1">
+            <div class="px-1 lg:w-1/2 mx-auto">
                 <canvas id="collection"></canvas>
             </div>
         </div>
@@ -107,7 +107,7 @@ function createCollectionChart() {
                 labels: data.map(row => row.year),
                 datasets: [
                     {
-                        label: '本周收藏单词统计',
+                        label: '本周收藏单词统计(开发中)',
                         data: data.map(row => row.count),
                     },
                 ],
