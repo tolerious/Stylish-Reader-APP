@@ -9,6 +9,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 import vueDevTools from 'vite-plugin-vue-devtools';
 // https://vitejs.dev/config/
 export default defineConfig({
+    build: { outDir: 'stylish-reader-app' },
     plugins: [
         vue(),
         vueJsx(),
