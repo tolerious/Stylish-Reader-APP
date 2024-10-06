@@ -12,6 +12,7 @@ dist.tar.gz
 node_modules
 .DS_Store
 dist
+stylish-reader-app
 dist-ssr
 coverage
 *.local
