@@ -1,319 +1,114 @@
 <template>
     <Header title="Flash Card" @goBack="handleGoBack"></Header>
-    <div class="recite-word-container">
-        <div class="recite-word-inner-container">
-            <template v-if="wordList.length > 0 || shouldShowCard">
-                <div class="title-word-container" @click="showMeanings" v-if="showWord">
-                    <div class="word">{{ currentWordObj?.wordDetail[0].name }}</div>
-                    <span class="phonetic">{{ currentWordObj?.wordDetail[0].phonetic }}</span>
+    <template v-if="wordList.length > 0">
+        <div
+            v-if="!isTranslationVisible"
+            card-container
+            class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-sm mt-9 h-3/5 flex items-center justify-center overflow-y-scroll"
+        >
+            <div word class="text-6xl text-pink-600 text-wrap break-all">{{ currentWord.en }}</div>
+        </div>
+        <div
+            v-else
+            card-container
+            class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-sm mt-9 h-3/5 overflow-y-scroll"
+        >
+            <div class="text-3xl text-center text-pink-600">{{ currentWord.en }}</div>
+            <div class="text-center text-normal">{{ currentTranslation.phonetic }}</div>
+            <div translation-container class="px-2">
+                <div
+                    item
+                    class="shadow shadow-gray-300 my-3 px-2"
+                    v-for="translation in currentTranslation.dicList"
+                    :key="translation"
+                >
+                    {{ translation.pos }}
+                    {{ translation.zh }}
                 </div>
-                <div class="meaning-collapse-container" v-else>
-                    <el-collapse v-if="currentWordObj.wordDetail.length > 0" v-model="activeNames">
-                        <el-collapse-item :title="`${card.name}`" :name="index"
-                            v-for="card, index in currentWordObj.wordDetail">
-                            <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
-                            <template v-for="dsenseObj in card.dsenseObjList">
-                                <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.defBlockObjList">
-                                    <template #header>
-                                        <div class="dsense-title-container">{{ dsense.en }}</div>
-                                        <div class="dsense-title-container">{{ dsense.zh }}</div>
-                                    </template>
-                                    <div>
-                                        <div v-for="sentence in dsense.sentence">
-                                            {{ sentence }}
-                                        </div>
-                                    </div>
-                                </el-card>
-                                <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.phraseBlockObjList">
-                                    <template #header>
-                                        <div class="dsense-title-container">{{ dsense.en }}</div>
-                                        <div class="dsense-title-container">{{ dsense.zh }}</div>
-                                    </template>
-                                    <div>
-                                        <div v-for="sentence in dsense.sentence">
-                                            {{ sentence }}
-                                        </div>
-                                    </div>
-                                </el-card>
-                            </template>
-                        </el-collapse-item>
-                    </el-collapse>
-                </div>
-                <div class="bottom-btn-group">
-                    <audio id="reciteWordAudio" autoplay type="audio/mpeg" :src="audioUrl"></audio>
-                    <div class="bottom-btn-group-inner">
-                        <el-button type="success" @click="pronounce">Audio</el-button>
-                        <el-button type="danger" @click="goWordList">Word List</el-button>
-                        <el-button v-if="source === 'normal'" type="info" @click="wordMotion('prev')">Prev</el-button>
-                        <el-button v-if="source === 'normal'" type="primary" @click="wordMotion('next')">Next</el-button>
-                    </div>
-                    <el-row justify="space-around">
-                        <el-col :span="6"> </el-col>
-                        <el-col :span="6"> </el-col>
-                        <el-col :span="6" v-if="source === 'normal'"> </el-col>
-                        <el-col :span="6" v-if="source === 'normal'"> </el-col>
-                    </el-row>
-                </div>
-            </template>
-            <template v-else>
-                <el-empty description="No Data." />
-            </template>
-            <div class="roll-back">
-                <el-button @click="showMeanings" :icon="Refresh" size="large" circle />
             </div>
         </div>
-    </div>
+        <div button-group class="fixed w-full bottom-10 h-10 flex items-center px-2 justify-around">
+            <button
+                @click="navigateWord(text)"
+                v-for="text in buttonTexts"
+                :key="text"
+                class="text-white border-[1px] border-pink-600 px-4 py-1 bg-pink-500 active:shadow-sm active:shadow-gray-500"
+                :class="[]"
+            >
+                {{ text }}
+            </button>
+        </div>
+        <div class="roll-back fixed right-3 bottom-28">
+            <el-button :icon="Refresh" size="large" circle @click="isTranslationVisible = !isTranslationVisible" />
+        </div>
+    </template>
+    <template v-else>
+        <el-empty description="默认词组中没有收藏单词" />
+    </template>
 </template>
 
 <script setup lang="ts">
-import { Refresh } from "@element-plus/icons-vue";
-import { onMounted, ref } from 'vue';
-import Header from '@/components/Header.vue'
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
-import { request } from '@/utils/service'
-let showWord = ref(true)
-// #region lifecycle
+import Header from '@/components/Header.vue';
+import type { ResponseData, Word } from '@/types';
+import { request } from '@/utils/service';
+import { Refresh } from '@element-plus/icons-vue';
+import { ElNotification } from 'element-plus';
+import { computed, onMounted, ref, type Ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const buttonTexts = ['上一个', '下一个'];
+
+const route = useRoute();
+const router = useRouter();
+const groupId = ref('');
+const isTranslationVisible = ref(false);
+const wordList: Ref<Word[]> = ref([]);
+const currentIndex = ref(0);
+const currentTranslation = ref();
+
+const currentWord = computed(() => wordList.value[currentIndex.value] ?? { en: '' });
+
 onMounted(async () => {
-    source.value = route.params.source
-    queryString.value = route.query
-    cycleWord()
-})
-// #endregion
-
-// #region variable
-onBeforeRouteLeave((from, to) => {
-
-})
-let defaultGroup = ref('')
-let currentIndex = 0
-let activeNames = ref([0])
-let audioUrl = ref('')
-let source = ref('')
-let queryString = ref('')
-let currentWordName = ref('')
-let currentWordObj = ref(null)
-let wordList = ref([])
-let shouldShowCard = ref(true)
-const router = useRouter()
-const route = useRoute()
-// #endregion
-
-// #region function
-
-function goWordList() {
-    router.push('/wordlist/' + defaultGroup.value)
-}
-
-async function pronounce() {
-    let b = await audioSourceReady(currentWordName.value)
-}
-
-async function cycleWord() {
-    switch (route.params.source) {
-        case 'normal':
-            // 普通模式，每次只获取一个单词
-            if (queryString.value.sharedGroupID) {
-                defaultGroup.value = queryString.value.sharedGroupID
-            } else {
-                await getDefaultGroup()
-            }
-            await getWordsByGroupID(defaultGroup.value)
-            await audioSourceReady(currentWordObj?.value.wordDetail[0].name)
-            break;
-        case 'group':
-            defaultGroup.value = route.query.groupID
-            await getWordsByGroupID(defaultGroup.value)
-            for (let f of generateItem()) {
-                currentWordName.value = f.wordDetail[0].name
-                currentWordObj.value = f
-                let r = await audioSourceReady(f.wordDetail[0].name)
-                let rs = await audioSourceReady(f.wordDetail[0].name)
-                await sleep(5000)
-
-            }
+    groupId.value = route.params.groupId as string;
+    await getWordList();
+    if (currentWord.value.en) {
+        await getTranslation(currentWord.value.en);
     }
+});
 
-}
-async function getDefaultGroup() {
-    const info = await request({
-        url: '/usersetting', method: 'post'
-    })
-    defaultGroup.value = info.data.defaultGroupID
-}
-function* generateItem() {
-    for (let i = 0; i < wordList.value.length; i++) {
-        yield wordList.value[i]
-    }
-}
-function audioSourceReady(name) {
-    return new Promise(resolve => {
-        let audio = document.getElementById('reciteWordAudio')! as HTMLMediaElement
-        let url = `https://dict.youdao.com/dictvoice?audio=${name}&type=1`
-        if (audio && url === audio.src) {
-            audio.pause()
-            audio.currentTime = 0
-            audio.play()
-            resolve(true)
+async function getWordList() {
+    const t: ResponseData = await request({ url: '/word/bygroup', method: 'post', data: { groupId: groupId.value } });
 
-        } else {
-            audioUrl.value = url
-            audio?.addEventListener('loadeddata', async () => {
-                audio.play();
-                await sleep(3000)
-                resolve(true)
-            })
-        }
-
-    })
-
+    wordList.value = t.data;
 }
-function sleep(ms) {
-    return new Promise((resolve) => {
-        setTimeout(resolve, ms);
-    })
-}
-async function getWordsByGroupID(id) {
 
-    let info = await request({ url: '/word/bygroup', method: 'post', data: { groupID: id } })
-    wordList.value = info.data
-    if (wordList.value.length > 0) {
-        currentWordName.value = wordList.value[0].wordDetail[0].name
-        currentWordObj.value = wordList.value[0]
-
-    }
+async function getTranslation(wordText: string) {
+    const t: ResponseData = await request({ url: '/translation/content/', method: 'post', data: { word: wordText } });
+    currentTranslation.value = t.data;
 }
+
 function handleGoBack() {
-    router.go(-1)
-}
-function showMeanings() {
-    showWord.value = !showWord.value
-}
-async function wordMotion(motion: string) {
-    showWord.value = true
-    if (motion === 'prev') {
-        currentIndex--;
-        if (currentIndex < 0) currentIndex = wordList.value.length - 1
-        currentWordObj.value = wordList.value[currentIndex]
-        currentWordName.value = currentWordObj.value.wordDetail[0].name
-        await audioSourceReady(currentWordName.value)
-    }
-    if (motion === 'next') {
-        currentIndex++;
-        if (currentIndex > wordList.value.length - 1) currentIndex = 0
-        currentWordObj.value = wordList.value[currentIndex]
-        currentWordName.value = currentWordObj.value.wordDetail[0].name
-        await audioSourceReady(currentWordName.value)
-    }
+    router.go(-1);
 }
 
-// #endregion
+function navigateWord(text: string) {
+    if (text === '上一个') {
+        if (currentIndex.value != 0) {
+            currentIndex.value -= 1;
+            getTranslation(currentWord.value.en);
+        } else {
+            ElNotification({ type: 'info', title: '前面没有单词喽', message: '继续下一个单词吧' });
+        }
+    }
+    if (text === '下一个') {
+        if (currentIndex.value < wordList.value.length - 1) {
+            currentIndex.value += 1;
+            getTranslation(currentWord.value.en);
+        } else {
+            ElNotification({ type: 'info', title: '单词已学完', message: '选择其他词组继续学习吧' });
+        }
+    }
+    isTranslationVisible.value = false;
+}
 </script>
-
-<style lang="less" scoped>
-.recite-word-container {
-    .recite-word-inner-container {
-        margin: 0 auto;
-        width: 80%;
-        height: 50%;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        margin-bottom: 40px;
-
-        .title-word-container {
-            text-align: center;
-            font-size: 29px;
-            width: 90%;
-            height: 50vh;
-            border: 1px solid #eeeeee;
-            border-radius: 5px;
-            box-shadow: 2px 2px 2p #eeeeee;
-            // display: flex;
-            // flex-direction: column;
-            // justify-content: space-around;
-            // align-items: center;
-            color: #ff7c0a;
-            font-weight: bold;
-            margin-top: 40px;
-            position: relative;
-
-            .word {
-                position: absolute;
-                left: 0;
-                right: 0;
-                top: 40%;
-                margin: auto;
-                display: block;
-                width: 90%;
-                height: 40px;
-                line-height: 40px;
-            }
-
-            .phonetic {
-                position: absolute;
-                top: calc(40% + 40px);
-                font-size: 13px;
-                left: 0;
-                right: 0;
-                margin: auto;
-                height: 20px;
-                color: black;
-                font-weight: normal;
-
-            }
-
-        }
-
-        .meaning-collapse-container {
-            width: 100%;
-
-            .english-meaning-content {
-                width: 90%;
-                font-weight: bold;
-            }
-
-            .chinese-meaning-content {
-                font-weight: bold;
-                text-align: left;
-                width: 90%;
-            }
-
-            .sentence-container {
-                font-size: 13px;
-            }
-        }
-
-        .bottom-btn-group {
-            position: fixed;
-            bottom: 30px;
-            width: 100%;
-            height: 40px;
-            border-bottom: 1px solid #eeeeee;
-            text-align: center;
-
-            &-inner {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                align-items: center;
-            }
-        }
-    }
-
-    .roll-back {
-        position: fixed;
-        // background-color: blue;
-        height: 40px;
-        width: 40px;
-        bottom: 120px;
-        right: 20px;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
-
-    }
-}
-</style>
+1

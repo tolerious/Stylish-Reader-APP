@@ -131,7 +131,7 @@ const register = (formEl: FormInstance | undefined) => {
 
             if (info.code === 200) {
                 ElMessage({ message: 'Successfully!', duration: 1200 });
-                router.push('/login');
+                router.push('/enter');
             } else {
                 ElMessage({ message: info.msg, duration: 1200, type: 'error' });
             }

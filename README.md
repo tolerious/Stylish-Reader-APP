@@ -1,5 +1,6 @@
 # Stylish Reader 英语学习软件
-[![Burning English Frontend CI](https://github.com/tolerious/English-Burning-Frontend/actions/workflows/node.js.yml/badge.svg?branch=master)](https://github.com/tolerious/English-Burning-Frontend/actions/workflows/node.js.yml)
+
+[![Stylish Reader APP CI](https://github.com/tolerious/Stylish-Reader-APP/actions/workflows/node.js.yml/badge.svg)](https://github.com/tolerious/Stylish-Reader-APP/actions/workflows/node.js.yml)
 
 作为一个英语学习的爱好者，我深知单词对于英语学习的重要性。这也是这款软件创建的初衷，希望它能够成为英语爱好者们的好帮手。
 
@@ -13,11 +14,8 @@
 
 ## 计划开发的功能
 
-具体可以参照 [Issues 列表](https://github.com/tolerious/English-Burning-Frontend/labels/enhancement)中的 `Enhancement` 标签。
-
-
+具体可以参照 [Issues 列表](https://github.com/tolerious/Stylish-Reader-APP/issues)中的 `Enhancement` 标签。
 
 ## ScreenShot
-
 
 ![Alt text](Animation.gif)
