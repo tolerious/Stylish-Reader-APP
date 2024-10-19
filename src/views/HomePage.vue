@@ -33,7 +33,8 @@
         </div>
         <div class="body-container">
             <div class="text-sm my-4 cursor-pointer text-center text-pink-500">
-                <span>Stay Hungry, Stay Foolish！</span>
+                <span v-if="todayWordCount > 0">今天收藏了{{ todayWordCount }}个单词，你真是太棒了！</span>
+                <span v-else>你今天还没有收藏单词哦~</span>
                 <!-- <span>加入VIP体验更多功能</span> -->
             </div>
 
@@ -75,27 +76,28 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { onMounted, ref } from 'vue';
 import { request } from '@/utils/service';
 import Chart from 'chart.js/auto';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const data = [
-    { year: '周一', count: 10 },
-    { year: '周二', count: 20 },
-    { year: '周三', count: 15 },
-    { year: '周四', count: 25 },
-    { year: '周五', count: 22 },
-    { year: '周六', count: 30 },
-    { year: '周日', count: 28 },
-];
+const everyDayWordCount = ref([]);
+const todayWordCount = ref(0);
 const router = useRouter();
 const defaultGroupID = ref('');
 
 onMounted(async () => {
     await getGroupList();
+    await getEveryDayWordCount();
+    await getTodayWordCount();
     createCollectionChart();
 });
+
+async function getTodayWordCount() {
+    const info = await request({ url: '/word/today' });
+    console.log(info.data);
+    todayWordCount.value = info.data.count;
+}
 
 function createCollectionChart() {
     const dom = document.getElementById('collection');
@@ -104,11 +106,11 @@ function createCollectionChart() {
         const chart = new Chart('collection', {
             type: 'bar',
             data: {
-                labels: data.map(row => row.year),
+                labels: everyDayWordCount.value.map(row => row.year),
                 datasets: [
                     {
-                        label: '本周收藏单词统计(开发中)',
-                        data: data.map(row => row.count),
+                        label: '每日收藏单词数',
+                        data: everyDayWordCount.value.map(row => row.count),
                     },
                 ],
             },
@@ -142,6 +144,37 @@ function redirect(condition: string) {
     if (condition === 'settings') router.push('/settings');
     if (condition === 'help') router.push('/help');
     if (condition === 'square') router.push('/square');
+}
+
+function mapWeekDay(week: string) {
+    switch (week) {
+        case 'Monday':
+            return '周一';
+        case 'Tuesday':
+            return '周二';
+        case 'Wednesday':
+            return '周三';
+        case 'Thursday':
+            return '周四';
+        case 'Friday':
+            return '周五';
+        case 'Saturday':
+            return '周六';
+        case 'Sunday':
+            return '周日';
+        default:
+            break;
+    }
+}
+
+async function getEveryDayWordCount() {
+    const info = await request({ url: '/word/thisweek' });
+    for (let key in info.data) {
+        everyDayWordCount.value.push({
+            year: mapWeekDay(key),
+            count: info.data[key],
+        });
+    }
 }
 
 async function getGroupList() {
