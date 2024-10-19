@@ -33,7 +33,10 @@
         </div>
         <div class="body-container">
             <div class="text-sm my-4 cursor-pointer text-center text-pink-500">
-                <span v-if="todayWordCount > 0">今天收藏了{{ todayWordCount }}个单词，你真是太棒了！</span>
+                <span v-if="todayWordCount > 0"
+                    >今天收藏了
+                    <span class="text-red-500 font-bold italic">{{ todayWordCount }}</span> 个单词，你真是太棒了！</span
+                >
                 <span v-else>你今天还没有收藏单词哦~</span>
                 <!-- <span>加入VIP体验更多功能</span> -->
             </div>
