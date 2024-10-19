@@ -56,7 +56,7 @@ import { ElNotification } from 'element-plus';
 import { computed, onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const buttonTexts = ['上一个', '下一个'];
+const buttonTexts = ['上一个', '文章链接', '下一个'];
 
 const route = useRoute();
 const router = useRouter();
@@ -65,6 +65,7 @@ const isTranslationVisible = ref(false);
 const wordList: Ref<Word[]> = ref([]);
 const currentIndex = ref(0);
 const currentTranslation = ref();
+const originalPageUrl = ref('');
 
 const currentWord = computed(() => wordList.value[currentIndex.value] ?? { en: '' });
 
@@ -74,6 +75,7 @@ onMounted(async () => {
     if (currentWord.value.en) {
         await getTranslation(currentWord.value.en);
     }
+    await getGroupDetail();
 });
 
 async function getWordList() {
@@ -91,6 +93,11 @@ function handleGoBack() {
     router.go(-1);
 }
 
+async function getGroupDetail() {
+    const info = await request({ url: '/wordgroup/detail', method: 'post', data: { groupID: groupId.value } });
+    originalPageUrl.value = info.data.originalPageUrl;
+}
+
 function navigateWord(text: string) {
     if (text === '上一个') {
         if (currentIndex.value != 0) {
@@ -106,6 +113,11 @@ function navigateWord(text: string) {
             getTranslation(currentWord.value.en);
         } else {
             ElNotification({ type: 'info', title: '单词已学完', message: '选择其他词组继续学习吧' });
+        }
+    }
+    if (text === '文章链接') {
+        if (originalPageUrl.value) {
+            window.open(`http://${originalPageUrl.value}`, '_blank');
         }
     }
     isTranslationVisible.value = false;
