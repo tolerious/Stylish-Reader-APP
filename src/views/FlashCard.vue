@@ -45,6 +45,7 @@
     <template v-else>
         <el-empty description="默认词组中没有收藏单词" />
     </template>
+    <audio autoplay ref="audioPlayer" :src="audioUrl">123</audio>
 </template>
 
 <script setup lang="ts">
@@ -52,11 +53,12 @@ import Header from '@/components/Header.vue';
 import type { ResponseData, Word } from '@/types';
 import { request } from '@/utils/service';
 import { Refresh } from '@element-plus/icons-vue';
+import axios from 'axios';
 import { ElNotification } from 'element-plus';
 import { computed, onMounted, ref, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const buttonTexts = ['上一个', '文章链接', '下一个'];
+const buttonTexts = ['文章链接', '发音', '上一个', '下一个'];
 
 const route = useRoute();
 const router = useRouter();
@@ -66,6 +68,8 @@ const wordList: Ref<Word[]> = ref([]);
 const currentIndex = ref(0);
 const currentTranslation = ref();
 const originalPageUrl = ref('');
+const audioUrl = ref('');
+const audioPlayer: Ref<HTMLAudioElement | null> = ref(null);
 
 const currentWord = computed(() => wordList.value[currentIndex.value] ?? { en: '' });
 
@@ -77,6 +81,21 @@ onMounted(async () => {
     }
     await getGroupDetail();
 });
+
+async function handleClick() {
+    console.log(currentWord.value.en);
+    const response: any = await axios({
+        url: `${import.meta.env.VITE_BACKEND_URL}/youdao/`, // 后端 API
+        method: 'POST',
+        data: { word: currentWord.value.en },
+        responseType: 'blob', // 获取音频为 Blob
+    });
+    console.log(response.data);
+    const audioBlob = response.data;
+    const u = URL.createObjectURL(audioBlob);
+    audioUrl.value = u;
+    audioPlayer.value?.play();
+}
 
 async function getWordList() {
     const t: ResponseData = await request({ url: '/word/bygroup', method: 'post', data: { groupId: groupId.value } });
@@ -119,6 +138,9 @@ function navigateWord(text: string) {
         if (originalPageUrl.value) {
             window.open(`http://${originalPageUrl.value}`, '_blank');
         }
+    }
+    if (text === '发音') {
+        handleClick();
     }
     isTranslationVisible.value = false;
 }
