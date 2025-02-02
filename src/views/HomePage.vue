@@ -84,15 +84,44 @@ import Chart from 'chart.js/auto';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const everyDayWordCount = ref([]);
+const everyDayWordCount = ref([
+    {
+        year: '周一',
+        count: 0,
+    },
+    {
+        year: '周二',
+        count: 0,
+    },
+    {
+        year: '周三',
+        count: 0,
+    },
+    {
+        year: '周四',
+        count: 0,
+    },
+    {
+        year: '周五',
+        count: 0,
+    },
+    {
+        year: '周六',
+        count: 0,
+    },
+    {
+        year: '周日',
+        count: 0,
+    },
+]);
 const todayWordCount = ref(0);
 const router = useRouter();
 const defaultGroupID = ref('');
 
 onMounted(async () => {
     await getGroupList();
+    getTodayWordCount();
     await getEveryDayWordCount();
-    await getTodayWordCount();
     createCollectionChart();
 });
 
