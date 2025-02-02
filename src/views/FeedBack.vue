@@ -11,7 +11,7 @@
         ></textarea>
         <button
             @click="submitFeedback"
-            class="bg-pink-500 text-white px-3 py-1 font-bold rounded-sm w-30 active:shadow active:shadow-gray-300"
+            class="bg-pink-500 text-white px-3 py-1 font-bold rounded-xs w-30 active:shadow-sm active:shadow-gray-300"
         >
             提 交 反 馈
         </button>

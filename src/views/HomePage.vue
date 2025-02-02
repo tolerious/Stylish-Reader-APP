@@ -43,30 +43,30 @@
 
             <el-row justify="space-around">
                 <el-col :span="11">
-                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('group-manage')"
+                    <el-card class="cursor-pointer text-center" shadow-sm="always" @click="redirect('group-manage')"
                         >我的词组</el-card
                     >
                 </el-col>
                 <el-col :span="11">
-                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('today')">
+                    <el-card class="cursor-pointer text-center" shadow-sm="always" @click="redirect('today')">
                         今日收藏
                     </el-card>
                 </el-col>
             </el-row>
             <!-- <el-row justify="space-around" style="margin-top: 15px">
-                <el-col :span="11"> <el-card shadow="always" @click="redirect('record')">单词查询</el-card> </el-col>
+                <el-col :span="11"> <el-card shadow-sm="always" @click="redirect('record')">单词查询</el-card> </el-col>
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('square')">词组广场 </el-card>
                 </el-col>
             </el-row> -->
             <el-row justify="space-around" style="margin-top: 15px">
                 <el-col :span="11">
-                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('feedback')"
+                    <el-card class="cursor-pointer text-center" shadow-sm="always" @click="redirect('feedback')"
                         >反馈建议</el-card
                     >
                 </el-col>
                 <el-col :span="11">
-                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('settings')"
+                    <el-card class="cursor-pointer text-center" shadow-sm="always" @click="redirect('settings')"
                         >用户设置</el-card
                     >
                 </el-col>

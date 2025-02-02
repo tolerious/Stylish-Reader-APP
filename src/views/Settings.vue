@@ -5,7 +5,7 @@
             <template #extra>
                 <button
                     @click="logout"
-                    class="bg-pink-600 active:shadow-sm active:shadow-gray-500 px-3 py-2 rounded-md text-white font-bold"
+                    class="bg-pink-600 active:shadow-xs active:shadow-gray-500 px-3 py-2 rounded-md text-white font-bold"
                 >
                     退出登录
                 </button>

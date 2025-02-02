@@ -6,7 +6,7 @@
             v-for="group in groupList"
             :key="group._id"
             word-group
-            class="rounded-sm px-2 py-1 m-2 shadow-md shadow-slate-300 cursor-pointer"
+            class="rounded-xs px-2 py-1 m-2 shadow-md shadow-slate-300 cursor-pointer"
         >
             <div>{{ group.name }}</div>
             <div class="text-gray-500">收藏单词数: {{ group.wordCount }}</div>

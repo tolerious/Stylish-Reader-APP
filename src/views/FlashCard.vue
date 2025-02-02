@@ -4,21 +4,21 @@
         <div
             v-if="!isTranslationVisible"
             card-container
-            class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-sm mt-9 h-3/5 flex items-center justify-center overflow-y-scroll"
+            class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-xs mt-9 h-3/5 flex items-center justify-center overflow-y-scroll"
         >
             <div word class="text-6xl text-pink-600 text-wrap break-all">{{ currentWord.en }}</div>
         </div>
         <div
             v-else
             card-container
-            class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-sm mt-9 h-3/5 overflow-y-scroll"
+            class="border-[1px] border-gray-300 w-11/12 my-0 mx-auto rounded-xs mt-9 h-3/5 overflow-y-scroll"
         >
             <div class="text-3xl text-center text-pink-600">{{ currentWord.en }}</div>
             <div class="text-center text-normal">{{ currentTranslation.phonetic }}</div>
             <div translation-container class="px-2">
                 <div
                     item
-                    class="shadow shadow-gray-300 my-3 px-2"
+                    class="shadow-sm shadow-gray-300 my-3 px-2"
                     v-for="translation in currentTranslation.dicList"
                     :key="translation"
                 >
@@ -32,7 +32,7 @@
                 @click="navigateWord(text)"
                 v-for="text in buttonTexts"
                 :key="text"
-                class="text-white border-[1px] border-pink-600 px-4 py-1 bg-pink-500 active:shadow-sm active:shadow-gray-500"
+                class="text-white border-[1px] border-pink-600 px-4 py-1 bg-pink-500 active:shadow-xs active:shadow-gray-500"
                 :class="[]"
             >
                 {{ text }}

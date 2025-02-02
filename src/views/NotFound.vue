@@ -1,17 +1,17 @@
 <template>
-  <Header @go-back="handleGoBack" title="Page Not Found"></Header>
-  <div style="margin-top: 30px;">
-    <el-empty description="404 Not Found" />
-  </div>
+    <Header @go-back="handleGoBack" title="Page Not Found"></Header>
+    <div style="margin-top: 30px">
+        <el-empty description="404 Not Found" />
+    </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
 
-const router = useRouter()
+const router = useRouter();
 
 function handleGoBack() {
-  router.push('/home')
+    router.push('/home');
 }
 </script>
 
