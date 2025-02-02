@@ -1,6 +1,6 @@
 <template>
     <Header title="Words of Today" @goBack="handleGoBack"></Header>
-    <div v-if="todayWord.length > 0" class="p-2 grid lg:grid-cols-5 grid-cols-3 lg:gap-3 gap-2">
+    <div v-if="todayWord.wordList.length > 0" class="p-2 grid lg:grid-cols-5 grid-cols-3 lg:gap-3 gap-2">
         <word-of-today-item :wordText="i.en" v-for="i in todayWord.wordList" :key="i"></word-of-today-item>
     </div>
     <el-empty description="No Data." v-else />
