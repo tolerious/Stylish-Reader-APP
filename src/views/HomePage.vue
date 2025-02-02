@@ -48,8 +48,8 @@
                     >
                 </el-col>
                 <el-col :span="11">
-                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('recite')">
-                        单词背诵
+                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('today')">
+                        今日收藏
                     </el-card>
                 </el-col>
             </el-row>
@@ -147,6 +147,7 @@ function redirect(condition: string) {
     if (condition === 'settings') router.push('/settings');
     if (condition === 'help') router.push('/help');
     if (condition === 'square') router.push('/square');
+    if (condition === 'today') router.push('/today');
 }
 
 function mapWeekDay(week: string) {
