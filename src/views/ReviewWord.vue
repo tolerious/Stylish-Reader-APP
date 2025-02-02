@@ -1,7 +1,7 @@
 <template>
     <Header title="good" @go-back="handleGoBack"></Header>
     <div class="relearn-container" v-if="relearnVisible">
-        <el-card v-for="word in incorrectWordList" :key="word.wordDetail" shadow="always">
+        <el-card v-for="word in incorrectWordList" :key="word.wordDetail" shadow-sm="always">
             <span class="color-orange">{{ word.wordDetail[0].name }}</span> &nbsp;&nbsp;
             {{ word.wordDetail[0].dsenseObjList[0].defBlockObjList[0].zh }}
         </el-card>

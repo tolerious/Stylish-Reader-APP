@@ -17,34 +17,34 @@
 </template>
 
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
+import Header from '@/components/Header.vue';
 import { request } from '@/utils/service';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 // #region variable
-const router = useRouter()
-let groupList = ref([])
-let groupID = ref('')
+const router = useRouter();
+let groupList = ref([]);
+let groupID = ref('');
 // #endregion
 
 // #region lifecycle
 onMounted(() => {
-    getGroupList()
-})
+    getGroupList();
+});
 // #endregion
 
 // #region function
 async function redirect(id) {
-    router.push('/wordlist/' + id)
+    router.push('/wordlist/' + id);
 }
 async function getGroupList() {
     const info = await request({
-        url: '/wordgroup'
-    })
-    groupList.value = info.data.list
+        url: '/wordgroup',
+    });
+    groupList.value = info.data.list;
 }
 function handleGoBack() {
-    router.push('/home')
+    router.push('/home');
 }
 // #endregion
 </script>

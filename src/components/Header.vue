@@ -21,21 +21,26 @@ import { useRoute, useRouter } from 'vue-router';
 
 defineProps({
     title: {
-        default() { return '' }, type: String
+        default() {
+            return '';
+        },
+        type: String,
     },
     showBack: {
         default() {
-            return true
+            return true;
         },
-        type: Boolean
+        type: Boolean,
     },
-})
-const router = useRouter()
-const emit = defineEmits(['goBack'])
+});
+const router = useRouter();
+const emit = defineEmits(['goBack']);
 function goBack() {
-    emit('goBack')
+    emit('goBack');
 }
-const goHome = () => { router.push('/home') }
+const goHome = () => {
+    router.push('/home');
+};
 </script>
 
 <style scoped lang="less">

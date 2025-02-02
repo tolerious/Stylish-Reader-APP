@@ -1,15 +1,15 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
+import { ref, computed } from 'vue';
+import { defineStore } from 'pinia';
+import { useRouter } from 'vue-router';
 
 export const useUserStore = defineStore('user', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function reset() {
-    router.push('/enter')
-  }
+    const count = ref(0);
+    const doubleCount = computed(() => count.value * 2);
+    function reset() {
+        router.push('/enter');
+    }
 
-  const router = useRouter()
+    const router = useRouter();
 
-  return { count, doubleCount, reset }
-})
+    return { count, doubleCount, reset };
+});
