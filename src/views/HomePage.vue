@@ -202,6 +202,7 @@ function mapWeekDay(week: string) {
 
 async function getEveryDayWordCount() {
     const info = await request({ url: '/word/thisweek' });
+    everyDayWordCount.value = [];
     for (let key in info.data) {
         everyDayWordCount.value.push({
             year: mapWeekDay(key),
