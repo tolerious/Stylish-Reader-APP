@@ -19,6 +19,16 @@ const router = createRouter({
             component: () => import('@/views/UserRegister.vue'),
         },
         {
+            path: '/reading',
+            name: 'reading',
+            component: () => import('@/views/ReadingArticle.vue'),
+        },
+        {
+            path: '/reading/:articleID',
+            name: 'readingDetail',
+            component: () => import('@/views/ReadingArticleDetail.vue'),
+        },
+        {
             path: '/review/word/:groupID',
             name: 'reviewWord',
             component: () => import('@/views/ReviewWord.vue'),

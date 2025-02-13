@@ -61,6 +61,16 @@
             </el-row> -->
             <el-row justify="space-around" style="margin-top: 15px">
                 <el-col :span="11">
+                    <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('reading')"
+                        >阅读理解</el-card
+                    >
+                </el-col>
+                <el-col :span="11">
+                    <el-card class="cursor-pointer text-center" shadow="always">即将开放 </el-card>
+                </el-col>
+            </el-row>
+            <el-row justify="space-around" style="margin-top: 15px">
+                <el-col :span="11">
                     <el-card class="cursor-pointer text-center" shadow="always" @click="redirect('feedback')"
                         >反馈建议</el-card
                     >
@@ -106,7 +116,7 @@ function createCollectionChart() {
     const dom = document.getElementById('collection');
 
     if (dom) {
-        const chart = new Chart('collection', {
+        new Chart('collection', {
             type: 'bar',
             data: {
                 labels: everyDayWordCount.value.map(row => row.year),
@@ -147,6 +157,7 @@ function redirect(condition: string) {
     if (condition === 'settings') router.push('/settings');
     if (condition === 'help') router.push('/help');
     if (condition === 'square') router.push('/square');
+    if (condition === 'reading') router.push('/reading');
 }
 
 function mapWeekDay(week: string) {
