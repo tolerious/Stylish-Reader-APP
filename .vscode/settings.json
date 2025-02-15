@@ -1,4 +1,13 @@
 {
     "files.autoSave": "afterDelay",
-    "editor.bracketPairColorization.independentColorPoolPerBracketType": true
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "cSpell.words": [
+        "dsense",
+        "FUIYOH",
+        "HIYAA",
+        "thisweek",
+        "usersetting",
+        "wordgroup",
+        "wordlist"
+    ]
 }

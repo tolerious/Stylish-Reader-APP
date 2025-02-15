@@ -23,7 +23,12 @@
             <div>
                 <el-select style="width: 180px" v-model="defaultGroup">
                     <el-option value="" label=""></el-option>
-                    <el-option v-for="group in groupList" :value="group._id" :label="group.name"></el-option>
+                    <el-option
+                        v-for="group in groupList"
+                        :value="group._id"
+                        :label="group.name"
+                        :key="group.name"
+                    ></el-option>
                 </el-select>
             </div>
             <div><el-button type="warning" @click="playAudio(form.englishName)">&nbsp;Audio&nbsp;</el-button></div>
@@ -34,27 +39,32 @@
                 :title="`${card.name} - ${card.property} - ${card.phonetic}`"
                 :name="index"
                 v-for="(card, index) in cardList"
+                :key="index"
             >
                 <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
                 <template v-for="dsenseObj in card.dsenseObjList">
-                    <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.defBlockObjList">
+                    <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.defBlockObjList" :key="dsense.en">
                         <template #header>
                             <div class="dsense-title-container">{{ dsense.en }}</div>
                             <div class="dsense-title-container">{{ dsense.zh }}</div>
                         </template>
                         <div>
-                            <div v-for="sentence in dsense.sentence">
+                            <div v-for="sentence in dsense.sentence" :key="sentence">
                                 {{ sentence }}
                             </div>
                         </div>
                     </el-card>
-                    <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.phraseBlockObjList">
+                    <el-card
+                        style="margin-bottom: 15px"
+                        v-for="dsense in dsenseObj.phraseBlockObjList"
+                        :key="dsense.en"
+                    >
                         <template #header>
                             <div class="dsense-title-container">{{ dsense.en }}</div>
                             <div class="dsense-title-container">{{ dsense.zh }}</div>
                         </template>
                         <div>
-                            <div v-for="sentence in dsense.sentence">
+                            <div v-for="sentence in dsense.sentence" :key="sentence">
                                 {{ sentence }}
                             </div>
                         </div>
@@ -98,10 +108,8 @@ interface WDL {
 // #region variable
 let timer = ref(null);
 const grabWordInput = ref(null);
-let groupID = ref('');
 const router = useRouter();
 let activeNames = ref([]);
-let wordDescription: Ref<WD>;
 let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=');
 let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=');
 const form: Ref<WDL> = ref({
@@ -133,14 +141,6 @@ onMounted(() => {
                 if (form.value.englishName) playAudio(form.value.englishName);
             }
         }, 1200);
-    });
-    wordDescription = ref({
-        englishDescription: '',
-        partOfSpeech: '',
-        level: '',
-        chineseDescription: '',
-        sentence: '',
-        group: '',
     });
     getDefaultGroup();
     getGroupList();
