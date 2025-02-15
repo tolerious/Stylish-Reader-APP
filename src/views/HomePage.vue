@@ -61,7 +61,7 @@
                 </el-col>
             </el-row>
             <!-- <el-row justify="space-around" style="margin-top: 15px">
-                <el-col :span="11"> <el-card shadow="always" @click="redirect('record')">单词查询</el-card> </el-col>
+                <el-col :span="11"> <el-card shadow-sm="always" @click="redirect('record')">单词查询</el-card> </el-col>
                 <el-col :span="11">
                     <el-card shadow="always" @click="redirect('square')">词组广场 </el-card>
                 </el-col>
@@ -110,15 +110,44 @@ import Chart from 'chart.js/auto';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const everyDayWordCount = ref([]);
+const everyDayWordCount = ref([
+    {
+        year: '周一',
+        count: 0,
+    },
+    {
+        year: '周二',
+        count: 0,
+    },
+    {
+        year: '周三',
+        count: 0,
+    },
+    {
+        year: '周四',
+        count: 0,
+    },
+    {
+        year: '周五',
+        count: 0,
+    },
+    {
+        year: '周六',
+        count: 0,
+    },
+    {
+        year: '周日',
+        count: 0,
+    },
+]);
 const todayWordCount = ref(0);
 const router = useRouter();
 const defaultGroupID = ref('');
 
 onMounted(async () => {
     await getGroupList();
+    getTodayWordCount();
     await getEveryDayWordCount();
-    await getTodayWordCount();
     createCollectionChart();
 });
 
@@ -174,6 +203,7 @@ function redirect(condition: string) {
     if (condition === 'help') router.push('/help');
     if (condition === 'square') router.push('/square');
     if (condition === 'reading') router.push('/reading');
+    if (condition === 'today') router.push('/today');
 }
 
 function mapWeekDay(week: string) {
@@ -199,6 +229,7 @@ function mapWeekDay(week: string) {
 
 async function getEveryDayWordCount() {
     const info = await request({ url: '/word/thisweek' });
+    everyDayWordCount.value = [];
     for (let key in info.data) {
         everyDayWordCount.value.push({
             year: mapWeekDay(key),

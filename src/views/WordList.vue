@@ -12,7 +12,6 @@
                 <button @click.stop="playAudio(word.wordDetail[0].name)">
                     <span>Audio</span>
                 </button>
-
             </div>
         </div>
         <template v-else>
@@ -22,14 +21,23 @@
             <el-button type="primary" v-if="addWordVisible" @click="addWord">Add Word</el-button>
         </div>
         <audio id="wordListAudio" type="audio/mpeg" :src="audioUrl"></audio>
-        <el-dialog @close="handleDialogClose" v-model="centerDialogVisible" :title="currentWord.wordDetail[0].name"
-            style="max-height:85vh;overflow: scroll;" width="90%" align-center>
+        <el-dialog
+            @close="handleDialogClose"
+            v-model="centerDialogVisible"
+            :title="currentWord.wordDetail[0].name"
+            style="max-height: 85vh; overflow: scroll"
+            width="90%"
+            align-center
+        >
             <el-collapse v-model="activeNames">
-                <el-collapse-item :title="`${card.name} - ${card.property} - ${card.phonetic}`" :name="index"
-                    v-for="card, index in currentWord.wordDetail">
+                <el-collapse-item
+                    :title="`${card.name} - ${card.property} - ${card.phonetic}`"
+                    :name="index"
+                    v-for="(card, index) in currentWord.wordDetail"
+                >
                     <div class="collapse-header">{{ card.property }} {{ card.phonetic }}</div>
                     <template v-for="dsenseObj in card.dsenseObjList">
-                        <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.defBlockObjList">
+                        <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.defBlockObjList">
                             <template #header>
                                 <div class="dsense-title-container">{{ dsense.en }}</div>
                                 <div class="dsense-title-container">{{ dsense.zh }}</div>
@@ -40,7 +48,7 @@
                                 </div>
                             </div>
                         </el-card>
-                        <el-card style="margin-bottom: 15px;" v-for="dsense in dsenseObj.phraseBlockObjList">
+                        <el-card style="margin-bottom: 15px" v-for="dsense in dsenseObj.phraseBlockObjList">
                             <template #header>
                                 <div class="dsense-title-container">{{ dsense.en }}</div>
                                 <div class="dsense-title-container">{{ dsense.zh }}</div>
@@ -67,99 +75,96 @@
 </template>
 
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
+import Header from '@/components/Header.vue';
 import { request } from '@/utils/service';
 import { ElMessageBox, ElNotification } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 // #region variable
-let addWordVisible = ref(true)
-const router = useRouter()
-const route = useRoute()
-let activeNames = ref([])
-let wordList = ref([])
-let groupID = ref('')
-let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
-let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=')
-let centerDialogVisible = ref(false)
-let currentWord = ref({ wordDetail: [{ name: '' }] })
+let addWordVisible = ref(true);
+const router = useRouter();
+const route = useRoute();
+let activeNames = ref([]);
+let wordList = ref([]);
+let groupID = ref('');
+let originUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=');
+let audioUrl = ref('https://dict.youdao.com/dictvoice?type=1&audio=');
+let centerDialogVisible = ref(false);
+let currentWord = ref({ wordDetail: [{ name: '' }] });
 // #endregion
-
 
 // #region function
 
 async function getGroupBelongs2Me() {
-    const info = await request({ url: '/wordgroup/child', })
-    let a = info.data.map(item => item._id)
+    const info = await request({ url: '/wordgroup/child' });
+    let a = info.data.map(item => item._id);
     if (a.indexOf(groupID.value) > -1) {
         // 当前分享的词组属于我
-        addWordVisible.value = true
+        addWordVisible.value = true;
     } else {
-        addWordVisible.value = false
+        addWordVisible.value = false;
     }
 }
 
 function handleDialogClose() {
-    activeNames = []
+    activeNames = [];
 }
 function playAudio(word) {
     if (!word) {
         ElMessage({ message: 'Please input word first', type: 'warning', duration: 1200 });
-        return
+        return;
     }
-    let audio = document.getElementById('wordListAudio')
-    audioUrl.value = originUrl.value + word
+    let audio = document.getElementById('wordListAudio');
+    audioUrl.value = originUrl.value + word;
     setTimeout(() => {
-        audio.play()
+        audio.play();
     }, 300);
 }
 async function addWord() {
-    const info = await request({ url: '/usersetting', method: 'post', data: { defaultGroupID: groupID.value } })
+    const info = await request({ url: '/usersetting', method: 'post', data: { defaultGroupID: groupID.value } });
     if (info.code === 200) {
-        router.push('/record-word')
+        router.push('/record-word');
     } else {
-        ElNotification({ message: 'Update Filed', type: 'error', duration: 1200 })
+        ElNotification({ message: 'Update Filed', type: 'error', duration: 1200 });
     }
 }
 function visitWordDetail(w) {
-    currentWord.value = w
-    centerDialogVisible.value = true
+    currentWord.value = w;
+    centerDialogVisible.value = true;
 }
 async function deleteWord(id) {
-    ElMessageBox.confirm('Do you want to delete this word?', 'Delete Word').then(async () => {
-        const info = await request({ url: '/word', method: 'delete', data: { id: id, groupID: groupID.value } })
-        if (info.code === 200) {
-            ElNotification({ message: 'Delete Successfully', type: 'success', duration: 800 })
-            getWordList(groupID.value)
-        }
-    }).catch(() => {
-
-    })
-
+    ElMessageBox.confirm('Do you want to delete this word?', 'Delete Word')
+        .then(async () => {
+            const info = await request({ url: '/word', method: 'delete', data: { id: id, groupID: groupID.value } });
+            if (info.code === 200) {
+                ElNotification({ message: 'Delete Successfully', type: 'success', duration: 800 });
+                getWordList(groupID.value);
+            }
+        })
+        .catch(() => {});
 }
 function handleGoBack() {
-    router.go(-1)
+    router.go(-1);
 }
 async function getWordList(groupID) {
     const info = await request({
         url: '/word/bygroup',
         method: 'post',
-        data: { groupID: groupID }
-    })
-    wordList.value = info.data
+        data: { groupID: groupID },
+    });
+    wordList.value = info.data;
 }
 
 // #endregion
 
 // #region lifecycle
 onMounted(async () => {
-    groupID.value = route.params.groupID
-    await getGroupBelongs2Me()
-    getWordList(groupID.value)
-})
+    groupID.value = route.params.groupID;
+    await getGroupBelongs2Me();
+    getWordList(groupID.value);
+});
 // #endregion
-
 </script>
 
 <style scoped lang="less">

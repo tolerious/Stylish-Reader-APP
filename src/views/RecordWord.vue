@@ -142,7 +142,6 @@ onMounted(() => {
             }
         }, 1200);
     });
-
     getDefaultGroup();
     getGroupList();
 });
